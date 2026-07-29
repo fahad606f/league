@@ -8,12 +8,12 @@
     <script src="data.js"></script>
     <style>
         :root {
-            /* ألوان مائلة للأزرق وأفتح قليلاً */
-            --bg-color: #1a233a; 
-            --card-bg: #25314c; 
-            --score-bg: #324263; 
+            /* ألوان أفتح بنسبة 50% بدرجات أزرق ساطعة ومريحة للعين */
+            --bg-color: #243456; 
+            --card-bg: #354a78; 
+            --score-bg: #465f9a; 
             --text-main: #ffffff;
-            --text-muted: #9ba6c1; 
+            --text-muted: #c5d2ee; 
             --gold: #FFD700;
             --green: #4CAF50;
             --red: #f44336;
@@ -34,21 +34,21 @@
         .marquee { display: inline-block; animation: marquee 10s linear infinite; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* تصميم البطاقات الموحد (تم تقليص العرض بنسبة 20% تقريباً) */
+        /* تصميم البطاقات الموحد (بنسبة 75%) */
         .styled-box {
             background-color: var(--card-bg);
             border-radius: 16px;
             padding: 15px;
             margin: 0 auto 15px auto;
-            max-width: 75%; /* كان 95% وأصبح 75% */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            max-width: 75%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .box-header {
             display: flex; justify-content: space-between; font-size: 11px;
             color: var(--text-muted); margin-bottom: 10px;
         }
         .box-divider {
-            border: 0; height: 1px; background: rgba(255, 255, 255, 0.1); margin-bottom: 12px;
+            border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 12px;
         }
         .box-content {
             display: flex; justify-content: space-between; align-items: center;
@@ -100,7 +100,7 @@
         /* صفوف قائمة الهدافين */
         .player-stat-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 14px;
+            padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 14px;
         }
         .player-stat-row:last-child { border-bottom: none; }
         img.player-icon { width: 25px; height: 25px; border-radius: 50%; vertical-align: middle; margin-left: 8px; }
@@ -109,7 +109,7 @@
         .nav-buttons { margin-bottom: 20px; }
         .nav-buttons a, .admin-btn {
             display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
-            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.1);
+            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.15);
             cursor: pointer; font-family: inherit; font-size: 13px; font-weight: bold;
         }
     </style>
