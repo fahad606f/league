@@ -32,7 +32,6 @@
         .marquee { display: inline-block; animation: marquee 10s linear infinite; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* تصميم الإطارات الموحد (مثل إطارات المباريات تماماً) */
         .styled-box {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -56,6 +55,16 @@
         .box-content {
             display: flex; justify-content: space-between; align-items: center;
             font-weight: bold; font-size: 14px;
+        }
+        
+        /* عنوان قسم المواجهات */
+        .section-main-title {
+            color: var(--gold);
+            font-size: 17px;
+            font-weight: bold;
+            text-align: right;
+            max-width: 75%;
+            margin: 25px auto 10px auto;
         }
         
         .score-container {
@@ -147,6 +156,9 @@
         <hr class="box-divider">
         <div id="top-assists"></div>
     </div>
+
+    <!-- العنوان الرئيسي للمواجهات -->
+    <div class="section-main-title">⚔️ مواجهات الدوري</div>
 
     <!-- إطارات المباريات -->
     <div id="matches-container"></div>
