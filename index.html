@@ -8,12 +8,12 @@
     <script src="data.js"></script>
     <style>
         :root {
-            /* الألوان المستوحاة من الصورة image_3.png */
-            --bg-color: #0f111a; 
-            --card-bg: #1c1f2e; 
-            --score-bg: #272a3e; 
+            /* ألوان مائلة للأزرق وأفتح قليلاً */
+            --bg-color: #1a233a; 
+            --card-bg: #25314c; 
+            --score-bg: #324263; 
             --text-main: #ffffff;
-            --text-muted: #8b92a5; 
+            --text-muted: #9ba6c1; 
             --gold: #FFD700;
             --green: #4CAF50;
             --red: #f44336;
@@ -34,13 +34,13 @@
         .marquee { display: inline-block; animation: marquee 10s linear infinite; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* تصميم البطاقات الموحد (للمواجهات والهدافين) بناءً على الصورة */
+        /* تصميم البطاقات الموحد (تم تقليص العرض بنسبة 20% تقريباً) */
         .styled-box {
             background-color: var(--card-bg);
             border-radius: 16px;
             padding: 15px;
             margin: 0 auto 15px auto;
-            max-width: 95%;
+            max-width: 75%; /* كان 95% وأصبح 75% */
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .box-header {
@@ -48,14 +48,14 @@
             color: var(--text-muted); margin-bottom: 10px;
         }
         .box-divider {
-            border: 0; height: 1px; background: #2a2e42; margin-bottom: 12px;
+            border: 0; height: 1px; background: rgba(255, 255, 255, 0.1); margin-bottom: 12px;
         }
         .box-content {
             display: flex; justify-content: space-between; align-items: center;
             font-weight: bold; font-size: 14px;
         }
         
-        /* مربعات النتيجة مثل الصورة */
+        /* مربعات النتيجة */
         .score-container {
             display: flex; align-items: center; gap: 8px;
             color: var(--text-muted); font-size: 12px;
@@ -65,13 +65,13 @@
             border-radius: 8px; color: var(--text-main); font-size: 15px;
         }
 
-        /* نجم المباراة (MVP) - مقلص بنسبة 45% تقريباً */
+        /* نجم المباراة */
         .mvp-card {
             background-color: var(--card-bg);
             border-radius: 16px;
             padding: 10px;
             margin: 15px auto;
-            max-width: 45%; /* تم تقليص الحجم هنا */
+            max-width: 45%;
             border: 1px solid var(--gold);
             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
@@ -90,17 +90,17 @@
         #mvp-name { font-size: 13px; margin-top: 5px; font-weight: bold; }
 
         /* حالات خروج المغلوب */
-        .styled-box.finished { opacity: 0.6; } /* لون أغمق للمنتهية */
+        .styled-box.finished { opacity: 0.6; }
         .winner { color: var(--green); }
         .loser { text-decoration: line-through; color: var(--red); }
         .team-name { flex: 1; text-align: center; }
         .team-right { text-align: right; }
         .team-left { text-align: left; }
 
-        /* صفوف قائمة الهدافين داخل المربع */
+        /* صفوف قائمة الهدافين */
         .player-stat-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; border-bottom: 1px solid #2a2e42; font-size: 14px;
+            padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 14px;
         }
         .player-stat-row:last-child { border-bottom: none; }
         img.player-icon { width: 25px; height: 25px; border-radius: 50%; vertical-align: middle; margin-left: 8px; }
@@ -109,7 +109,7 @@
         .nav-buttons { margin-bottom: 20px; }
         .nav-buttons a, .admin-btn {
             display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
-            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid #3a3e52;
+            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.1);
             cursor: pointer; font-family: inherit; font-size: 13px; font-weight: bold;
         }
     </style>
@@ -125,7 +125,7 @@
         <a href="history.html">🏆 السجل الشرفي</a>
     </div>
 
-    <!-- نجم المباراة (مقلص) -->
+    <!-- نجم المباراة -->
     <div class="mvp-card">
         <div class="mvp-title">🌟 نجم الجولة</div>
         <div class="mvp-img-wrapper">
@@ -134,7 +134,7 @@
         <div id="mvp-name"></div>
     </div>
 
-    <!-- قائمة الهدافين وصناع اللعب (بنفس إطار المواجهات) -->
+    <!-- قائمة الهدافين وصناع اللعب -->
     <div class="styled-box">
         <div class="box-header">
             <span>أعلى الهدافين</span>
@@ -158,20 +158,16 @@
     <button class="admin-btn" onclick="checkAdmin()" style="margin-top: 15px;">⚙️ دخول الإدارة</button>
 
     <script>
-        // 1. تفعيل البنر الإعلاني
         if(DB.settings.showBanner) {
             document.getElementById('ad-banner').style.display = 'block';
             document.getElementById('ad-text').innerText = DB.settings.bannerText;
         }
 
-        // 2. تفعيل نجم المباراة
         document.getElementById('mvp-img').src = DB.lastMvp.image;
         document.getElementById('mvp-name').innerText = DB.lastMvp.name;
 
-        // 3. جلب وترتيب الهدافين وصناع اللعب
         let players = DB.players.slice();
         
-        // الهدافين
         let topScorersHtml = "";
         let topScorers = players.sort((a, b) => b.goals - a.goals).slice(0, 3);
         topScorers.forEach(p => {
@@ -183,7 +179,6 @@
         });
         document.getElementById('top-scorers').innerHTML = topScorersHtml;
 
-        // صناع اللعب
         let topAssistsHtml = "";
         let topAssists = players.sort((a, b) => b.assists - a.assists).slice(0, 3);
         topAssists.forEach(p => {
@@ -195,7 +190,6 @@
         });
         document.getElementById('top-assists').innerHTML = topAssistsHtml;
 
-        // 4. عرض المباريات (مطابقة للصورة)
         let matchesHtml = "";
         DB.matches.forEach((m, index) => {
             let t1Class = "", t2Class = "", check1 = "", check2 = "";
@@ -227,7 +221,6 @@
         });
         document.getElementById('matches-container').innerHTML = matchesHtml;
 
-        // 5. نظام الإدارة
         function checkAdmin() {
             let pass = prompt("أدخل الرقم السري للإدارة:");
             if(pass === "322332") {
