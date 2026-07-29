@@ -32,6 +32,7 @@
         .marquee { display: inline-block; animation: marquee 10s linear infinite; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
+        /* تصميم الإطارات الموحد (مثل إطارات المباريات تماماً) */
         .styled-box {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -45,20 +46,9 @@
             opacity: 0.85;
         }
 
-        .section-title {
-            color: var(--gold);
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0 0 10px 0;
-            text-align: right;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
         .box-header {
-            display: flex; justify-content: space-between; font-size: 12px;
-            color: var(--text-muted); margin-bottom: 8px; font-weight: bold;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 13px; color: var(--text-muted); margin-bottom: 10px; font-weight: bold;
         }
         .box-divider {
             border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 12px;
@@ -140,9 +130,8 @@
 
     <!-- إطار أعلى الهدافين المستقل -->
     <div class="styled-box">
-        <div class="section-title">⚽ أعلى الهدافين</div>
         <div class="box-header">
-            <span>اللاعب</span>
+            <span style="font-size: 15px; color: var(--gold); font-weight: bold;">⚽ أعلى الهدافين</span>
             <span>الأهداف</span>
         </div>
         <hr class="box-divider">
@@ -151,15 +140,15 @@
 
     <!-- إطار أعلى صناع اللعب المستقل -->
     <div class="styled-box">
-        <div class="section-title">🎯 أعلى صناع اللعب</div>
         <div class="box-header">
-            <span>اللاعب</span>
+            <span style="font-size: 15px; color: var(--gold); font-weight: bold;">🎯 أعلى صناع اللعب</span>
             <span>الصناعة</span>
         </div>
         <hr class="box-divider">
         <div id="top-assists"></div>
     </div>
 
+    <!-- إطارات المباريات -->
     <div id="matches-container"></div>
 
     <script>
