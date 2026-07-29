@@ -36,8 +36,15 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         .history-item:last-child { border-bottom: none; }
-        .season-title { color: var(--gold); font-weight: bold; font-size: 16px; margin-bottom: 5px; }
-        .winners-list { color: var(--text-main); font-size: 14px; font-weight: bold; }
+        .season-title { color: var(--gold); font-weight: bold; font-size: 16px; margin-bottom: 8px; }
+        .winners-list { color: var(--text-main); font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+        
+        .winner-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--score-bg); padding: 4px 10px; border-radius: 20px;
+        }
+        img.winner-img { width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold); }
+
         .nav-btn {
             display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
             text-decoration: none; border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.15);
@@ -59,12 +66,21 @@
         let historyHtml = "";
         if(DB.history && DB.history.length > 0) {
             DB.history.forEach(h => {
-                // دمج الأسماء في حال كان هناك بطلين أو أكثر معاً
-                let winnersText = h.winners.join(" & ");
+                let winnersHtml = "";
+                h.winners.forEach(winnerName => {
+                    // البحث عما إذا كان الفائز مسجلاً في قائمة اللاعبين لجلب صورته
+                    let player = DB.players ? DB.players.find(p => p.name === winnerName) : null;
+                    if(player) {
+                        winnersHtml += `<span class="winner-badge"><img src="${player.image}" class="winner-img">${winnerName}</span>`;
+                    } else {
+                        winnersHtml += `<span class="winner-badge">${winnerName}</span>`;
+                    }
+                });
+
                 historyHtml += `
                 <div class="history-item">
                     <div class="season-title">🏅 ${h.season}</div>
-                    <div class="winners-list">البطل: ${winnersText}</div>
+                    <div class="winners-list">البطل: ${winnersHtml}</div>
                 </div>`;
             });
         } else {
