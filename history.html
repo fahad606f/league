@@ -66,14 +66,24 @@
         let historyHtml = "";
         if(DB.history && DB.history.length > 0) {
             DB.history.forEach(h => {
+                let winnersArray = [];
+                // دعم الصيغتين: سواء كانت الكلمة winners (مصفوفة) أو winner (نص أو مصفوفة)
+                if(h.winners) {
+                    winnersArray = Array.isArray(h.winners) ? h.winners : [h.winners];
+                } else if(h.winner) {
+                    winnersArray = Array.isArray(h.winner) ? h.winner : [h.winner];
+                }
+
                 let winnersHtml = "";
-                h.winners.forEach(winnerName => {
-                    // البحث عما إذا كان الفائز مسجلاً في قائمة اللاعبين لجلب صورته
-                    let player = DB.players ? DB.players.find(p => p.name === winnerName) : null;
+                winnersArray.forEach(winnerName => {
+                    let cleanName = String(winnerName).trim();
+                    // البحث عن اللاعب مع إزالة الفراغات لضمان المطابقة الدقيقة
+                    let player = DB.players ? DB.players.find(p => p.name && p.name.trim() === cleanName) : null;
+                    
                     if(player) {
-                        winnersHtml += `<span class="winner-badge"><img src="${player.image}" class="winner-img">${winnerName}</span>`;
+                        winnersHtml += `<span class="winner-badge"><img src="${player.image}" class="winner-img"> ${cleanName}</span>`;
                     } else {
-                        winnersHtml += `<span class="winner-badge">${winnerName}</span>`;
+                        winnersHtml += `<span class="winner-badge">${cleanName}</span>`;
                     }
                 });
 
