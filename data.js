@@ -36,19 +36,18 @@ const DB = {
     matches: [
         { team1: "مشعل", score1: 5, team2: "عبدالمجيد", score2: 10, status: "finished" },
         { team1: "خالد فايز", score1: 9, team2: "صنهات", score2: 8, status: "finished" },
-        { team1: "محمد فيصل", score1: 1, team2: "ريان", score2: 0, status: "finished" },
-        { team1: "نواف", score1: 3, team2: "محمد فهد", score2: 1, status: "pending" },
-        { team1: "امجد", score1: 0, team2: "مهند", score2: 2, status: "pending" },
+        { team1: "محمد فيصل", score1: 0, team2: "ريان", score2: 0, status: "pending" },
+        { team1: "نواف", score1: 0, team2: "محمد فهد", score2: 0, status: "pending" },
+        { team1: "امجد", score1: 0, team2: "مهند", score2: 0, status: "pending" },
         { team1: "عبدالعزيز", score1: 0, team2: "مؤيد", score2: 0, status: "pending" },
-        { team1: "فهد اليامي", score1: 3, team2: "عبدالله", score2: 1, status: "pending" },
-        { team1: "سامي", score1: 0, team2: "فارس", score2: 2, status: "pending" },
+        { team1: "فهد اليامي", score1: 0, team2: "عبدالله", score2: 0, status: "pending" },
+        { team1: "سامي", score1: 0, team2: "فارس", score2: 0, status: "pending" },
         { team1: "مشاري", score1: 0, team2: "بسام", score2: 0, status: "pending" },
         { team1: "علي", score1: 0, team2: "وليد الغامدي", score2: 0, status: "pending" }
     ],
 
     history: [
         { season: "الدوري الرمضاني", winners: ["بسام", "خالد فايز"] },
-        { season: "الدوري 1", winners: ["⏳"] },
-        { season: "بطولة eeeجديدة", winners: ["اسم البطggل"] }
+        { season: "الدوري 1", winners: ["⏳"] }
     ]
 };
