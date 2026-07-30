@@ -10,7 +10,7 @@ const DB = {
     // 2. أفضل لاعب في الجولة الأخيرة
     lastMvp: {
         name: "حمد العنزي",
-        image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" // يمكنك تغيير الرابط بصورة اللاعب الحقيقية
+        image: "images/IMG_0500.jpeg" // تم تعديل الرابط ليتوافق مع صورتك في المجلد
     },
 
     // 3. قائمة اللاعبين (يتم ترتيبهم تلقائياً في الصفحات)
@@ -31,6 +31,7 @@ const DB = {
         { name: "سامي", image: "images/IMG_0478.jpeg", goals: 8, assists: 9, mvps: 1 },
         { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 15, assists: 2, mvps: 4 },
         { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 5, assists: 1, mvps: 0 }
+    ], // <--- هنا كان الخطأ، تم إضافة قوس الإغلاق والفاصلة بنجاح
 
     // 4. مباريات خروج المغلوب (10 مباريات)
     // status: "finished" تعني المباراة انتهت، "pending" تعني لم تبدأ
@@ -45,13 +46,11 @@ const DB = {
         { team1: "سامي", score1: 0, team2: "فارس", score2: 2, status: "pending" },
         { team1: "مشاري", score1: 0, team2: "بسام", score2: 0, status: "pending" },
         { team1: "علي", score1: 0, team2: "وليد الغامدي", score2: 0, status: "pending" },
-    
-        // ... (يمكنك إضافة بقية المباريات بنفس الطريقة)
     ],
 
     // 5. السجل الشرفي
     history: [
         { season: "الدوري الرمضاني", winners: ["بسام", "خالد فايز"] },
-        { season: "الدوري 1", winners: ["⏳"] } // مثال لبطلين معاً
+        { season: "الدوري 1", winners: ["⏳"] }
     ]
 };
