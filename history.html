@@ -20,83 +20,140 @@
             color: var(--text-main);
             margin: 0; padding: 15px; text-align: center;
         }
-        .styled-box {
+
+        .nav-buttons { margin-bottom: 25px; }
+        .nav-buttons a {
+            display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
+            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.15);
+            font-weight: bold; font-size: 15px;
+        }
+
+        .page-title {
+            color: var(--gold);
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* نفس عرض البنر 100% مثل صفحة league */
+        .table-container {
+            width: 100%; 
+            margin: 0 auto 30px auto;
             background-color: var(--card-bg);
             border-radius: 16px;
-            padding: 15px;
-            margin: 0 auto 15px auto;
-            max-width: 75%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            overflow: hidden; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
-        .box-divider {
-            border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin: 12px 0;
-        }
-        .history-item {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .history-item:last-child { border-bottom: none; }
-        .season-title { color: var(--gold); font-weight: bold; font-size: 16px; margin-bottom: 8px; }
-        .winners-list { color: var(--text-main); font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
-        
-        .winner-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--score-bg); padding: 4px 10px; border-radius: 20px;
-        }
-        img.winner-img { width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold); }
 
-        .nav-btn {
-            display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
-            text-decoration: none; border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.15);
-            font-weight: bold; font-size: 13px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: var(--score-bg);
+            padding: 12px 10px;
+            color: var(--gold);
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        th.text-right {
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        td {
+            padding: 8px 10px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 17px;
+            font-weight: bold;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        tr:last-child td { 
+            border-bottom: none; 
+        }
+
+        .history-info {
+            display: flex; 
+            align-items: center; 
+            justify-content: start; 
+            gap: 12px;
+            padding-right: 5px;
+        }
+
+        /* مربع الترتيب أو الموسم */
+        .season-box {
+            min-width: 28px;
+            height: 28px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--gold);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="nav-btn">⬅ العودة للرئيسية</a>
+    <div class="nav-buttons">
+        <a href="index.html">⬅️ العودة للرئيسية</a>
+        <a href="league.html">📊 إحصائيات اللاعبين</a>
+    </div>
 
-    <div class="styled-box">
-        <h3 style="color: var(--gold); margin-top: 0;">🏆 السجل الشرفي للبطولات</h3>
-        <div class="box-divider"></div>
-        <div id="history-container"></div>
+    <div class="page-title">🏆 السجل الشرفي للأبطال</div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-right">الموسم / البطولة</th>
+                    <th>🥇 البطل</th>
+                    <th>🥈 الوصيف</th>
+                </tr>
+            </thead>
+            <tbody id="history-table-body">
+                <!-- سيتم جلب بيانات السجل الشرفي من data.js ووضعها هنا تلقائياً -->
+            </tbody>
+        </table>
     </div>
 
     <script>
-        let historyHtml = "";
-        if(DB.history && DB.history.length > 0) {
-            DB.history.forEach(h => {
-                let winnersArray = [];
-                // دعم الصيغتين: سواء كانت الكلمة winners (مصفوفة) أو winner (نص أو مصفوفة)
-                if(h.winners) {
-                    winnersArray = Array.isArray(h.winners) ? h.winners : [h.winners];
-                } else if(h.winner) {
-                    winnersArray = Array.isArray(h.winner) ? h.winner : [h.winner];
-                }
-
-                let winnersHtml = "";
-                winnersArray.forEach(winnerName => {
-                    let cleanName = String(winnerName).trim();
-                    // البحث عن اللاعب مع إزالة الفراغات لضمان المطابقة الدقيقة
-                    let player = DB.players ? DB.players.find(p => p.name && p.name.trim() === cleanName) : null;
-                    
-                    if(player) {
-                        winnersHtml += `<span class="winner-badge"><img src="${player.image}" class="winner-img"> ${cleanName}</span>`;
-                    } else {
-                        winnersHtml += `<span class="winner-badge">${cleanName}</span>`;
-                    }
-                });
-
-                historyHtml += `
-                <div class="history-item">
-                    <div class="season-title">🏅 ${h.season}</div>
-                    <div class="winners-list">البطل: ${winnersHtml}</div>
-                </div>`;
+        // التحقق من وجود بيانات السجل الشرفي في ملف data.js
+        let historyData = (typeof DB !== 'undefined' && DB.history) ? DB.history : [];
+        
+        let tableHtml = "";
+        if (historyData.length > 0) {
+            historyData.forEach((h, index) => {
+                let seasonNum = index + 1;
+                tableHtml += `
+                <tr>
+                    <td class="text-right">
+                        <div class="history-info">
+                            <div class="season-box">${seasonNum}</div>
+                            <span>${h.season}</span>
+                        </div>
+                    </td>
+                    <td>${h.champion}</td>
+                    <td>${h.runnerUp}</td>
+                </tr>`;
             });
         } else {
-            historyHtml = "<div style='color: var(--text-muted);'>لا توجد بطولات مسجلة حتى الآن</div>";
+            tableHtml = `
+            <tr>
+                <td colspan="3" style="text-align: center; padding: 20px; color: var(--text-muted);">
+                    لا توجد بيانات مسجلة في السجل الشرفي حالياً
+                </td>
+            </tr>`;
         }
-        document.getElementById('history-container').innerHTML = historyHtml;
+        
+        document.getElementById('history-table-body').innerHTML = tableHtml;
     </script>
 </body>
 </html>
