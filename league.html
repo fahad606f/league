@@ -35,7 +35,6 @@
             margin-bottom: 20px;
         }
 
-        /* تمت زيادة العرض ليصبح 100% لملء الشاشة بالكامل */
         .table-container {
             width: 100%; 
             margin: 0 auto 30px auto;
@@ -50,10 +49,10 @@
             border-collapse: collapse;
         }
 
-        /* تمت زيادة المساحة الداخلية (Padding) بنسبة 15% ليصبح البنر أكبر */
+        /* تقليل الفراغات في العناوين العلوية */
         th {
             background-color: var(--score-bg);
-            padding: 18px 12px;
+            padding: 12px 10px;
             color: var(--gold);
             font-size: 16px;
             font-weight: bold;
@@ -65,8 +64,9 @@
             padding-right: 20px;
         }
 
+        /* تقليل الفراغات (الارتفاع) بين الأسماء */
         td {
-            padding: 15px 12px;
+            padding: 8px 10px; 
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             font-size: 17px;
             font-weight: bold;
@@ -83,12 +83,26 @@
             align-items: center; 
             justify-content: start; 
             gap: 12px;
-            padding-right: 10px;
+            padding-right: 5px;
+        }
+
+        /* تنسيق مربع الترتيب بلون أغمق */
+        .rank-box {
+            min-width: 28px;
+            height: 28px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--gold);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
         }
 
         .player-icon {
-            width: 50px; 
-            height: 50px;
+            width: 45px; 
+            height: 45px;
             border-radius: 50%; 
             object-fit: cover;
             border: 2px solid var(--gold);
@@ -115,27 +129,29 @@
                 </tr>
             </thead>
             <tbody id="players-table-body">
-                <!-- سيتم جلب اللاعبين من ملف data.js ووضعهم هنا تلقائياً -->
+                <!-- سيتم جلب البيانات وإضافة الترتيب تلقائياً من الجافاسكربت -->
             </tbody>
         </table>
     </div>
 
     <script>
-        // جلب البيانات من data.js
         let players = DB.players.slice();
         
-        // ترتيب اللاعبين تنازلياً: حسب الأهداف أولاً، وإذا تساووا يتم الترتيب حسب الصناعة
+        // ترتيب اللاعبين تنازلياً: الأهداف ثم الصناعة
         players.sort((a, b) => {
             if (b.goals !== a.goals) return b.goals - a.goals;
             return b.assists - a.assists;
         });
 
         let tableHtml = "";
-        players.forEach(p => {
+        // تم إضافة index لمعرفة ترتيب اللاعب (يبدأ من 0 لذلك نضيف 1)
+        players.forEach((p, index) => {
+            let rank = index + 1;
             tableHtml += `
             <tr>
                 <td>
                     <div class="player-info">
+                        <div class="rank-box">${rank}</div>
                         <img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"> 
                         <span>${p.name}</span>
                     </div>
