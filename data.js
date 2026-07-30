@@ -15,22 +15,22 @@ const DB = {
 
     // 3. قائمة اللاعبين (يتم ترتيبهم تلقائياً في الصفحات)
     players: [
-        { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 12, assists: 5, mvps: 2 },
-        { name: "محمد فيصل", image: "images/IMG_0447.jpeg", goals: 8, assists: 9, mvps: 1 },
-        { name: "عبدالعزيز", image: "images/IMG_0448.jpeg", goals: 15, assists: 2, mvps: 4 },
-        { name: "نواف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 5, assists: 1, mvps: 0 },
-        { name: "ابوبسام", image: "images/IMG_0454.jpeg", goals: 12, assists: 5, mvps: 2 },
-        { name: "بسام", image: "images/IMG_0450.jpeg", goals: 8, assists: 9, mvps: 1 },
-        { name: "حمد العنزي", image: "images/IMG_0500.jpeg", goals: 15, assists: 2, mvps: 4 },
-        { name: "علي", image: "images/IMG_0452.jpeg", goals: 5, assists: 1, mvps: 0 },
-        { name: "فارس", image: "images/IMG_0451.jpeg", goals: 12, assists: 5, mvps: 2 },
-        { name: "مهند", image: "images/IMG_0446.jpeg", goals: 8, assists: 9, mvps: 1 },
+        { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 7, assists: 2, mvps: 0 },
+        { name: "محمد فيصل", image: "images/IMG_0447.jpeg", goals: 2, assists: 4, mvps: 1 },
+        { name: "عبدالعزيز", image: "images/IMG_0448.jpeg", goals: 0, assists: 4, mvps: 0 },
+        { name: "نواف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
+        { name: "ابوبسام", image: "images/IMG_0454.jpeg", goals: 2, assists: 0, mvps: 0 },
+        { name: "بسام", image: "images/IMG_0450.jpeg", goals: 1, assists: 0, mvps: 0 },
+        { name: "حمد العنزي", image: "images/IMG_0500.jpeg", goals: 3, assists: 0, mvps: 1 },
+        { name: "علي", image: "images/IMG_0452.jpeg", goals: 3, assists: 1, mvps: 0 },
+        { name: "فارس", image: "images/IMG_0451.jpeg", goals: 5, assists: 1, mvps: 0 },
+        { name: "مهند", image: "images/IMG_0446.jpeg", goals: 2, assists: 2, mvps: 0 },
         { name: "محمد فهد", image: "images/IMG_0482.jpeg", goals: 15, assists: 2, mvps: 4 },
-        { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 5, assists: 1, mvps: 0 },
-        { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 12, assists: 5, mvps: 2 },
-        { name: "سامي", image: "images/IMG_0478.jpeg", goals: 8, assists: 9, mvps: 1 },
-        { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 15, assists: 2, mvps: 4 },
-        { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 5, assists: 1, mvps: 0 }
+        { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 3, assists: 4, mvps: 0 },
+        { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 0, assists: 0, mvps: 0 },
+        { name: "سامي", image: "images/IMG_0478.jpeg", goals: 0, assists: 1, mvps: 0 },
+        { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
+        { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 0, assists: 0, mvps: 0 }
     ], // <--- هنا كان الخطأ، تم إضافة قوس الإغلاق والفاصلة بنجاح
 
     // 4. مباريات خروج المغلوب (10 مباريات)
