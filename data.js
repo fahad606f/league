@@ -27,11 +27,11 @@ const DB = {
         { name: "مهند", image: "images/IMG_0446.jpeg", goals: 2, assists: 2, mvps: 0 },
         { name: "محمد فهد", image: "images/IMG_0482.jpeg", goals: 15, assists: 2, mvps: 4 },
         { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 3, assists: 4, mvps: 0 },
-                { name: "فهد اليامي", image: "images/IMG_9999999.jpeg", goals: 0, assists: 2, mvps: 0 },
+        { name: "فهد اليامي", image: "images/IMG_9999999.jpeg", goals: 0, assists: 2, mvps: 0 },
         { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 0, assists: 0, mvps: 0 },
-                { name: "زيد", image: "images/IMG_0478.jpeg", goals: 2, assists: 0, mvps: 0 },
+        { name: "زيد", image: "images/IMG_0478.jpeg", goals: 2, assists: 0, mvps: 0 },
         { name: "سامي", image: "images/IMG_0478.jpeg", goals: 0, assists: 1, mvps: 0 },
-        { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
+        { name: "مؤيد", image: "images/IMG_0481.jpeg", goals: 1, assists: 0, mvps: 0 },
         { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 0, assists: 0, mvps: 0 }
     ], // <--- هنا كان الخطأ، تم إضافة قوس الإغلاق والفاصلة بنجاح
 
