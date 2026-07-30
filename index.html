@@ -83,7 +83,7 @@
             border-radius: 10px; color: var(--text-main); font-size: 18px;
         }
 
-        /* بطاقة نجم الجولة (MVP) بعد التكبير وإضافة التاج */
+        /* بطاقة نجم الجولة (MVP) وتعديل التاج */
         .mvp-card {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -100,17 +100,20 @@
             display: inline-block;
             margin: 15px auto 5px auto;
         }
+        
+        /* التاج: تكبير 250% ونقله لشمال غرب ومائل لليسار */
         .crown-icon {
             position: absolute;
-            top: -24px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 32px;
+            top: -35px; /* رفعه للأعلى */
+            left: -35px; /* نقله لليسار */
+            transform: rotate(-25deg); /* إمالته لليسار */
+            font-size: 80px; /* تم التكبير */
             z-index: 10;
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
         }
+
         .mvp-img-wrapper {
-            position: relative; width: 110px; height: 110px; /* تم تكبيرها 80% */
+            position: relative; width: 110px; height: 110px;
             border-radius: 50%; border: 3px solid var(--gold); overflow: hidden;
         }
         .mvp-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
@@ -129,10 +132,11 @@
         .team-right { text-align: right; }
         .team-left { text-align: left; }
 
-        /* إحصائيات اللاعبين بعد التكبير */
+        /* إحصائيات اللاعبين وتقليل الفراغات */
         .player-stat-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 17px;
+            padding: 8px 0; /* تم تقليل الفراغات لتكون متناسقة */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 17px;
             font-weight: bold;
         }
         .player-stat-row:last-child { border-bottom: none; }
@@ -140,8 +144,23 @@
         .player-info {
             display: flex; align-items: center; gap: 12px;
         }
+        
+        /* مربع الترتيب */
+        .rank-box {
+            min-width: 28px;
+            height: 28px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--gold);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
         img.player-icon { 
-            width: 60px; height: 60px; /* تم تكبيرها 85% */
+            width: 55px; height: 55px;
             border-radius: 50%; object-fit: cover; 
             border: 2px solid var(--gold); 
         }
@@ -214,11 +233,13 @@
         // بناء قائمة الهدافين
         let topScorersHtml = "";
         let topScorers = players.sort((a, b) => b.goals - a.goals).slice(0, 3);
-        topScorers.forEach(p => {
+        topScorers.forEach((p, index) => {
+            let rank = index + 1; // ترتيب اللاعب
             topScorersHtml += `
             <div class="player-stat-row">
                 <div class="player-info">
-                    <img src="${p.image}" class="player-icon"> 
+                    <div class="rank-box">${rank}</div>
+                    <img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"> 
                     <span>${p.name}</span>
                 </div>
                 <div class="score-box" style="padding: 6px 14px; font-size: 16px;">${p.goals}</div>
@@ -229,11 +250,13 @@
         // بناء قائمة صناع اللعب
         let topAssistsHtml = "";
         let topAssists = players.sort((a, b) => b.assists - a.assists).slice(0, 3);
-        topAssists.forEach(p => {
+        topAssists.forEach((p, index) => {
+            let rank = index + 1; // ترتيب اللاعب
             topAssistsHtml += `
             <div class="player-stat-row">
                 <div class="player-info">
-                    <img src="${p.image}" class="player-icon"> 
+                    <div class="rank-box">${rank}</div>
+                    <img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"> 
                     <span>${p.name}</span>
                 </div>
                 <div class="score-box" style="padding: 6px 14px; font-size: 16px;">${p.assists}</div>
