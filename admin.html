@@ -20,12 +20,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            margin: 0; padding: 15px; text-align: center;
-            box-sizing: border-box;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
+            margin: 0; padding: 20px; text-align: center;
         }
 
         #login-screen {
@@ -55,20 +50,19 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 100%;
         }
-        .panel-section h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 18px; }
+        .panel-section h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: var(--text-muted); }
         .form-group input, .form-group select {
             width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; font-size: 15px;
+            background: rgba(0,0,0,0.2); color: white; font-size: 15px; box-sizing: border-box;
         }
 
         .players-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
         .player-edit-card {
@@ -82,7 +76,7 @@
         .inputs-row div { flex: 1; }
         .inputs-row input {
             width: 100%; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 14px;
+            background: rgba(0,0,0,0.2); color: white; text-align: center; box-sizing: border-box;
         }
 
         .item-card {
@@ -91,41 +85,50 @@
             border-radius: 10px;
             margin-bottom: 12px;
             border: 1px solid rgba(255,255,255,0.05);
-            width: 100%;
         }
 
-        /* تنسيق مرن لصفوف المواجهات متناسب تماماً مع الشاشة */
-        .match-row-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 40px 1fr 2fr 1.5fr auto;
-            gap: 8px;
+        /* تعديل قسم المواجهات لتكون المربعات أصغر ومضغوطة بشكل جميل */
+        .match-row-compact {
+            display: flex;
+            gap: 6px;
             align-items: center;
-            width: 100%;
+            margin-bottom: 8px;
         }
-        @media (max-width: 768px) {
-            .match-row-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .match-row-grid span {
-                grid-column: span 2;
-                text-align: center;
-            }
+        .match-row-compact input[type="text"] {
+            flex: 2;
+            padding: 6px 8px;
+            font-size: 13px;
+            height: 34px;
         }
-
-        .match-row-grid input, .match-row-grid select {
+        .match-row-compact input[type="number"] {
+            flex: 0.8;
+            padding: 6px;
+            font-size: 13px;
+            text-align: center;
+            height: 34px;
+        }
+        .match-row-compact select {
+            flex: 1.2;
+            padding: 6px;
+            font-size: 13px;
+            height: 34px;
+        }
+        .match-row-compact span {
+            font-weight: bold;
+            font-size: 13px;
+            padding: 0 2px;
+        }
+        .match-row-compact .btn-delete {
+            padding: 6px 10px;
+            font-size: 12px;
+            height: 34px;
+        }
+        .match-row-compact input, .match-row-compact select {
             background: rgba(0,0,0,0.2); 
             border: 1px solid rgba(255,255,255,0.2); 
-            color: white;
-            padding: 8px; 
+            color: white; 
             border-radius: 6px; 
-            font-size: 14px; 
-            width: 100%;
-            text-align: center;
-        }
-        .match-row-grid input[type="text"] {
-            text-align: right;
-            padding-right: 10px;
+            box-sizing: border-box;
         }
 
         .row-flex {
@@ -133,11 +136,10 @@
             gap: 10px;
             align-items: center;
             margin-bottom: 8px;
-            width: 100%;
         }
         .row-flex input, .row-flex select {
             background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
-            padding: 8px; border-radius: 6px; font-size: 14px;
+            padding: 8px; border-radius: 6px; font-size: 14px; box-sizing: border-box;
         }
 
         .btn-add {
@@ -147,7 +149,6 @@
         .btn-delete {
             background: var(--red); color: white; border: none; padding: 8px 12px;
             border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
-            white-space: nowrap;
         }
 
         .action-bar {
@@ -158,8 +159,6 @@
             background: var(--green); color: white; padding: 12px 30px; font-size: 18px;
             font-weight: bold; border: none; border-radius: 10px; cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 400px;
         }
         .save-btn:hover { background: #45a049; }
         .success-alert { color: var(--green); font-weight: bold; margin-top: 10px; display: none; }
@@ -177,7 +176,7 @@
     </div>
 
     <div id="admin-panel">
-        <h1 style="color: var(--gold); text-align: center; margin-bottom: 25px; font-size: 24px;">⚙️ لوحة إدارة دوري الأبطال</h1>
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 25px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <!-- 1. البنر -->
         <div class="panel-section">
@@ -218,7 +217,7 @@
         <div class="panel-section">
             <h3>
                 <span>⚔️ إدارة المواجهات</span>
-                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة</button>
+                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة جديدة</button>
             </h3>
             <div id="matches-edit-container"></div>
         </div>
@@ -227,14 +226,14 @@
         <div class="panel-section">
             <h3>
                 <span>🏆 السجل الشرفي والبطولات</span>
-                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة</button>
+                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة جديدة</button>
             </h3>
             <div id="history-edit-container"></div>
         </div>
 
         <!-- زر الحفظ -->
         <div class="action-bar">
-            <button class="save-btn" onclick="generateNewDataFile()">💾 توليد ونسخ كود التحديث</button>
+            <button class="save-btn" onclick="generateNewDataFile()">💾 توليد ونسخ كود التحديث الشامل</button>
             <div id="success-msg" class="success-alert">تم نسخ الكود بنجاح! الصقه في ملف data.js واحفظه</div>
         </div>
     </div>
@@ -282,10 +281,10 @@
             workingData.matches.forEach((m, index) => {
                 matchesHtml += `
                 <div class="item-card">
-                    <div class="match-row-grid">
+                    <div class="match-row-compact">
                         <input type="text" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق الأول">
                         <input type="number" id="m-score1-${index}" value="${m.score1}">
-                        <span style="font-weight:bold; text-align:center;">VS</span>
+                        <span>VS</span>
                         <input type="number" id="m-score2-${index}" value="${m.score2}">
                         <input type="text" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق الثاني">
                         <select id="m-status-${index}">
@@ -318,13 +317,13 @@
                 historyHtml += `
                 <div class="item-card">
                     <div class="row-flex" style="margin-bottom:10px;">
-                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة">
+                        <input type="text" style="flex:3" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة أو الموسم">
                         <button class="btn-delete" onclick="deleteHistory(${hIndex})">حذف البطولة</button>
                     </div>
-                    <div class="form-group" style="margin-bottom:5px;">
-                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال مفصولة بفواصل (مثال: بسام, خالد)">
+                    <div class="row-flex">
+                        <input type="text" style="flex:1" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال مفصولة بفواصل (مثال: بسام, خالد فايز)">
                     </div>
-                    <small style="color:var(--text-muted); font-size:12px;">افصل بين أسماء الأبطال بـ (فاصلة) ليظهروا كأبطال للبطولة.</small>
+                    <small style="color:var(--text-muted)">اكتب أسماء الأبطال وافصل بينهم بـ (فاصلة) ليظهروا كأبطال للبطولة.</small>
                 </div>`;
             });
             document.getElementById('history-edit-container').innerHTML = historyHtml;
@@ -364,7 +363,7 @@
             });
 
             workingData.history.forEach((h, hIndex) => {
-                h.season = document.getElementById(`h-season-${hIndex}` ).value;
+                h.season = document.getElementById(`h-season-${hIndex}`).value;
                 let rawWinners = document.getElementById(`h-winners-${hIndex}`).value;
                 h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
             });
