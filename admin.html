@@ -20,7 +20,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            margin: 0; padding: 20px; text-align: center;
+            margin: 0; padding: 15px; text-align: center;
+            box-sizing: border-box;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
         #login-screen {
@@ -50,19 +55,20 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 100%;
         }
-        .panel-section h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .panel-section h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 18px; }
 
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: var(--text-muted); }
         .form-group input, .form-group select {
             width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; font-size: 15px; box-sizing: border-box;
+            background: rgba(0,0,0,0.2); color: white; font-size: 15px;
         }
 
         .players-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 15px;
         }
         .player-edit-card {
@@ -76,7 +82,7 @@
         .inputs-row div { flex: 1; }
         .inputs-row input {
             width: 100%; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; text-align: center; box-sizing: border-box;
+            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 14px;
         }
 
         .item-card {
@@ -85,16 +91,53 @@
             border-radius: 10px;
             margin-bottom: 12px;
             border: 1px solid rgba(255,255,255,0.05);
+            width: 100%;
         }
+
+        /* تنسيق مرن لصفوف المواجهات متناسب تماماً مع الشاشة */
+        .match-row-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 40px 1fr 2fr 1.5fr auto;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .match-row-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .match-row-grid span {
+                grid-column: span 2;
+                text-align: center;
+            }
+        }
+
+        .match-row-grid input, .match-row-grid select {
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid rgba(255,255,255,0.2); 
+            color: white;
+            padding: 8px; 
+            border-radius: 6px; 
+            font-size: 14px; 
+            width: 100%;
+            text-align: center;
+        }
+        .match-row-grid input[type="text"] {
+            text-align: right;
+            padding-right: 10px;
+        }
+
         .row-flex {
             display: flex;
             gap: 10px;
             align-items: center;
             margin-bottom: 8px;
+            width: 100%;
         }
         .row-flex input, .row-flex select {
             background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
-            padding: 8px; border-radius: 6px; font-size: 14px; box-sizing: border-box;
+            padding: 8px; border-radius: 6px; font-size: 14px;
         }
 
         .btn-add {
@@ -104,6 +147,7 @@
         .btn-delete {
             background: var(--red); color: white; border: none; padding: 8px 12px;
             border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
+            white-space: nowrap;
         }
 
         .action-bar {
@@ -114,6 +158,8 @@
             background: var(--green); color: white; padding: 12px 30px; font-size: 18px;
             font-weight: bold; border: none; border-radius: 10px; cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
         }
         .save-btn:hover { background: #45a049; }
         .success-alert { color: var(--green); font-weight: bold; margin-top: 10px; display: none; }
@@ -131,7 +177,7 @@
     </div>
 
     <div id="admin-panel">
-        <h1 style="color: var(--gold); text-align: center; margin-bottom: 25px;">⚙️ لوحة إدارة دوري الأبطال</h1>
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 25px; font-size: 24px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <!-- 1. البنر -->
         <div class="panel-section">
@@ -172,7 +218,7 @@
         <div class="panel-section">
             <h3>
                 <span>⚔️ إدارة المواجهات</span>
-                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة جديدة</button>
+                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة</button>
             </h3>
             <div id="matches-edit-container"></div>
         </div>
@@ -181,14 +227,14 @@
         <div class="panel-section">
             <h3>
                 <span>🏆 السجل الشرفي والبطولات</span>
-                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة جديدة</button>
+                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة</button>
             </h3>
             <div id="history-edit-container"></div>
         </div>
 
         <!-- زر الحفظ -->
         <div class="action-bar">
-            <button class="save-btn" onclick="generateNewDataFile()">💾 توليد ونسخ كود التحديث الشامل</button>
+            <button class="save-btn" onclick="generateNewDataFile()">💾 توليد ونسخ كود التحديث</button>
             <div id="success-msg" class="success-alert">تم نسخ الكود بنجاح! الصقه في ملف data.js واحفظه</div>
         </div>
     </div>
@@ -207,15 +253,12 @@
         let workingData = JSON.parse(JSON.stringify(DB));
 
         function loadAdminData() {
-            // البنر
             document.getElementById('edit-banner-text').value = workingData.settings.bannerText;
             document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
 
-            // نجم الجولة
             document.getElementById('edit-mvp-name').value = workingData.lastMvp.name || "";
             document.getElementById('edit-mvp-image').value = workingData.lastMvp.image || "";
 
-            // اللاعبين
             let playersHtml = "";
             workingData.players.forEach((p, index) => {
                 playersHtml += `
@@ -234,19 +277,18 @@
             renderHistory();
         }
 
-        // عرض المباريات
         function renderMatches() {
             let matchesHtml = "";
             workingData.matches.forEach((m, index) => {
                 matchesHtml += `
                 <div class="item-card">
-                    <div class="row-flex">
-                        <input type="text" style="flex:2" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق الأول">
-                        <input type="number" style="flex:1; text-align:center;" id="m-score1-${index}" value="${m.score1}">
-                        <span style="font-weight:bold">VS</span>
-                        <input type="number" style="flex:1; text-align:center;" id="m-score2-${index}" value="${m.score2}">
-                        <input type="text" style="flex:2" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق الثاني">
-                        <select style="flex:1.5" id="m-status-${index}">
+                    <div class="match-row-grid">
+                        <input type="text" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق الأول">
+                        <input type="number" id="m-score1-${index}" value="${m.score1}">
+                        <span style="font-weight:bold; text-align:center;">VS</span>
+                        <input type="number" id="m-score2-${index}" value="${m.score2}">
+                        <input type="text" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق الثاني">
+                        <select id="m-status-${index}">
                             <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
                             <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
                         </select>
@@ -269,7 +311,6 @@
             renderMatches();
         }
 
-        // عرض السجل الشرفي
         function renderHistory() {
             let historyHtml = "";
             workingData.history.forEach((h, hIndex) => {
@@ -277,13 +318,13 @@
                 historyHtml += `
                 <div class="item-card">
                     <div class="row-flex" style="margin-bottom:10px;">
-                        <input type="text" style="flex:3" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة أو الموسم">
+                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة">
                         <button class="btn-delete" onclick="deleteHistory(${hIndex})">حذف البطولة</button>
                     </div>
-                    <div class="row-flex">
-                        <input type="text" style="flex:1" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال مفصولة بفواصل (مثال: بسام, خالد فايز)">
+                    <div class="form-group" style="margin-bottom:5px;">
+                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال مفصولة بفواصل (مثال: بسام, خالد)">
                     </div>
-                    <small style="color:var(--text-muted)">اكتب أسماء الأبطال وافصل بينهم بـ (فاصلة) ليظهروا كأبطال للبطولة.</small>
+                    <small style="color:var(--text-muted); font-size:12px;">افصل بين أسماء الأبطال بـ (فاصلة) ليظهروا كأبطال للبطولة.</small>
                 </div>`;
             });
             document.getElementById('history-edit-container').innerHTML = historyHtml;
@@ -301,7 +342,6 @@
             renderHistory();
         }
 
-        // سحب البيانات من الحقول لواجهة الذاكرة قبل أي تحديث أو إضافة
         function syncFromUI() {
             workingData.settings.bannerText = document.getElementById('edit-banner-text').value;
             workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
@@ -324,13 +364,12 @@
             });
 
             workingData.history.forEach((h, hIndex) => {
-                h.season = document.getElementById(`h-season-${hIndex}`).value;
+                h.season = document.getElementById(`h-season-${hIndex}` ).value;
                 let rawWinners = document.getElementById(`h-winners-${hIndex}`).value;
                 h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
             });
         }
 
-        // توليد الكود النهائي ونسخه
         function generateNewDataFile() {
             syncFromUI();
 
