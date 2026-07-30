@@ -9,30 +9,49 @@ const DB = {
 
     // 2. أفضل لاعب في الجولة الأخيرة
     lastMvp: {
-        name: "فهد الدوسري",
+        name: "حمد العنزي",
         image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" // يمكنك تغيير الرابط بصورة اللاعب الحقيقية
     },
 
     // 3. قائمة اللاعبين (يتم ترتيبهم تلقائياً في الصفحات)
     players: [
-        { name: "خالد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 12, assists: 5, mvps: 2 },
-        { name: "محمد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 8, assists: 9, mvps: 1 },
-        { name: "سالم", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 15, assists: 2, mvps: 4 },
-        { name: "نواف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 5, assists: 1, mvps: 0 }
-    ],
+        { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 12, assists: 5, mvps: 2 },
+        { name: "محمد فيصل", image: "images/IMG_0447.jpeg", goals: 8, assists: 9, mvps: 1 },
+        { name: "عبدالعزيز", image: "images/IMG_0448.jpeg", goals: 15, assists: 2, mvps: 4 },
+        { name: "نواف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 5, assists: 1, mvps: 0 },
+        { name: "ابوبسام", image: "images/IMG_0454.jpeg", goals: 12, assists: 5, mvps: 2 },
+        { name: "بسام", image: "images/IMG_0450.jpeg", goals: 8, assists: 9, mvps: 1 },
+        { name: "حمد العنزي", image: "images/IMG_0500.jpeg", goals: 15, assists: 2, mvps: 4 },
+        { name: "علي", image: "images/IMG_0452.jpeg", goals: 5, assists: 1, mvps: 0 },
+        { name: "فارس", image: "images/IMG_0451.jpeg", goals: 12, assists: 5, mvps: 2 },
+        { name: "مهند", image: "images/IMG_0446.jpeg", goals: 8, assists: 9, mvps: 1 },
+        { name: "محمد فهد", image: "images/IMG_0482.jpeg", goals: 15, assists: 2, mvps: 4 },
+        { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 5, assists: 1, mvps: 0 },
+        { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 12, assists: 5, mvps: 2 },
+        { name: "سامي", image: "images/IMG_0478.jpeg", goals: 8, assists: 9, mvps: 1 },
+        { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 15, assists: 2, mvps: 4 },
+        { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 5, assists: 1, mvps: 0 }
 
     // 4. مباريات خروج المغلوب (10 مباريات)
     // status: "finished" تعني المباراة انتهت، "pending" تعني لم تبدأ
     matches: [
-        { team1: "الصقور", score1: 3, team2: "النمور", score2: 1, status: "finished" },
-        { team1: "الأبطال", score1: 0, team2: "الفرسان", score2: 2, status: "finished" },
-        { team1: "الرعد", score1: 0, team2: "البرق", score2: 0, status: "pending" },
+        { team1: "مشعل", score1: 5, team2: "عبدالمجيد", score2: 10, status: "finished" },
+        { team1: "خالد فايز", score1: 9, team2: "صنهات", score2: 8, status: "finished" },
+        { team1: "محمد فيصل", score1: 0, team2: "ريان", score2: 0, status: "pending" },
+        { team1: "نواف", score1: 3, team2: "محمد فهد", score2: 1, status: "pending" },
+        { team1: "امجد", score1: 0, team2: "مهند", score2: 2, status: "pending" },
+        { team1: "عبدالعزيز", score1: 0, team2: "مؤيد", score2: 0, status: "pending" },
+        { team1: "فهد اليامي", score1: 3, team2: "عبدالله", score2: 1, status: "pending" },
+        { team1: "سامي", score1: 0, team2: "فارس", score2: 2, status: "pending" },
+        { team1: "مشاري", score1: 0, team2: "بسام", score2: 0, status: "pending" },
+        { team1: "علي", score1: 0, team2: "وليد الغامدي", score2: 0, status: "pending" },
+    
         // ... (يمكنك إضافة بقية المباريات بنفس الطريقة)
     ],
 
     // 5. السجل الشرفي
     history: [
-        { season: "النسخة الأولى 2023", winners: ["فريق الصقور"] },
-        { season: "النسخة الثانية 2024", winners: ["فريق النمور", "فريق الأبطال"] } // مثال لبطلين معاً
+        { season: "الدوري الرمضاني", winners: ["بسام", "خالد فايز"] },
+        { season: "الدوري 1", winners: ["⏳"] } // مثال لبطلين معاً
     ]
 };
