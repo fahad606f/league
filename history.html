@@ -35,7 +35,6 @@
             margin-bottom: 20px;
         }
 
-        /* نفس عرض البنر 100% مثل صفحة league */
         .table-container {
             width: 100%; 
             margin: 0 auto 30px auto;
@@ -85,7 +84,6 @@
             padding-right: 5px;
         }
 
-        /* مربع الترتيب أو الموسم */
         .season-box {
             min-width: 28px;
             height: 28px;
@@ -119,29 +117,33 @@
                 </tr>
             </thead>
             <tbody id="history-table-body">
-                <!-- سيتم جلب بيانات السجل الشرفي من data.js ووضعها هنا تلقائياً -->
+                <!-- سيتم جلب البيانات وتعبئتها هنا -->
             </tbody>
         </table>
     </div>
 
     <script>
-        // التحقق من وجود بيانات السجل الشرفي في ملف data.js
         let historyData = (typeof DB !== 'undefined' && DB.history) ? DB.history : [];
         
         let tableHtml = "";
         if (historyData.length > 0) {
             historyData.forEach((h, index) => {
                 let seasonNum = index + 1;
+                // التعامل مع مختلف احتمالات أسماء الخانات في ملف data.js
+                let seasonName = h.season || h.name || h.title || `الموسم ${seasonNum}`;
+                let championName = h.champion || h.winner || h.first || '-';
+                let runnerUpName = h.runnerUp || h.second || h.loser || '-';
+
                 tableHtml += `
                 <tr>
                     <td class="text-right">
                         <div class="history-info">
                             <div class="season-box">${seasonNum}</div>
-                            <span>${h.season}</span>
+                            <span>${seasonName}</span>
                         </div>
                     </td>
-                    <td>${h.champion}</td>
-                    <td>${h.runnerUp}</td>
+                    <td>${championName}</td>
+                    <td>${runnerUpName}</td>
                 </tr>`;
             });
         } else {
