@@ -64,9 +64,9 @@
         }
 
         td {
-            padding: 8px 10px; 
+            padding: 12px 10px; 
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 17px;
+            font-size: 16px;
             font-weight: bold;
             vertical-align: middle;
             text-align: center;
@@ -96,6 +96,36 @@
             font-size: 14px;
             font-weight: bold;
         }
+
+        /* حاوية الأبطال (تدعم أكثر من بطل بجانب بعضهم) */
+        .winners-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* تنسيق صورة البطل وتحتها اسمه */
+        .winner-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .winner-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+
+        .winner-name {
+            font-size: 14px;
+            color: var(--text-main);
+        }
     </style>
 </head>
 <body>
@@ -113,7 +143,6 @@
                 <tr>
                     <th class="text-right">الموسم / البطولة</th>
                     <th>🥇 البطل</th>
-                    <th>🥈 الوصيف</th>
                 </tr>
             </thead>
             <tbody id="history-table-body">
@@ -124,6 +153,23 @@
 
     <script>
         let historyData = (typeof DB !== 'undefined' && DB.history) ? DB.history : [];
+        let playersData = (typeof DB !== 'undefined' && DB.players) ? DB.players : [];
+
+        // دالة لتوليد شكل البطل (صورة وتحتها اسمه) أو عرض الرمز إذا لم يكن اسماً معتاداً
+        function getWinnerCardHtml(name) {
+            if (!name || name === '-' || name === '⏳') {
+                return `<span>${name || '-'}</span>`;
+            }
+
+            let foundPlayer = playersData.find(p => p.name === name);
+            let imgSrc = foundPlayer ? foundPlayer.image : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+
+            return `
+            <div class="winner-card">
+                <img src="${imgSrc}" class="winner-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <span class="winner-name">${name}</span>
+            </div>`;
+        }
         
         let tableHtml = "";
         if (historyData.length > 0) {
@@ -131,17 +177,17 @@
                 let seasonNum = index + 1;
                 let seasonName = h.season || `الموسم ${seasonNum}`;
                 
-                // قراءة البطل والوصيف من مصفوفة winners الموجودة في ملف data.js لديك
-                let championName = '-';
-                let runnerUpName = '-';
+                let winnersHtml = '';
 
-                if (Array.isArray(h.winners)) {
-                    if (h.winners.length > 0) championName = h.winners[0];
-                    if (h.winners.length > 1) runnerUpName = h.winners[1];
+                // التعامل مع مصفوفة الأبطال أياً كان عددهم
+                if (Array.isArray(h.winners) && h.winners.length > 0) {
+                    let cards = h.winners.map(wName => getWinnerCardHtml(wName));
+                    winnersHtml = `<div class="winners-container">${cards.join('')}</div>`;
+                } else if (h.champion || h.winner) {
+                    let singleWinner = h.champion || h.winner;
+                    winnersHtml = getWinnerCardHtml(singleWinner);
                 } else {
-                    // دعم احتياطي في حال وجود خصائص أخرى
-                    championName = h.champion || h.winner || '-';
-                    runnerUpName = h.runnerUp || h.second || '-';
+                    winnersHtml = '-';
                 }
 
                 tableHtml += `
@@ -152,14 +198,13 @@
                             <span>${seasonName}</span>
                         </div>
                     </td>
-                    <td>${championName}</td>
-                    <td>${runnerUpName}</td>
+                    <td>${winnersHtml}</td>
                 </tr>`;
             });
         } else {
             tableHtml = `
             <tr>
-                <td colspan="3" style="text-align: center; padding: 20px; color: var(--text-muted);">
+                <td colspan="2" style="text-align: center; padding: 20px; color: var(--text-muted);">
                     لا توجد بيانات مسجلة في السجل الشرفي حالياً
                 </td>
             </tr>`;
