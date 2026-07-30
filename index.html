@@ -1,14 +1,236 @@
-#ad-banner {
-    background: linear-gradient(90deg, #ff8a00, #e52e71);
-    color: white; padding: 12px; border-radius: 12px; font-weight: bold; font-size: 16px;
-    overflow: hidden; white-space: nowrap; margin-bottom: 20px; display: none;
-}
-.marquee { 
-    display: inline-block; 
-    /* تم زيادة الوقت إلى 25 ثانية لجعله أبطأ بكثير، وعكس الاتجاه ل يتحرك من اليسار لليمين */
-    animation: marquee 25s linear infinite; 
-}
-@keyframes marquee { 
-    0% { transform: translateX(-100%); } 
-    100% { transform: translateX(100%); } 
-}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرئيسية | دوري الأبطال</title>
+    <script src="data.js"></script>
+    <style>
+        :root {
+            --bg-color: #243456; 
+            --card-bg: #354a78; 
+            --score-bg: #465f9a; 
+            --finished-bg: #1c2742; 
+            --text-main: #ffffff;
+            --text-muted: #c5d2ee; 
+            --gold: #FFD700;
+            --green: #4CAF50;
+            --red: #f44336;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0; padding: 15px; text-align: center;
+        }
+
+        #ad-banner {
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            color: white; padding: 12px; border-radius: 12px; font-weight: bold; font-size: 16px;
+            overflow: hidden; white-space: nowrap; margin-bottom: 20px; display: none;
+        }
+        .marquee { 
+            display: inline-block; 
+            animation: marquee 25s linear infinite; 
+        }
+        @keyframes marquee { 
+            0% { transform: translateX(-100%); } 
+            100% { transform: translateX(100%); } 
+        }
+
+        .styled-box {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 18px;
+            margin: 0 auto 15px auto;
+            max-width: 80%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .styled-box.finished-box {
+            background-color: var(--finished-bg);
+            opacity: 0.85;
+        }
+
+        .box-header {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 15px; color: var(--text-muted); margin-bottom: 10px; font-weight: bold;
+        }
+        .box-divider {
+            border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 12px;
+        }
+        .box-content {
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: bold; font-size: 17px;
+        }
+        
+        .section-main-title {
+            color: var(--gold);
+            font-size: 19px;
+            font-weight: bold;
+            text-align: right;
+            max-width: 80%;
+            margin: 25px auto 10px auto;
+        }
+        
+        .score-container {
+            display: flex; align-items: center; gap: 10px;
+            color: var(--text-muted); font-size: 14px;
+        }
+        .score-box {
+            background-color: var(--score-bg); padding: 6px 15px;
+            border-radius: 10px; color: var(--text-main); font-size: 18px;
+        }
+
+        .mvp-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 12px;
+            margin: 15px auto;
+            max-width: 50%;
+            border: 1px solid var(--gold);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .mvp-title { font-size: 13px; margin: 5px 0; color: var(--gold); }
+        .mvp-img-wrapper {
+            position: relative; width: 60px; height: 60px; margin: 8px auto;
+            border-radius: 50%; border: 2px solid var(--gold); overflow: hidden;
+        }
+        .mvp-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .mvp-img-wrapper::after {
+            content: ""; position: absolute; top: 0; left: -100%;
+            width: 50%; height: 100%; background: rgba(255,255,255,0.4);
+            transform: skewX(-20deg); animation: shine 3s infinite;
+        }
+        @keyframes shine { 100% { left: 200%; } }
+        #mvp-name { font-size: 15px; margin-top: 5px; font-weight: bold; }
+
+        .winner { color: var(--green); }
+        .loser { text-decoration: line-through; color: var(--red); }
+        .team-name { flex: 1; text-align: center; }
+        .team-right { text-align: right; }
+        .team-left { text-align: left; }
+
+        .player-stat-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 16px;
+            font-weight: bold;
+        }
+        .player-stat-row:last-child { border-bottom: none; }
+        img.player-icon { width: 32px; height: 32px; border-radius: 50%; vertical-align: middle; margin-left: 10px; border: 1px solid var(--gold); }
+
+        .nav-buttons { margin-bottom: 20px; }
+        .nav-buttons a {
+            display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
+            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.15);
+            font-family: inherit; font-size: 14px; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ad-banner"><div class="marquee" id="ad-text"></div></div>
+
+    <div class="nav-buttons">
+        <a href="league.html">📊 إحصائيات اللاعبين</a>
+        <a href="history.html">🏆 السجل الشرفي</a>
+    </div>
+
+    <div class="mvp-card">
+        <div class="mvp-title">🌟 نجم الجولة</div>
+        <div class="mvp-img-wrapper">
+            <img id="mvp-img" src="" alt="MVP">
+        </div>
+        <div id="mvp-name"></div>
+    </div>
+
+    <div class="styled-box">
+        <div class="box-header">
+            <span style="font-size: 17px; color: var(--gold); font-weight: bold;">⚽ أعلى الهدافين</span>
+            <span>الأهداف</span>
+        </div>
+        <hr class="box-divider">
+        <div id="top-scorers"></div>
+    </div>
+
+    <div class="styled-box">
+        <div class="box-header">
+            <span style="font-size: 17px; color: var(--gold); font-weight: bold;">🎯 أعلى صناع اللعب</span>
+            <span>الصناعة</span>
+        </div>
+        <hr class="box-divider">
+        <div id="top-assists"></div>
+    </div>
+
+    <div class="section-main-title">⚔️ مواجهات الدوري</div>
+
+    <div id="matches-container"></div>
+
+    <script>
+        if(DB.settings.showBanner) {
+            document.getElementById('ad-banner').style.display = 'block';
+            document.getElementById('ad-text').innerText = DB.settings.bannerText;
+        }
+
+        document.getElementById('mvp-img').src = DB.lastMvp.image;
+        document.getElementById('mvp-name').innerText = DB.lastMvp.name;
+
+        let players = DB.players.slice();
+        
+        let topScorersHtml = "";
+        let topScorers = players.sort((a, b) => b.goals - a.goals).slice(0, 3);
+        topScorers.forEach(p => {
+            topScorersHtml += `
+            <div class="player-stat-row">
+                <div><img src="${p.image}" class="player-icon"> ${p.name}</div>
+                <div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.goals}</div>
+            </div>`;
+        });
+        document.getElementById('top-scorers').innerHTML = topScorersHtml;
+
+        let topAssistsHtml = "";
+        let topAssists = players.sort((a, b) => b.assists - a.assists).slice(0, 3);
+        topAssists.forEach(p => {
+            topAssistsHtml += `
+            <div class="player-stat-row">
+                <div><img src="${p.image}" class="player-icon"> ${p.name}</div>
+                <div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.assists}</div>
+            </div>`;
+        });
+        document.getElementById('top-assists').innerHTML = topAssistsHtml;
+
+        let matchesHtml = "";
+        DB.matches.forEach((m, index) => {
+            let t1Class = "", t2Class = "", check1 = "", check2 = "";
+            let score1 = m.status === 'finished' ? m.score1 : '0';
+            let score2 = m.status === 'finished' ? m.score2 : '0';
+            
+            let boxLabel = m.status === 'finished' ? 'انتهت' : 'خروج المغلوب';
+            let boxClass = m.status === 'finished' ? 'styled-box finished-box' : 'styled-box';
+
+            if(m.status === "finished") {
+                if(m.score1 > m.score2) { t1Class = "winner"; t2Class = "loser"; check1 = "✅"; }
+                else if(m.score2 > m.score1) { t2Class = "winner"; t1Class = "loser"; check2 = "✅"; }
+            }
+            
+            matchesHtml += `
+            <div class="${boxClass}">
+                <div class="box-header">
+                    <span>${boxLabel}</span>
+                    <span>مباراة رقم ${index + 1}</span>
+                </div>
+                <hr class="box-divider">
+                <div class="box-content">
+                    <div class="team-name team-right ${t1Class}">${check1} ${m.team1}</div>
+                    <div class="score-container">
+                        <div class="score-box">${score1}</div>
+                        <div>VS</div>
+                        <div class="score-box">${score2}</div>
+                    </div>
+                    <div class="team-name team-left ${t2Class}">${m.team2} ${check2}</div>
+                </div>
+            </div>`;
+        });
+        document.getElementById('matches-container').innerHTML = matchesHtml;
+    </script>
+</body>
+</html>
