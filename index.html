@@ -35,9 +35,9 @@
         .styled-box {
             background-color: var(--card-bg);
             border-radius: 16px;
-            padding: 15px;
+            padding: 18px;
             margin: 0 auto 15px auto;
-            max-width: 75%;
+            max-width: 80%;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .styled-box.finished-box {
@@ -45,49 +45,52 @@
             opacity: 0.85;
         }
 
+        /* تكبير خط العلوية في المربعات */
         .box-header {
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 13px; color: var(--text-muted); margin-bottom: 10px; font-weight: bold;
+            font-size: 15px; color: var(--text-muted); margin-bottom: 10px; font-weight: bold;
         }
         .box-divider {
             border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 12px;
         }
+        /* تكبير خط محتوى المباريات (أسماء الفرق) */
         .box-content {
             display: flex; justify-content: space-between; align-items: center;
-            font-weight: bold; font-size: 14px;
+            font-weight: bold; font-size: 17px;
         }
         
-        /* عنوان قسم المواجهات */
+        /* تكبير العنوان الرئيسي للمواجهات */
         .section-main-title {
             color: var(--gold);
-            font-size: 17px;
+            font-size: 19px;
             font-weight: bold;
             text-align: right;
-            max-width: 75%;
+            max-width: 80%;
             margin: 25px auto 10px auto;
         }
         
         .score-container {
-            display: flex; align-items: center; gap: 8px;
-            color: var(--text-muted); font-size: 12px;
+            display: flex; align-items: center; gap: 10px;
+            color: var(--text-muted); font-size: 14px;
         }
+        /* تكبير صندوق النتائج والأرقام */
         .score-box {
-            background-color: var(--score-bg); padding: 5px 12px;
-            border-radius: 8px; color: var(--text-main); font-size: 15px;
+            background-color: var(--score-bg); padding: 6px 15px;
+            border-radius: 10px; color: var(--text-main); font-size: 18px;
         }
 
         .mvp-card {
             background-color: var(--card-bg);
             border-radius: 16px;
-            padding: 10px;
+            padding: 12px;
             margin: 15px auto;
-            max-width: 45%;
+            max-width: 50%;
             border: 1px solid var(--gold);
             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
-        .mvp-title { font-size: 12px; margin: 5px 0; color: var(--gold); }
+        .mvp-title { font-size: 13px; margin: 5px 0; color: var(--gold); }
         .mvp-img-wrapper {
-            position: relative; width: 50px; height: 50px; margin: 5px auto;
+            position: relative; width: 60px; height: 60px; margin: 8px auto;
             border-radius: 50%; border: 2px solid var(--gold); overflow: hidden;
         }
         .mvp-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
@@ -97,7 +100,7 @@
             transform: skewX(-20deg); animation: shine 3s infinite;
         }
         @keyframes shine { 100% { left: 200%; } }
-        #mvp-name { font-size: 13px; margin-top: 5px; font-weight: bold; }
+        #mvp-name { font-size: 15px; margin-top: 5px; font-weight: bold; }
 
         .winner { color: var(--green); }
         .loser { text-decoration: line-through; color: var(--red); }
@@ -105,18 +108,20 @@
         .team-right { text-align: right; }
         .team-left { text-align: left; }
 
+        /* تكبير خط أسماء اللاعبين في الهدافين والصانعين */
         .player-stat-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 14px;
+            padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 16px;
+            font-weight: bold;
         }
         .player-stat-row:last-child { border-bottom: none; }
-        img.player-icon { width: 25px; height: 25px; border-radius: 50%; vertical-align: middle; margin-left: 8px; }
+        img.player-icon { width: 32px; height: 32px; border-radius: 50%; vertical-align: middle; margin-left: 10px; border: 1px solid var(--gold); }
 
         .nav-buttons { margin-bottom: 20px; }
         .nav-buttons a {
             display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
             text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.15);
-            font-family: inherit; font-size: 13px; font-weight: bold;
+            font-family: inherit; font-size: 14px; font-weight: bold;
         }
     </style>
 </head>
@@ -140,7 +145,7 @@
     <!-- إطار أعلى الهدافين المستقل -->
     <div class="styled-box">
         <div class="box-header">
-            <span style="font-size: 15px; color: var(--gold); font-weight: bold;">⚽ أعلى الهدافين</span>
+            <span style="font-size: 17px; color: var(--gold); font-weight: bold;">⚽ أعلى الهدافين</span>
             <span>الأهداف</span>
         </div>
         <hr class="box-divider">
@@ -150,7 +155,7 @@
     <!-- إطار أعلى صناع اللعب المستقل -->
     <div class="styled-box">
         <div class="box-header">
-            <span style="font-size: 15px; color: var(--gold); font-weight: bold;">🎯 أعلى صناع اللعب</span>
+            <span style="font-size: 17px; color: var(--gold); font-weight: bold;">🎯 أعلى صناع اللعب</span>
             <span>الصناعة</span>
         </div>
         <hr class="box-divider">
@@ -180,7 +185,7 @@
             topScorersHtml += `
             <div class="player-stat-row">
                 <div><img src="${p.image}" class="player-icon"> ${p.name}</div>
-                <div class="score-box" style="padding: 3px 10px;">${p.goals}</div>
+                <div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.goals}</div>
             </div>`;
         });
         document.getElementById('top-scorers').innerHTML = topScorersHtml;
@@ -191,7 +196,7 @@
             topAssistsHtml += `
             <div class="player-stat-row">
                 <div><img src="${p.image}" class="player-icon"> ${p.name}</div>
-                <div class="score-box" style="padding: 3px 10px;">${p.assists}</div>
+                <div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.assists}</div>
             </div>`;
         });
         document.getElementById('top-assists').innerHTML = topAssistsHtml;
