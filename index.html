@@ -39,12 +39,12 @@
             100% { transform: translateX(100%); } 
         }
 
-        /* الصناديق الأساسية */
+        /* الصناديق الأساسية وتم تقليل الفراغ السفلي لتقريبها */
         .styled-box {
             background-color: var(--card-bg);
             border-radius: 16px;
-            padding: 18px;
-            margin: 0 auto 15px auto;
+            padding: 12px 18px; /* تقليل الارتفاع الداخلي */
+            margin: 0 auto 8px auto; /* تقليل المسافة بين الصناديق لتتلاصق بشكل جميل */
             max-width: 80%;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
@@ -55,10 +55,10 @@
 
         .box-header {
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 15px; color: var(--text-muted); margin-bottom: 10px; font-weight: bold;
+            font-size: 15px; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;
         }
         .box-divider {
-            border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 12px;
+            border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 8px;
         }
         .box-content {
             display: flex; justify-content: space-between; align-items: center;
@@ -71,7 +71,7 @@
             font-weight: bold;
             text-align: right;
             max-width: 80%;
-            margin: 25px auto 10px auto;
+            margin: 20px auto 10px auto;
         }
         
         .score-container {
@@ -79,11 +79,11 @@
             color: var(--text-muted); font-size: 14px;
         }
         .score-box {
-            background-color: var(--score-bg); padding: 6px 15px;
-            border-radius: 10px; color: var(--text-main); font-size: 18px;
+            background-color: var(--score-bg); padding: 5px 12px;
+            border-radius: 10px; color: var(--text-main); font-size: 17px;
         }
 
-        /* بطاقة نجم الجولة (MVP) وتعديل التاج */
+        /* بطاقة نجم الجولة (MVP) */
         .mvp-card {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -101,20 +101,25 @@
             margin: 15px auto 5px auto;
         }
         
-        /* التاج: تكبير 250% ونقله لشمال غرب ومائل لليسار */
+        /* التاج خلف الصورة تماماً ودون التقاطع معها */
         .crown-icon {
             position: absolute;
-            top: -35px; /* رفعه للأعلى */
-            left: -35px; /* نقله لليسار */
-            transform: rotate(-25deg); /* إمالته لليسار */
-            font-size: 80px; /* تم التكبير */
-            z-index: 10;
+            top: -28px;
+            left: -28px;
+            transform: rotate(-20deg);
+            font-size: 75px;
+            z-index: 0; /* جعلناه في الخلفية خلف الحاوية والصورة */
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
         }
 
         .mvp-img-wrapper {
-            position: relative; width: 110px; height: 110px;
-            border-radius: 50%; border: 3px solid var(--gold); overflow: hidden;
+            position: relative; 
+            width: 110px; height: 110px;
+            border-radius: 50%; 
+            border: 3px solid var(--gold); 
+            overflow: hidden;
+            z-index: 1; /* الصورة في المقدمة */
+            background-color: var(--card-bg);
         }
         .mvp-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         .mvp-img-wrapper::after {
@@ -132,10 +137,10 @@
         .team-right { text-align: right; }
         .team-left { text-align: left; }
 
-        /* إحصائيات اللاعبين وتقليل الفراغات */
+        /* إحصائيات اللاعبين وتقليل المسافات */
         .player-stat-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; /* تم تقليل الفراغات لتكون متناسقة */
+            padding: 6px 0; /* تقليل الارتفاع بين الاسماء */
             border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 17px;
             font-weight: bold;
         }
@@ -147,20 +152,20 @@
         
         /* مربع الترتيب */
         .rank-box {
-            min-width: 28px;
-            height: 28px;
+            min-width: 26px;
+            height: 26px;
             background-color: rgba(0, 0, 0, 0.3);
             color: var(--gold);
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
         }
 
         img.player-icon { 
-            width: 55px; height: 55px;
+            width: 50px; height: 50px;
             border-radius: 50%; object-fit: cover; 
             border: 2px solid var(--gold); 
         }
@@ -204,7 +209,7 @@
         <div id="top-scorers"></div>
     </div>
 
-    <!-- أعلى صناع اللعب -->
+    <!-- أعلى صناع اللعب (متلاصق تماماً مع الهدافين بدون فراغ مزعج) -->
     <div class="styled-box">
         <div class="box-header">
             <span style="font-size: 17px; color: var(--gold); font-weight: bold;">🎯 أعلى صناع اللعب</span>
@@ -234,7 +239,7 @@
         let topScorersHtml = "";
         let topScorers = players.sort((a, b) => b.goals - a.goals).slice(0, 3);
         topScorers.forEach((p, index) => {
-            let rank = index + 1; // ترتيب اللاعب
+            let rank = index + 1;
             topScorersHtml += `
             <div class="player-stat-row">
                 <div class="player-info">
@@ -242,7 +247,7 @@
                     <img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"> 
                     <span>${p.name}</span>
                 </div>
-                <div class="score-box" style="padding: 6px 14px; font-size: 16px;">${p.goals}</div>
+                <div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.goals}</div>
             </div>`;
         });
         document.getElementById('top-scorers').innerHTML = topScorersHtml;
@@ -251,7 +256,7 @@
         let topAssistsHtml = "";
         let topAssists = players.sort((a, b) => b.assists - a.assists).slice(0, 3);
         topAssists.forEach((p, index) => {
-            let rank = index + 1; // ترتيب اللاعب
+            let rank = index + 1;
             topAssistsHtml += `
             <div class="player-stat-row">
                 <div class="player-info">
@@ -259,7 +264,7 @@
                     <img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"> 
                     <span>${p.name}</span>
                 </div>
-                <div class="score-box" style="padding: 6px 14px; font-size: 16px;">${p.assists}</div>
+                <div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.assists}</div>
             </div>`;
         });
         document.getElementById('top-assists').innerHTML = topAssistsHtml;
