@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم المحمية | دوري الأبطال</title>
+    <title>لوحة التحكم الشاملة | دوري الأبطال</title>
     <script src="data.js"></script>
     <style>
         :root {
@@ -23,7 +23,6 @@
             margin: 0; padding: 20px; text-align: center;
         }
 
-        /* شاشة تسجيل الدخول بالرقم السري */
         #login-screen {
             max-width: 400px;
             margin: 100px auto;
@@ -43,8 +42,7 @@
         }
         .error-msg { color: var(--red); font-size: 14px; margin-top: 10px; display: none; }
 
-        /* لوحة التحكم الرئيسية (مخفية حتى يتم إدخال الرقم السري) */
-        #admin-panel { display: none; max-width: 800px; margin: 0 auto; text-align: right; }
+        #admin-panel { display: none; max-width: 850px; margin: 0 auto; text-align: right; }
         
         .panel-section {
             background-color: var(--card-bg);
@@ -53,11 +51,11 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .panel-section h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .panel-section h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: var(--text-muted); }
-        .form-group input[type="text"], .form-group select {
+        .form-group input, .form-group select {
             width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
             background: rgba(0,0,0,0.2); color: white; font-size: 15px; box-sizing: border-box;
         }
@@ -81,6 +79,33 @@
             background: rgba(0,0,0,0.2); color: white; text-align: center; box-sizing: border-box;
         }
 
+        .item-card {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .row-flex {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .row-flex input, .row-flex select {
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
+            padding: 8px; border-radius: 6px; font-size: 14px; box-sizing: border-box;
+        }
+
+        .btn-add {
+            background: var(--score-bg); color: white; border: none; padding: 8px 15px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
+        }
+        .btn-delete {
+            background: var(--red); color: white; border: none; padding: 8px 12px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
+        }
+
         .action-bar {
             position: sticky; bottom: 20px; text-align: center; background: rgba(36, 52, 86, 0.95);
             padding: 15px; border-radius: 12px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5); z-index: 100;
@@ -91,29 +116,24 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .save-btn:hover { background: #45a049; }
-        
-        .success-alert {
-            color: var(--green); font-weight: bold; margin-top: 10px; display: none; text-align: center;
-        }
+        .success-alert { color: var(--green); font-weight: bold; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
-    <!-- شاشة إدخال الرقم السري -->
     <div id="login-screen">
-        <h2>🔒 لوحة التحكم المحمية</h2>
-        <p style="color: var(--text-muted); font-size: 14px;">الرجاء إدخال الرقم السري للمتابعة</p>
-        <input type="password" id="pin-input" placeholder="أدخل الرقم السري">
+        <h2>🔒 لوحة التحكم الشاملة</h2>
+        <p style="color: var(--text-muted); font-size: 14px;">أدخل الرقم السري للمتابعة</p>
+        <input type="password" id="pin-input" placeholder="الرقم السري">
         <br>
         <button onclick="checkPin()">دخول</button>
         <div id="error-msg" class="error-msg">الرقم السري غير صحيح!</div>
     </div>
 
-    <!-- لوحة التحكم الحقيقية -->
     <div id="admin-panel">
-        <h1 style="color: var(--gold); text-align: center; margin-bottom: 25px;">⚙️ لوحة تحكم دوري الأبطال</h1>
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 25px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
-        <!-- 1. إعدادات البنر -->
+        <!-- 1. البنر -->
         <div class="panel-section">
             <h3>📢 إعدادات الإعلان (البنر)</h3>
             <div class="form-group">
@@ -123,32 +143,59 @@
             <div class="form-group">
                 <label>حالة الإعلان:</label>
                 <select id="edit-banner-show">
-                    <option value="true">إظهار الإعلان</option>
-                    <option value="false">إخفاء الإعلان</option>
+                    <option value="true">إظهار</option>
+                    <option value="false">إخفاء</option>
                 </select>
             </div>
         </div>
 
-        <!-- 2. إحصائيات اللاعبين -->
+        <!-- 2. نجم الجولة (Last MVP) -->
         <div class="panel-section">
-            <h3>👥 إحصائيات اللاعبين (الأهداف والصناعة)</h3>
-            <div class="players-grid" id="players-edit-container">
-                <!-- سيتم تعبئتها تلقائياً -->
+            <h3>🌟 نجم الجولة الأخيرة (MVP)</h3>
+            <div class="form-group">
+                <label>اسم نجم الجولة:</label>
+                <input type="text" id="edit-mvp-name">
+            </div>
+            <div class="form-group">
+                <label>مسار/رابط صورة نجم الجولة:</label>
+                <input type="text" id="edit-mvp-image">
             </div>
         </div>
 
-        <!-- زر الحفظ العائم في الأسفل -->
+        <!-- 3. اللاعبين -->
+        <div class="panel-section">
+            <h3>👥 إحصائيات اللاعبين</h3>
+            <div class="players-grid" id="players-edit-container"></div>
+        </div>
+
+        <!-- 4. المواجهات -->
+        <div class="panel-section">
+            <h3>
+                <span>⚔️ إدارة المواجهات</span>
+                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة جديدة</button>
+            </h3>
+            <div id="matches-edit-container"></div>
+        </div>
+
+        <!-- 5. السجل الشرفي -->
+        <div class="panel-section">
+            <h3>
+                <span>🏆 السجل الشرفي والبطولات</span>
+                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة جديدة</button>
+            </h3>
+            <div id="history-edit-container"></div>
+        </div>
+
+        <!-- زر الحفظ -->
         <div class="action-bar">
-            <button class="save-btn" onclick="generateNewDataFile()">💾 توليد ونسخ كود التحديث</button>
+            <button class="save-btn" onclick="generateNewDataFile()">💾 توليد ونسخ كود التحديث الشامل</button>
             <div id="success-msg" class="success-alert">تم نسخ الكود بنجاح! الصقه في ملف data.js واحفظه</div>
         </div>
     </div>
 
     <script>
-        // التحقق من الرقم السري (322332)
         function checkPin() {
-            let enteredPin = document.getElementById('pin-input').value;
-            if (enteredPin === "322332") {
+            if (document.getElementById('pin-input').value === "322332") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
                 loadAdminData();
@@ -157,13 +204,16 @@
             }
         }
 
-        // تحميل البيانات الحالية من DB لداخل الحقول
-        let workingData = JSON.parse(JSON.stringify(DB)); // نسخة للعمل عليها
+        let workingData = JSON.parse(JSON.stringify(DB));
 
         function loadAdminData() {
             // البنر
             document.getElementById('edit-banner-text').value = workingData.settings.bannerText;
             document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
+
+            // نجم الجولة
+            document.getElementById('edit-mvp-name').value = workingData.lastMvp.name || "";
+            document.getElementById('edit-mvp-image').value = workingData.lastMvp.image || "";
 
             // اللاعبين
             let playersHtml = "";
@@ -172,70 +222,145 @@
                 <div class="player-edit-card">
                     <h4>${p.name}</h4>
                     <div class="inputs-row">
-                        <div>
-                            <label style="font-size:12px">الأهداف</label>
-                            <input type="number" id="p-goals-${index}" value="${p.goals}">
-                        </div>
-                        <div>
-                            <label style="font-size:12px">الصناعة</label>
-                            <input type="number" id="p-assists-${index}" value="${p.assists}">
-                        </div>
-                        <div>
-                            <label style="font-size:12px">MVP</label>
-                            <input type="number" id="p-mvps-${index}" value="${p.mvps}">
-                        </div>
+                        <div><label style="font-size:11px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals}"></div>
+                        <div><label style="font-size:11px">صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists}"></div>
+                        <div><label style="font-size:11px">MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps}"></div>
                     </div>
                 </div>`;
             });
             document.getElementById('players-edit-container').innerHTML = playersHtml;
+
+            renderMatches();
+            renderHistory();
         }
 
-        // توليد الكود الجديد ونسخه للحافظة
-        function generateNewDataFile() {
-            // تحديث قيم البنر
+        // عرض المباريات
+        function renderMatches() {
+            let matchesHtml = "";
+            workingData.matches.forEach((m, index) => {
+                matchesHtml += `
+                <div class="item-card">
+                    <div class="row-flex">
+                        <input type="text" style="flex:2" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق الأول">
+                        <input type="number" style="flex:1; text-align:center;" id="m-score1-${index}" value="${m.score1}">
+                        <span style="font-weight:bold">VS</span>
+                        <input type="number" style="flex:1; text-align:center;" id="m-score2-${index}" value="${m.score2}">
+                        <input type="text" style="flex:2" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق الثاني">
+                        <select style="flex:1.5" id="m-status-${index}">
+                            <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
+                            <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
+                        </select>
+                        <button class="btn-delete" onclick="deleteMatch(${index})">حذف</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('matches-edit-container').innerHTML = matchesHtml;
+        }
+
+        function addMatch() {
+            syncFromUI();
+            workingData.matches.push({ team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" });
+            renderMatches();
+        }
+
+        function deleteMatch(index) {
+            syncFromUI();
+            workingData.matches.splice(index, 1);
+            renderMatches();
+        }
+
+        // عرض السجل الشرفي
+        function renderHistory() {
+            let historyHtml = "";
+            workingData.history.forEach((h, hIndex) => {
+                let winnersList = h.winners ? h.winners.join(", ") : "";
+                historyHtml += `
+                <div class="item-card">
+                    <div class="row-flex" style="margin-bottom:10px;">
+                        <input type="text" style="flex:3" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة أو الموسم">
+                        <button class="btn-delete" onclick="deleteHistory(${hIndex})">حذف البطولة</button>
+                    </div>
+                    <div class="row-flex">
+                        <input type="text" style="flex:1" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال مفصولة بفواصل (مثال: بسام, خالد فايز)">
+                    </div>
+                    <small style="color:var(--text-muted)">اكتب أسماء الأبطال وافصل بينهم بـ (فاصلة) ليظهروا كأبطال للبطولة.</small>
+                </div>`;
+            });
+            document.getElementById('history-edit-container').innerHTML = historyHtml;
+        }
+
+        function addHistorySeason() {
+            syncFromUI();
+            workingData.history.push({ season: "بطولة جديدة", winners: ["اسم البطل"] });
+            renderHistory();
+        }
+
+        function deleteHistory(index) {
+            syncFromUI();
+            workingData.history.splice(index, 1);
+            renderHistory();
+        }
+
+        // سحب البيانات من الحقول لواجهة الذاكرة قبل أي تحديث أو إضافة
+        function syncFromUI() {
             workingData.settings.bannerText = document.getElementById('edit-banner-text').value;
             workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
 
-            // تحديث قيم اللاعبين من الحقول
+            workingData.lastMvp.name = document.getElementById('edit-mvp-name').value;
+            workingData.lastMvp.image = document.getElementById('edit-mvp-image').value;
+
             workingData.players.forEach((p, index) => {
                 p.goals = parseInt(document.getElementById(`p-goals-${index}`).value) || 0;
                 p.assists = parseInt(document.getElementById(`p-assists-${index}`).value) || 0;
                 p.mvps = parseInt(document.getElementById(`p-mvps-${index}`).value) || 0;
             });
 
-            // بناء نص ملف data.js بالشكل الصحيح
+            workingData.matches.forEach((m, index) => {
+                m.team1 = document.getElementById(`m-team1-${index}`).value;
+                m.score1 = parseInt(document.getElementById(`m-score1-${index}`).value) || 0;
+                m.score2 = parseInt(document.getElementById(`m-score2-${index}`).value) || 0;
+                m.team2 = document.getElementById(`m-team2-${index}`).value;
+                m.status = document.getElementById(`m-status-${index}`).value;
+            });
+
+            workingData.history.forEach((h, hIndex) => {
+                h.season = document.getElementById(`h-season-${hIndex}`).value;
+                let rawWinners = document.getElementById(`h-winners-${hIndex}`).value;
+                h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
+            });
+        }
+
+        // توليد الكود النهائي ونسخه
+        function generateNewDataFile() {
+            syncFromUI();
+
             let fileContent = `// هذا الملف هو قاعدة البيانات الخاصة بك، من هنا تعدل كل شيء في الموقع\n\nconst DB = {\n`;
             
-            // 1. settings
-            fileContent += `    // 1. إعدادات البنر الإعلاني\n    settings: {\n`;
+            fileContent += `    settings: {\n`;
             fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
             fileContent += `        bannerText: "${workingData.settings.bannerText}"\n`;
             fileContent += `    },\n\n`;
 
-            // 2. lastMvp
-            fileContent += `    // 2. أفضل لاعب في الجولة الأخيرة\n    lastMvp: {\n`;
+            fileContent += `    lastMvp: {\n`;
             fileContent += `        name: "${workingData.lastMvp.name}",\n`;
             fileContent += `        image: "${workingData.lastMvp.image}"\n`;
             fileContent += `    },\n\n`;
 
-            // 3. players
-            fileContent += `    // 3. قائمة اللاعبين (يتم ترتيبهم تلقائياً في الصفحات)\n    players: [\n`;
+            fileContent += `    players: [\n`;
             workingData.players.forEach((p, i) => {
                 let comma = i === workingData.players.length - 1 ? "" : ",";
                 fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
             });
             fileContent += `    ],\n\n`;
 
-            // 4. matches
-            fileContent += `    // 4. مباريات خروج المغلوب\n    matches: [\n`;
+            fileContent += `    matches: [\n`;
             workingData.matches.forEach((m, i) => {
                 let comma = i === workingData.matches.length - 1 ? "" : ",";
                 fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
             });
             fileContent += `    ],\n\n`;
 
-            // 5. history
-            fileContent += `    // 5. السجل الشرفي\n    history: [\n`;
+            fileContent += `    history: [\n`;
             workingData.history.forEach((h, i) => {
                 let comma = i === workingData.history.length - 1 ? "" : ",";
                 let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
@@ -243,13 +368,12 @@
             });
             fileContent += `    ]\n};`;
 
-            // نسخ النص تلقائياً للحافظة
             navigator.clipboard.writeText(fileContent).then(() => {
                 let msg = document.getElementById('success-msg');
                 msg.style.display = 'block';
                 setTimeout(() => { msg.style.display = 'none'; }, 4000);
             }).catch(err => {
-                alert("حدث خطأ أثناء النسخ التلقائي، يرجى المحاولة مرة أخرى.");
+                alert("حدث خطأ أثناء النسخ التلقائي.");
             });
         }
     </script>
