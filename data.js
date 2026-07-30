@@ -29,7 +29,7 @@ const DB = {
         { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 3, assists: 4, mvps: 0 },
         { name: "فهد اليامي", image: "images/IMG_9999999.jpeg", goals: 0, assists: 2, mvps: 0 },
         { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 0, assists: 0, mvps: 0 },
-        { name: "راكان", image: "images/IMG_0479.jpeg", goals: 1, assists: 0, mvps: 0 },
+        { name: "راكان", image: "images/IMG_0479888.jpeg", goals: 1, assists: 0, mvps: 0 },
         { name: "زيد", image: "images/IMG_0478.jpeg", goals: 2, assists: 0, mvps: 0 },
         { name: "سامي", image: "images/IMG_0478.jpeg", goals: 0, assists: 1, mvps: 0 },
         { name: "مؤيد", image: "images/IMG_0481.jpeg", goals: 1, assists: 0, mvps: 0 },
