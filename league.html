@@ -20,76 +20,132 @@
             color: var(--text-main);
             margin: 0; padding: 15px; text-align: center;
         }
-        .styled-box {
+
+        .nav-buttons { margin-bottom: 25px; }
+        .nav-buttons a {
+            display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
+            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.15);
+            font-weight: bold; font-size: 15px;
+        }
+
+        .page-title {
+            color: var(--gold);
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* هنا تم تحديد عرض الجدول ليكون 85% من الشاشة */
+        .table-container {
+            width: 85%; 
+            margin: 0 auto 30px auto;
             background-color: var(--card-bg);
             border-radius: 16px;
-            padding: 15px;
-            margin: 0 auto 15px auto;
-            max-width: 75%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            overflow: hidden; /* للحفاظ على الزوايا الدائرية */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
-        .box-header {
-            display: flex; justify-content: space-between; font-size: 12px;
-            color: var(--text-muted); margin-bottom: 10px; font-weight: bold;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .box-divider {
-            border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 12px;
+
+        th {
+            background-color: var(--score-bg);
+            padding: 15px 10px;
+            color: var(--gold);
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
         }
-        .player-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 14px;
+        
+        th.text-right {
+            text-align: right;
+            padding-right: 20px;
         }
-        .player-row:last-child { border-bottom: none; }
-        .player-info { display: flex; align-items: center; gap: 10px; }
-        img.player-icon { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold); }
-        .stats-container { display: flex; gap: 8px; font-size: 12px; }
-        .stat-badge {
-            background-color: var(--score-bg); padding: 4px 8px;
-            border-radius: 6px; color: var(--text-main); text-align: center;
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 17px;
+            font-weight: bold;
+            vertical-align: middle;
+            text-align: center;
         }
-        .nav-btn {
-            display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
-            text-decoration: none; border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.15);
-            font-weight: bold; font-size: 13px;
+
+        tr:last-child td { 
+            border-bottom: none; 
+        }
+
+        .player-info {
+            display: flex; 
+            align-items: center; 
+            justify-content: start; 
+            gap: 12px;
+            padding-right: 10px;
+        }
+
+        .player-icon {
+            width: 50px; 
+            height: 50px;
+            border-radius: 50%; 
+            object-fit: cover;
+            border: 2px solid var(--gold);
         }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="nav-btn">⬅ العودة للرئيسية</a>
+    <div class="nav-buttons">
+        <a href="index.html">⬅️ العودة للرئيسية</a>
+        <a href="history.html">🏆 السجل الشرفي</a>
+    </div>
 
-    <div class="styled-box">
-        <h3 style="color: var(--gold); margin-top: 0;">📊 إحصائيات اللاعبين</h3>
-        <div class="box-header">
-            <span>اللاعب</span>
-            <span>(أهداف / صناعة / MVP)</span>
-        </div>
-        <hr class="box-divider">
-        <div id="players-list"></div>
+    <div class="page-title">📊 الترتيب العام للاعبين</div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-right">اللاعب</th>
+                    <th>⚽<br>أهداف</th>
+                    <th>🎯<br>صناعة</th>
+                    <th>🌟<br>MVP</th>
+                </tr>
+            </thead>
+            <tbody id="players-table-body">
+                <!-- سيتم جلب اللاعبين من ملف data.js ووضعهم هنا تلقائياً -->
+            </tbody>
+        </table>
     </div>
 
     <script>
+        // جلب البيانات من data.js
         let players = DB.players.slice();
-        // الترتيب تلقائياً من حيث الأعلى أهدافاً
-        players.sort((a, b) => b.goals - a.goals);
-
-        let html = "";
-        players.forEach((p, index) => {
-            html += `
-            <div class="player-row">
-                <div class="player-info">
-                    <span style="color: var(--gold); font-weight: bold; width: 20px;">#${index + 1}</span>
-                    <img src="${p.image}" class="player-icon">
-                    <span style="font-weight: bold;">${p.name}</span>
-                </div>
-                <div class="stats-container">
-                    <div class="stat-badge" title="الأهداف">⚽ ${p.goals}</div>
-                    <div class="stat-badge" title="الصناعة">🎯 ${p.assists}</div>
-                    <div class="stat-badge" title="MVP">🌟 ${p.mvps}</div>
-                </div>
-            </div>`;
+        
+        // ترتيب اللاعبين تنازلياً: حسب الأهداف أولاً، وإذا تساووا يتم الترتيب حسب الصناعة
+        players.sort((a, b) => {
+            if (b.goals !== a.goals) return b.goals - a.goals;
+            return b.assists - a.assists;
         });
-        document.getElementById('players-list').innerHTML = html;
+
+        let tableHtml = "";
+        players.forEach(p => {
+            tableHtml += `
+            <tr>
+                <td>
+                    <div class="player-info">
+                        <img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"> 
+                        <span>${p.name}</span>
+                    </div>
+                </td>
+                <td>${p.goals}</td>
+                <td>${p.assists}</td>
+                <td>${p.mvps}</td>
+            </tr>`;
+        });
+        
+        document.getElementById('players-table-body').innerHTML = tableHtml;
     </script>
 </body>
 </html>
