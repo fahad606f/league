@@ -17,7 +17,7 @@ const DB = {
         { name: "عبدالعزيز", image: "images/IMG_0448.jpeg", goals: 0, assists: 4, mvps: 0 },
         { name: "نواف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "ابوبسام", image: "images/IMG_0454.jpeg", goals: 2, assists: 0, mvps: 0 },
-        { name: "بسام", image: "images/IMG_0450.jpeg", goals: 1, assists: 0, mvps: 0 },
+        { name: "بسام", image: "images/IMG_0450.jpeg", goals: 0, assists: 1, mvps: 0 },
         { name: "حمد العنزي", image: "images/IMG_0500.jpeg", goals: 3, assists: 0, mvps: 1 },
         { name: "علي", image: "images/IMG_0452.jpeg", goals: 3, assists: 1, mvps: 0 },
         { name: "فارس", image: "images/IMG_0451.jpeg", goals: 5, assists: 1, mvps: 0 },
