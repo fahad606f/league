@@ -129,10 +129,20 @@
         if (historyData.length > 0) {
             historyData.forEach((h, index) => {
                 let seasonNum = index + 1;
-                // التعامل مع مختلف احتمالات أسماء الخانات في ملف data.js
-                let seasonName = h.season || h.name || h.title || `الموسم ${seasonNum}`;
-                let championName = h.champion || h.winner || h.first || '-';
-                let runnerUpName = h.runnerUp || h.second || h.loser || '-';
+                let seasonName = h.season || `الموسم ${seasonNum}`;
+                
+                // قراءة البطل والوصيف من مصفوفة winners الموجودة في ملف data.js لديك
+                let championName = '-';
+                let runnerUpName = '-';
+
+                if (Array.isArray(h.winners)) {
+                    if (h.winners.length > 0) championName = h.winners[0];
+                    if (h.winners.length > 1) runnerUpName = h.winners[1];
+                } else {
+                    // دعم احتياطي في حال وجود خصائص أخرى
+                    championName = h.champion || h.winner || '-';
+                    runnerUpName = h.runnerUp || h.second || '-';
+                }
 
                 tableHtml += `
                 <tr>
