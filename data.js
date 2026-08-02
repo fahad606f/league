@@ -8,7 +8,7 @@ const DB = {
 
     lastMvp: {
         name: "فهد اليامي",
-        image: "images/IMG_0500888.jpeg"
+        image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
     },
 
     players: [
