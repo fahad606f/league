@@ -39,7 +39,7 @@ const DB = {
         { team1: "مشعل", score1: 5, team2: "عبدالمجيد", score2: 10, status: "finished" },
         { team1: "خالد فايز", score1: 9, team2: "صنهات", score2: 8, status: "finished" },
         { team1: "محمد فيصل", score1: 0, team2: "ريان", score2: 0, status: "pending" },
-        { team1: "نواف", score1: 14, team2: "محمد فهد", score2: 4, status: "finished" },
+        { team1: "نواف", score1: 14, team2: "محمد فهد", score2: 5, status: "finished" },
         { team1: "امجد", score1: 0, team2: "مهند", score2: 0, status: "pending" },
         { team1: "عبدالعزيز", score1: 0, team2: "مؤيد", score2: 0, status: "pending" },
         { team1: "فهد اليامي", score1: 0, team2: "عبدالله", score2: 0, status: "pending" },
