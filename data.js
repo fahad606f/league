@@ -29,7 +29,7 @@ const DB = {
         { name: "راكان", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "زيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 0, mvps: 0 },
         { name: "سامي", image: "images/IMG_0478.jpeg", goals: 5, assists: 4, mvps: 0 },
-        { name: "مؤيد", image: "images/IMG_0481.jpeg", goals: 1, assists: 0, mvps: 0 },
+        { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "وليد الحماد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "عبدالله", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 4, mvps: 0 },
       { name: "حمود الكعبي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
