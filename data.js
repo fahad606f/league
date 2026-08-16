@@ -3,7 +3,7 @@
 const DB = {
     settings: {
         showBanner: true,
-        bannerText: "🔥 إعلان: المباراة القادمة المؤجلة[محمد فيصل x ريان]! 🔥"
+        bannerText: "🔥 إعلان: المباراة القادمة [مؤيد x عبدالعزيز]! 🔥"
     },
 
     lastMvp: {
@@ -12,35 +12,37 @@ const DB = {
     },
 
     players: [
-        { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 10, assists: 1, mvps: 0 },
-        { name: "محمد فيصل", image: "images/IMG_0447.jpeg", goals: 5, assists: 6, mvps: 1 },
-        { name: "عبدالعزيز", image: "images/IMG_0448.jpeg", goals: 0, assists: 4, mvps: 0 },
+        { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 15, assists: 1, mvps: 0 },
+        { name: "محمد فيصل", image: "images/IMG_0447.jpeg", goals: 6, assists: 8, mvps: 1 },
+        { name: "عبدالعزيز", image: "images/IMG_0448.jpeg", goals: 0, assists: 1, mvps: 0 },
         { name: "نواف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 1, mvps: 0 },
         { name: "ابوبسام", image: "images/IMG_0454.jpeg", goals: 2, assists: 0, mvps: 0 },
         { name: "بسام", image: "images/IMG_0450.jpeg", goals: 0, assists: 1, mvps: 0 },
         { name: "حمد العنزي", image: "images/IMG_0500.jpeg", goals: 3, assists: 0, mvps: 1 },
         { name: "علي", image: "images/IMG_0452.jpeg", goals: 3, assists: 1, mvps: 0 },
-        { name: "فارس", image: "images/IMG_0451.jpeg", goals: 10, assists: 2, mvps: 0 },
-        { name: "مهند", image: "images/IMG_0446.jpeg", goals: 3, assists: 3, mvps: 0 },
-        { name: "محمد فهد", image: "images/IMG_0482.jpeg", goals: 5, assists: 1, mvps: 0 },
-        { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 4, assists: 5, mvps: 0 },
-        { name: "فهد اليامي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 5, assists: 6, mvps: 2 },
+        { name: "فارس", image: "images/IMG_0451.jpeg", goals: 14, assists: 2, mvps: 0 },
+        { name: "مهند", image: "images/IMG_0446.jpeg", goals: 3, assists: 4, mvps: 0 },
+        { name: "محمد فهد", image: "images/IMG_0482.jpeg", goals: 6, assists: 1, mvps: 0 },
+        { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 5, assists: 5, mvps: 0 },
+        { name: "فهد اليامي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 6, assists: 8, mvps: 2 },
         { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 0, assists: 0, mvps: 0 },
         { name: "راكان", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "زيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 0, mvps: 0 },
         { name: "سامي", image: "images/IMG_0478.jpeg", goals: 5, assists: 4, mvps: 0 },
         { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "وليد الحماد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
-        { name: "عبدالله", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 4, mvps: 0 },
-      { name: "حمود الكعبي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
-      { name: "ريان", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 1, mvps: 0 },
-        { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 0, assists: 1, mvps: 0 }
+        { name: "عبدالله", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 5, assists: 5, mvps: 0 },
+        { name: "حمود الكعبي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
+        { name: "ريان", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 1, mvps: 0 },
+        { name: "ابوتركي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 3, mvps: 0 },
+        { name: "يوسف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
+        { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 0, assists: 2, mvps: 0 }
     ],
 
     matches: [
         { team1: "مشعل", score1: 5, team2: "عبدالمجيد", score2: 10, status: "finished" },
         { team1: "خالد فايز", score1: 9, team2: "صنهات", score2: 8, status: "finished" },
-        { team1: "محمد فيصل", score1: 0, team2: "ريان", score2: 0, status: "pending" },
+        { team1: "محمد فيصل", score1: 8, team2: "ريان", score2: 6, status: "finished" },
         { team1: "نواف", score1: 14, team2: "محمد فهد", score2: 5, status: "finished" },
         { team1: "امجد", score1: 0, team2: "مهند", score2: 1, status: "finished" },
         { team1: "عبدالعزيز", score1: 0, team2: "مؤيد", score2: 0, status: "pending" },
