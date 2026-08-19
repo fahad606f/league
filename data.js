@@ -7,8 +7,8 @@ const DB = {
     },
 
     lastMvp: {
-        name: "فهد اليامي",
-        image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+        name: "مشاري",
+        image: "images/IMG_0444.jpeg"
     },
 
     players: [
@@ -36,7 +36,7 @@ const DB = {
         { name: "ريان", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 1, mvps: 0 },
         { name: "ابوتركي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 3, mvps: 0 },
         { name: "يوسف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
-          { name: "طلال", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 0, mvps: 0 },
+        { name: "طلال", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 0, mvps: 0 },
         { name: "اسامة", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 1, mvps: 0 },
         { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 0, assists: 2, mvps: 0 }
     ],
