@@ -54,7 +54,7 @@ const DB = {
         { team1: "عبدالعزيز", score1: 5, team2: "مؤيد", score2: 6, status: "finished" },
         { team1: "فهد اليامي", score1: 13, team2: "عبدالله", score2: 11, status: "finished" },
         { team1: "سامي", score1: 12, team2: "فارس", score2: 7, status: "finished" },
-        { team1: "مشاري", score1: 9, team2: "بسام", score2: 7, status: "finished" },
+        { team1: "ابوخالد", score1: 9, team2: "بسام", score2: 7, status: "finished" },
         { team1: "علي", score1: 0, team2: "وليد الغامدي", score2: 0, status: "pending" }
     ],
 
