@@ -2,8 +2,8 @@
 
 const DB = {
     settings: {
-        showBanner: false,
-        bannerText: "🔥 إعلان: المباراة القادمة [وليدالغامدي x علي محمد]! 🔥"
+        showBanner: true,
+        bannerText: "🔥 إعلان: المباراة القادمة [سامي x نواف ]! 🔥"
     },
 
     lastMvp: {
@@ -42,19 +42,19 @@ const DB = {
         { name: "يوسف", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "طلال", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 3, mvps: 0 },
         { name: "اسامة", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 3, assists: 1, mvps: 0 },
-            { name: "عيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 3, assists: 1, mvps: 0 },
-            { name: "نواف الصبياني", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 1, mvps: 0 },
-            { name: "حسين", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
-            { name: "عبدالله المنتشري", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 0, mvps: 0 },
+        { name: "عيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 3, assists: 1, mvps: 0 },
+        { name: "نواف الصبياني", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 1, mvps: 0 },
+        { name: "حسين", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
+        { name: "عبدالله المنتشري", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 0, mvps: 0 },
         { name: "صنهات", image: "images/IMG_0477.jpeg", goals: 0, assists: 2, mvps: 0 }
     ],
 
     matches: [
-        { team1: "سامي", score1: 5, team2: "نواف", score2: 10, status: "finished" },
-        { team1: "علي", score1: 9, team2: "عبدالمجيد", score2: 8, status: "finished" },
-        { team1: "محمد فيصل", score1: 8, team2: "فهداليامي", score2: 6, status: "finished" },
-        { team1: "خالدفايز", score1: 14, team2: "مهند", score2: 5, status: "finished" },
-        { team1: "ابوخالد", score1: 0, team2: "مؤيد", score2: 1, status: "finished" }
+        { team1: "سامي", score1: 0, team2: "نواف", score2: 0, status: "pending" },
+        { team1: "علي", score1: 0, team2: "عبدالمجيد", score2: 0, status: "pending" },
+        { team1: "محمد فيصل", score1: 0, team2: "فهداليامي", score2: 0, status: "pending" },
+        { team1: "خالدفايز", score1: 0, team2: "مهند", score2: 0, status: "pending" },
+        { team1: "ابوخالد", score1: 0, team2: "مؤيد", score2: 0, status: "pending" }
     ],
 
     history: [
