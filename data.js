@@ -50,16 +50,11 @@ const DB = {
     ],
 
     matches: [
-        { team1: "مشعل", score1: 5, team2: "عبدالمجيد", score2: 10, status: "finished" },
-        { team1: "خالد فايز", score1: 9, team2: "صنهات", score2: 8, status: "finished" },
-        { team1: "محمد فيصل", score1: 8, team2: "ريان", score2: 6, status: "finished" },
-        { team1: "نواف", score1: 14, team2: "محمد فهد", score2: 5, status: "finished" },
-        { team1: "امجد", score1: 0, team2: "مهند", score2: 1, status: "finished" },
-        { team1: "عبدالعزيز", score1: 5, team2: "مؤيد", score2: 6, status: "finished" },
-        { team1: "فهد اليامي", score1: 13, team2: "عبدالله", score2: 11, status: "finished" },
-        { team1: "سامي", score1: 12, team2: "فارس", score2: 7, status: "finished" },
-        { team1: "ابوخالد", score1: 9, team2: "بسام", score2: 7, status: "finished" },
-        { team1: "علي", score1: 13, team2: "وليد الغامدي", score2: 10, status: "finished" }
+        { team1: "سامي", score1: 5, team2: "نواف", score2: 10, status: "finished" },
+        { team1: "علي", score1: 9, team2: "عبدالمجيد", score2: 8, status: "finished" },
+        { team1: "محمد فيصل", score1: 8, team2: "فهداليامي", score2: 6, status: "finished" },
+        { team1: "خالدفايز", score1: 14, team2: "مهند", score2: 5, status: "finished" },
+        { team1: "ابوخالد", score1: 0, team2: "مؤيد", score2: 1, status: "finished" }
     ],
 
     history: [
