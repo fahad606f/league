@@ -58,8 +58,8 @@ const DB = {
 
     matches: [
        
-      //  { team1: "علي", score1: 0, team2: "مؤيد", score2: 0, status: "finished" },
-      //  { team1: "نواف", score1: 0, team2: "فهد", score2: 0, status: "finished" }
+        { team1: "علي", score1: 0, team2: "مؤيد", score2: 0, status: "finished" },
+        { team1: "نواف", score1: 0, team2: "فهد", score2: 0, status: "finished" }
       
     ],
 
