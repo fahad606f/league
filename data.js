@@ -57,11 +57,10 @@ const DB = {
     ],
 
     matches: [
-        { team1: "سامي", score1: 9, team2: "نواف", score2: 11, status: "finished" },
-        { team1: "علي", score1: 9, team2: "عبدالمجيد", score2: 4, status: "finished" },
-        { team1: "محمد فيصل", score1: 9, team2: "فهداليامي", score2: 18, status: "finished" },
-        { team1: "خالدفايز", score1: 7, team2: "مهند", score2: 10, status: "finished" },
-        { team1: "ابوخالد", score1: 14, team2: "مؤيد", score2: 15, status: "finished" }
+       
+      //  { team1: "علي", score1: 0, team2: "مؤيد", score2: 0, status: "finished" },
+      //  { team1: "نواف", score1: 0, team2: "فهد", score2: 0, status: "finished" }
+      
     ],
 
     history: [
