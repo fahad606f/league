@@ -46,6 +46,7 @@ const DB = {
         { name: "نواف الصبياني", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 11, assists: 6, mvps: 0 },
         { name: "يزن", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 1, mvps: 0 },
         { name: "فايز", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 1, mvps: 0 },
+        {name: "خالدمحمد ", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "حسين", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 3, assists: 5, mvps: 0 },
         { name: "فيصل", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 1, mvps: 0 },
         { name: "احمد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 7, assists: 4, mvps: 0 },
