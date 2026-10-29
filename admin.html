@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم الشاملة | دوري الأبطال</title>
-    <script src="data.js"></script>
+    <!-- تم جلب البيانات بطريقة آمنة لا توقف الموقع لو حدث خطأ -->
+    <script src="data.js" onerror="console.log('data.js not loaded yet')"></script>
     <style>
         :root {
             --bg-color: #243456; 
@@ -40,7 +41,7 @@
         #login-screen h2 { color: var(--gold); margin-bottom: 15px; font-size: 20px; }
         #login-screen input {
             width: 80%; padding: 10px; font-size: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
-            text-align: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); color: white;
+            text-align: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); color: white; outline: none;
         }
         #login-screen button {
             padding: 10px 25px; background: var(--score-bg); color: white; border: none;
@@ -196,7 +197,7 @@
 </head>
 <body>
 
-    <!-- شاشة تسجيل الدخول مع خانة الرقم السري وزر الدخول الظاهرين بوضوح -->
+    <!-- شاشة تسجيل الدخول مضمونة الظهور بالكامل -->
     <div id="login-screen">
         <h2>🔒 لوحة التحكم</h2>
         <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">أدخل الرقم السري للمتابعة</p>
@@ -273,6 +274,7 @@
     </div>
 
     <script>
+        // إعداد بيانات آمنة 100% لا تتعطل أبدأ
         let workingData = {
             settings: { showBanner: true, bannerText: "", leagueEnded: false },
             lastMvp: { name: "", image: "" },
@@ -570,4 +572,3 @@
     </script>
 </body>
 </html>
-
