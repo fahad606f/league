@@ -397,7 +397,7 @@
             renderMatchesSection();
         }
 
-        // دالة تحديد الفائز وتلوين الشطب
+        // دالة تحديد الفائز وتلوين الشطب لأي مباراة
         function getWinnerAndClass(matchObj) {
             if (!matchObj || matchObj.status !== 'finished') {
                 return { winner: null, t1Class: "", t2Class: "" };
@@ -424,16 +424,18 @@
 
             let round1 = DB.matches || [];
             
-            // توليد الدور الثاني والثالث والنهائي
+            // توليد الدور الثاني وتتبع حالته
             let round2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
                 let m2 = round1[i+1];
                 let teamA = getWinnerAndClass(m1).winner || "[متأهل 1]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[متأهل 2]") : "---";
+                // يمكن تحديث نتيجة الدور الثاني إذا أدخلت نتائجه لاحقاً أو افترضنا مباريات معلقة
                 round2.push({ team1: teamA, team2: teamB, status: 'pending', score1: '-', score2: '-' });
             }
 
+            // توليد الدور الثالث (نصف النهائي)
             let round3 = [];
             for (let i = 0; i < round2.length; i += 2) {
                 let m1 = round2[i];
@@ -448,13 +450,12 @@
             let finalTeam2 = targetFinalRound.length > 1 ? (getWinnerAndClass(targetFinalRound[1]).winner || "[طرف 2]") : (targetFinalRound.length > 0 ? (targetFinalRound[0].team2 || "[طرف 2]") : "[طرف 2]");
             let finalMatch = { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: '-', score2: '-' };
 
-            // حالات الاكتمال
+            // حالات الاكتمال للوضع العادي
             let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
             let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
-            let isRound3Complete = round3.length > 0 && round3.every(m => m.status === 'finished');
 
             if (isBracketView) {
-                // ==================== 1. الوضع الشجري (يعرض المسار الكامل) ====================
+                // ==================== 1. الوضع الشجري (شامل تلوين الفائز وشطب الخاسر في كل الأدوار) ====================
                 let renderCard = (m, label) => {
                     let s1 = m && m.status === 'finished' ? m.score1 : '-';
                     let s2 = m && m.status === 'finished' ? m.score2 : '-';
@@ -481,7 +482,7 @@
                 <div class="bracket-scroll-wrapper">
                     <div class="bracket-master-container">
                         <div style="font-size: 10px; color: var(--gold); margin-bottom: 6px; font-weight: bold; text-align: center;">
-                            📊 مسار الأدوار الشجري (كامل ومرحل تلقائياً)
+                            📊 مسار الأدوار الشجري (شطب وتلوين تفعيلي لكل الأدوار)
                         </div>
                         <div class="tree-columns-flex">
                             <div class="tree-round-col" style="max-width: 110px;">
@@ -506,12 +507,12 @@
                 document.getElementById('matches-display-area').innerHTML = bracketHtml;
 
             } else {
-                // ==================== 2. الوضع العادي (تختفي مرحلة وتظهر المرحلة التالية مكانها) ====================
+                // ==================== 2. الوضع العادي (تبديل المراحل مع تفعيل الشطب والتلوين لأي مباراة منتهية) ====================
                 let matchesHtml = "";
                 let globalMatchIndex = 1;
 
                 if (!isRound1Complete) {
-                    // المرحلة الأولى: عرض مباريات الدور الأول فقط
+                    // عرض مباريات الدور الأول مع تلوين الفائز وشطب الخاسر
                     round1.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
                         let score1 = m.status === 'finished' ? m.score1 : '0';
@@ -519,9 +520,12 @@
                         let boxLabel = m.status === 'finished' ? 'انتهت' : 'مباراة قادمة';
                         let boxClass = m.status === 'finished' ? 'styled-box finished-box' : 'styled-box';
 
+                        let res = getWinnerAndClass(m);
                         if(m.status === "finished") {
-                            if(m.score1 > m.score2) { t1Class = "winner"; t2Class = "loser"; check1 = "✅"; }
-                            else if(m.score2 > m.score1) { t2Class = "winner"; t1Class = "loser"; check2 = "✅"; }
+                            t1Class = res.t1Class;
+                            t2Class = res.t2Class;
+                            if(res.t1Class === "winner") check1 = "✅";
+                            if(res.t2Class === "winner") check2 = "✅";
                         }
                         
                         matchesHtml += `
@@ -543,28 +547,52 @@
                         </div>`;
                     });
                 } else if (!isRound2Complete) {
-                    // المرحلة الثانية: اختفى الدور الأول تماماً، وحل مكانه الدور الثاني
+                    // عرض مباريات الدور الثاني بعد اكتمال الدور الأول
                     round2.forEach((m) => {
+                        let t1Class = "", t2Class = "", check1 = "", check2 = "";
+                        let score1 = m.status === 'finished' ? m.score1 : '0';
+                        let score2 = m.status === 'finished' ? m.score2 : '0';
+                        let boxLabel = m.status === 'finished' ? 'انتهت' : 'مباراة قادمة';
+                        let boxClass = m.status === 'finished' ? 'styled-box finished-box' : 'styled-box';
+
+                        let res = getWinnerAndClass(m);
+                        if(m.status === "finished") {
+                            t1Class = res.t1Class;
+                            t2Class = res.t2Class;
+                            if(res.t1Class === "winner") check1 = "✅";
+                            if(res.t2Class === "winner") check2 = "✅";
+                        }
+
                         matchesHtml += `
-                        <div class="styled-box generated-box">
+                        <div class="${boxClass}">
                             <div class="box-header">
                                 <span style="color:var(--gold);">🔄 الدور الثاني (تلقائي)</span>
                                 <span>مباراة رقم ${globalMatchIndex++}</span>
                             </div>
                             <hr class="box-divider">
                             <div class="box-content">
-                                <div class="team-name team-right">${m.team1}</div>
+                                <div class="team-name team-right ${t1Class}">${check1} ${m.team1}</div>
                                 <div class="score-container">
-                                    <div class="score-box">-</div>
+                                    <div class="score-box">${score1}</div>
                                     <div>VS</div>
-                                    <div class="score-box">-</div>
+                                    <div class="score-box">${score2}</div>
                                 </div>
-                                <div class="team-name team-left">${m.team2}</div>
+                                <div class="team-name team-left ${t2Class}">${m.team2} ${check2}</div>
                             </div>
                         </div>`;
                     });
                 } else {
-                    // المرحلة النهائية: اختفى الدور الثاني، وحل مكانه النهائي الكبير
+                    // عرض النهائي الكبير مع تفعيل الشطب والتلوين أيضاً
+                    let t1Class = "", t2Class = "", check1 = "", check2 = "";
+                    let score1 = finalMatch.status === 'finished' ? finalMatch.score1 : '0';
+                    let score2 = finalMatch.status === 'finished' ? finalMatch.score2 : '0';
+                    let res = getWinnerAndClass(finalMatch);
+                    if(finalMatch.status === "finished") {
+                        t1Class = res.t1Class; t2Class = res.t2Class;
+                        if(res.t1Class === "winner") check1 = "✅";
+                        if(res.t2Class === "winner") check2 = "✅";
+                    }
+
                     matchesHtml += `
                     <div class="styled-box generated-box" style="border: 2px solid var(--gold); background: rgba(55,40,85,0.9);">
                         <div class="box-header">
@@ -573,13 +601,13 @@
                         </div>
                         <hr class="box-divider">
                         <div class="box-content">
-                            <div class="team-name team-right" style="color:var(--gold);">${finalMatch.team1}</div>
+                            <div class="team-name team-right ${t1Class}" style="color:var(--gold);">${check1} ${finalMatch.team1}</div>
                             <div class="score-container">
-                                <div class="score-box">-</div>
+                                <div class="score-box">${score1}</div>
                                 <div>VS</div>
-                                <div class="score-box">-</div>
+                                <div class="score-box">${score2}</div>
                             </div>
-                            <div class="team-name team-left" style="color:var(--gold);">${finalMatch.team2}</div>
+                            <div class="team-name team-left ${t2Class}" style="color:var(--gold);">${finalMatch.team2} ${check2}</div>
                         </div>
                     </div>`;
                 }
