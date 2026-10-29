@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم الشاملة | دوري الأبطال</title>
-    <script src="data.js?v=2033"></script>
+    <script src="data.js?v=2035"></script>
     <style>
         :root {
             --bg-color: #243456; 
@@ -27,27 +27,9 @@
 
         *, *::before, *::after { box-sizing: border-box; }
 
-        #login-screen {
-            max-width: 380px;
-            margin: 80px auto;
-            background-color: var(--card-bg);
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        #login-screen h2 { color: var(--gold); margin-bottom: 15px; font-size: 22px; }
-        #login-screen p { font-size: 16px; color: var(--text-muted); }
-        #login-screen input {
-            width: 100%; padding: 12px; font-size: 18px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);
-            text-align: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); color: white; outline: none;
-        }
-        #login-screen button {
-            padding: 12px 25px; background: var(--score-bg); color: white; border: none;
-            border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%;
-        }
-        .error-msg { color: var(--red); font-size: 16px; margin-top: 10px; display: none; }
+        /* تم حذف شاشة الدخول نهائياً وباتت اللوحة تفتح مباشرة */
 
-        #admin-panel { display: none; max-width: 420px; margin: 0 auto; text-align: right; width: 100%; padding: 0 5px; }
+        #admin-panel { max-width: 420px; margin: 0 auto; text-align: right; width: 100%; padding: 0 5px; display: block; }
         
         .panel-section {
             background-color: var(--card-bg);
@@ -160,14 +142,6 @@
 </head>
 <body>
 
-    <div id="login-screen">
-        <h2>🔒 لوحة التحكم</h2>
-        <p>أدخل الرقم السري للمتابعة</p>
-        <input type="password" id="pin-input" placeholder="الرقم السري">
-        <button type="button" onclick="verifyLogin()">دخول</button>
-        <div id="error-msg" class="error-msg">الرقم السري غير صحيح!</div>
-    </div>
-
     <div id="admin-panel">
         <h1 style="color: var(--gold); text-align: center; margin-bottom: 18px; font-size: 22px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
@@ -264,38 +238,23 @@
 
         let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
 
-        function verifyLogin() {
-            let pinVal = document.getElementById('pin-input').value.trim();
-            if (pinVal === "322332") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                loadAdminData();
-            } else {
-                let errEl = document.getElementById('error-msg');
-                errEl.style.display = 'block';
-                errEl.innerText = "الرقم السري غير صحيح!";
-            }
-        }
-
+        // فتح لوحة التحكم فوراً وبشكل مباشر عند تحميل الصفحة
         document.addEventListener("DOMContentLoaded", function() {
-            const pinBox = document.getElementById('pin-input');
-            if (pinBox) {
-                pinBox.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        verifyLogin();
-                    }
-                });
-            }
+            loadAdminData();
         });
 
         function loadAdminData() {
-            document.getElementById('edit-banner-text').value = workingData.settings.bannerText || "";
-            document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
-            document.getElementById('edit-league-ended').value = workingData.settings.leagueEnded ? "true" : "false";
+            try {
+                document.getElementById('edit-banner-text').value = workingData.settings.bannerText || "";
+                document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
+                document.getElementById('edit-league-ended').value = workingData.settings.leagueEnded ? "true" : "false";
 
-            renderPlayers();
-            renderMatches();
-            renderHistory();
+                renderPlayers();
+                renderMatches();
+                renderHistory();
+            } catch (err) {
+                console.error("خطأ في تحميل البيانات:", err);
+            }
         }
 
         function renderPlayers() {
@@ -544,3 +503,157 @@
             syncFromUIValuesOnly();
 
             workingData.players.forEach((p, index) => {
+                let radioEl = document.getElementById(`mvp-radio-${index}`);
+                if (radioEl && radioEl.checked) {
+                    workingData.lastMvp = { name: p.name, image: p.image };
+                    previousMvpName = p.name;
+                }
+            });
+
+            let round1 = workingData.matches || [];
+            let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
+            let round2 = workingData.round2Matches || [];
+            let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
+            let semiFinal = workingData.semiFinalMatches || [];
+            let isSemiFinalComplete = semiFinal.length > 0 && semiFinal.every(m => m.status === 'finished');
+
+            if (!isRound1Complete) {
+                workingData.matches.forEach((m, index) => {
+                    let t1 = document.getElementById(`m-team1-${index}`);
+                    let s1 = document.getElementById(`m-score1-${index}`);
+                    let s2 = document.getElementById(`m-score2-${index}`);
+                    let t2 = document.getElementById(`m-team2-${index}`);
+                    let st = document.getElementById(`m-status-${index}`);
+
+                    if(t1) m.team1 = t1.value;
+                    if(s1) m.score1 = parseInt(s1.value) || 0;
+                    if(s2) m.score2 = parseInt(s2.value) || 0;
+                    if(t2) m.team2 = t2.value;
+                    if(st) m.status = st.value;
+                });
+            } else if (!isRound2Complete) {
+                if (workingData.round2Matches) {
+                    workingData.round2Matches.forEach((m, index) => {
+                        let s1 = document.getElementById(`r2-score1-${index}`);
+                        let s2 = document.getElementById(`r2-score2-${index}`);
+                        let st = document.getElementById(`r2-status-${index}`);
+
+                        if(s1) m.score1 = parseInt(s1.value) || 0;
+                        if(s2) m.score2 = parseInt(s2.value) || 0;
+                        if(st) m.status = st.value;
+                    });
+                }
+            } else if (!isSemiFinalComplete) {
+                if (workingData.semiFinalMatches) {
+                    workingData.semiFinalMatches.forEach((m, index) => {
+                        let s1 = document.getElementById(`sf-score1-${index}`);
+                        let s2 = document.getElementById(`sf-score2-${index}`);
+                        let st = document.getElementById(`sf-status-${index}`);
+
+                        if(s1) m.score1 = parseInt(s1.value) || 0;
+                        if(s2) m.score2 = parseInt(s2.value) || 0;
+                        if(st) m.status = st.value;
+                    });
+                }
+            } else {
+                if (workingData.finalMatch) {
+                    let s1 = document.getElementById(`f-score1`);
+                    let s2 = document.getElementById(`f-score2`);
+                    let st = document.getElementById(`f-status`);
+
+                    if(s1) workingData.finalMatch.score1 = parseInt(s1.value) || 0;
+                    if(s2) workingData.finalMatch.score2 = parseInt(s2.value) || 0;
+                    if(st) workingData.finalMatch.status = st.value;
+                    if(workingData.finalMatch.status === 'finished') workingData.settings.leagueEnded = true;
+                }
+            }
+
+            workingData.history.forEach((h, hIndex) => {
+                let seasonEl = document.getElementById(`h-season-${hIndex}`);
+                let winnersEl = document.getElementById(`h-winners-${hIndex}`);
+
+                if(seasonEl) h.season = seasonEl.value;
+                if(winnersEl) {
+                    let rawWinners = winnersEl.value;
+                    h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
+                }
+            });
+        }
+
+        function generateNewDataFile() {
+            syncFromUI();
+
+            let fileContent = `// قاعدة البيانات\n\nconst DB = {\n`;
+            
+            fileContent += `    settings: {\n`;
+            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
+            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
+            fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
+            fileContent += `    },\n\n`;
+
+            fileContent += `    lastMvp: {\n`;
+            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
+            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
+            fileContent += `    },\n\n`;
+
+            fileContent += `    players: [\n`;
+            workingData.players.forEach((p, i) => {
+                let comma = i === workingData.players.length - 1 ? "" : ",";
+                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
+            });
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    matches: [\n`;
+            workingData.matches.forEach((m, i) => {
+                let comma = i === workingData.matches.length - 1 ? "" : ",";
+                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
+            });
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    round2Matches: [\n`;
+            if (workingData.round2Matches) {
+                workingData.round2Matches.forEach((m, i) => {
+                    let comma = i === workingData.round2Matches.length - 1 ? "" : ",";
+                    fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
+                });
+            }
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    semiFinalMatches: [\n`;
+            if (workingData.semiFinalMatches) {
+                workingData.semiFinalMatches.forEach((m, i) => {
+                    let comma = i === workingData.semiFinalMatches.length - 1 ? "" : ",";
+                    fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
+                });
+            }
+            fileContent += `    ],\n\n`;
+
+            if (workingData.finalMatch) {
+                fileContent += `    finalMatch: {\n`;
+                fileContent += `        team1: "${workingData.finalMatch.team1}", score1: ${workingData.finalMatch.score1},\n`;
+                fileContent += `        team2: "${workingData.finalMatch.team2}", score2: ${workingData.finalMatch.score2},\n`;
+                fileContent += `        status: "${workingData.finalMatch.status}"\n`;
+                fileContent += `    },\n\n`;
+            }
+
+            fileContent += `    history: [\n`;
+            let historyArr = workingData.history || [];
+            historyArr.forEach((h, i) => {
+                let comma = i === historyArr.length - 1 ? "" : ",";
+                let winnersArr = h.winners || [];
+                let winnersStr = winnersArr.map(w => `"${w}"`).join(", ");
+                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
+            });
+            fileContent += `    ]\n};`;
+
+            navigator.clipboard.writeText(fileContent).then(() => {
+                let msg = document.getElementById('success-msg');
+                msg.style.display = 'block';
+                setTimeout(() => { msg.style.display = 'none'; }, 4000);
+            }).catch(err => {
+                alert("حدث خطأ أثناء النسخ.");
+            });
+        }
+    </script>
+</body>
+</html>
