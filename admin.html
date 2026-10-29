@@ -61,6 +61,39 @@
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.08);
         }
+        
+        /* تخصيص قوائم الطي المنسدلة */
+        details.panel-section {
+            cursor: pointer;
+        }
+        details.panel-section > summary {
+            color: var(--gold);
+            margin: -18px;
+            padding: 18px;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 19px;
+            font-weight: bold;
+            user-select: none;
+        }
+        details.panel-section > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.panel-section[open] > summary {
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: 15px;
+        }
+        .summary-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
         .panel-section h3 { 
             color: var(--gold); 
             margin-top: 0; 
@@ -87,6 +120,7 @@
             flex-direction: column;
             gap: 18px;
             width: 100%;
+            margin-top: 10px;
         }
 
         .player-edit-card {
@@ -238,8 +272,8 @@
         <h1 style="color: var(--gold); text-align: center; margin-bottom: 18px; font-size: 22px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <div class="panel-section">
-            <h3>📢 إعدادات الإعلان (البنر)</h3>
-            <div class="form-group">
+            <h3><span>📢 إعدادات الإعلان (البنر)</span></h3>
+            <div class="form-group" style="margin-top: 10px;">
                 <label>نص الإعلان المتحرك:</label>
                 <input type="text" id="edit-banner-text">
             </div>
@@ -253,8 +287,8 @@
         </div>
 
         <div class="panel-section">
-            <h3>🏁 حالة الدوري العامة</h3>
-            <div class="form-group">
+            <h3><span>🏁 حالة الدوري العامة</span></h3>
+            <div class="form-group" style="margin-top: 10px;">
                 <label>حالة منافسات الدوري:</label>
                 <select id="edit-league-ended">
                     <option value="false">الدوري جارٍ (عرض المباريات)</option>
@@ -263,30 +297,36 @@
             </div>
         </div>
 
-        <div class="panel-section">
-            <h3>
-                <span>👥 إحصائيات اللاعبين ونجم الجولة</span>
-                <button type="button" class="btn-add" onclick="addPlayer()">➕ إضافة لاعب</button>
-            </h3>
-            <p style="font-size:14px; color:var(--gold); margin-top:4px;">⭐ تفعيل (MVP) يحول اللاعب لنجم الجولة ويزيد عداد جوائزه تلقائياً (+1):</p>
+        <!-- قائمة منسدلة قابلة للطي للاعبين -->
+        <details class="panel-section" open>
+            <summary>
+                <div class="summary-content">
+                    <span>👥 إحصائيات اللاعبين ونجم الجولة</span>
+                    <button type="button" class="btn-add" onclick="event.preventDefault(); addPlayer();">➕ إضافة لاعب</button>
+                </div>
+            </summary>
+            <p style="font-size:14px; color:var(--gold); margin-top:10px; text-align: right;">⭐ تفعيل (MVP) يحول اللاعب لنجم الجولة ويزيد عداد جوائزه تلقائياً (+1):</p>
             <div class="players-grid" id="players-edit-container"></div>
-        </div>
+        </details>
 
-        <div class="panel-section">
-            <h3>
-                <span>⚔️ إدارة المواجهات والأدوار</span>
-                <button type="button" class="btn-add" onclick="addMatch()">➕ إضافة مباراة</button>
-            </h3>
-            <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">إدارة تدريجية تلقائية (الدور الأول $\leftarrow$ الثاني $\leftarrow$ النهائي):</p>
-            <div id="matches-edit-container"></div>
-        </div>
+        <!-- قائمة منسدلة قابلة للطي للمواجهات -->
+        <details class="panel-section" open>
+            <summary>
+                <div class="summary-content">
+                    <span>⚔️ إدارة المواجهات والأدوار</span>
+                    <button type="button" class="btn-add" onclick="event.preventDefault(); addMatch();">➕ إضافة مباراة</button>
+                </div>
+            </summary>
+            <p style="font-size:13px; color:var(--text-muted); margin:10px 0 8px 0; text-align: right;">إدارة تدريجية تلقائية (الدور الأول ← الثاني ← النهائي):</p>
+            <div id="matches-edit-container" style="margin-top: 10px;"></div>
+        </details>
 
         <div class="panel-section">
             <h3>
                 <span>🏆 السجل الشرفي والبطولات</span>
                 <button type="button" class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة</button>
             </h3>
-            <div id="history-edit-container"></div>
+            <div id="history-edit-container" style="margin-top: 10px;"></div>
         </div>
 
         <div class="action-bar">
@@ -374,6 +414,10 @@
                         </div>
                         <button type="button" class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
                     </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label style="font-size:13px; color:var(--text-muted); margin-bottom:4px; display:block;">مسار الصورة (مثال: images/khalid.jpg):</label>
+                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="images/name.jpg" style="font-size:15px; padding:10px; width:100%;">
+                    </div>
                     <div class="inputs-row">
                         <div><label>أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals || 0}"></div>
                         <div><label>صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists || 0}"></div>
@@ -400,11 +444,13 @@
         function syncFromUIValuesOnly() {
             workingData.players.forEach((p, index) => {
                 let nameEl = document.getElementById(`p-name-${index}`);
+                let imgEl = document.getElementById(`p-image-${index}`);
                 let goalsEl = document.getElementById(`p-goals-${index}`);
                 let assistsEl = document.getElementById(`p-assists-${index}`);
                 let mvpsEl = document.getElementById(`p-mvps-${index}`);
 
                 if (nameEl) p.name = nameEl.value;
+                if (imgEl) p.image = imgEl.value;
                 if (goalsEl) p.goals = parseInt(goalsEl.value) || 0;
                 if (assistsEl) p.assists = parseInt(assistsEl.value) || 0;
                 if (mvpsEl) p.mvps = parseInt(mvpsEl.value) || 0;
@@ -434,7 +480,6 @@
             let round1 = workingData.matches || [];
             let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
 
-            // تجهيز الدور الثاني تلقائياً
             let calcRound2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
@@ -454,7 +499,6 @@
             workingData.round2Matches = calcRound2;
             let isRound2Complete = calcRound2.length > 0 && calcRound2.every(m => m.status === 'finished');
 
-            // تجهيز النهائي الكبير تلقائياً بناء على الفائزين في الدور الثاني
             let finalTeam1 = calcRound2.length > 0 ? (getMatchWinner(calcRound2[0]) || "[طرف 1]") : "[طرف 1]";
             let finalTeam2 = calcRound2.length > 1 ? (getMatchWinner(calcRound2[1]) || "[طرف 2]") : "[طرف 2]";
             
@@ -637,65 +681,4 @@
             let fileContent = `// قاعدة البيانات\n\nconst DB = {\n`;
             
             fileContent += `    settings: {\n`;
-            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
-            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
-            fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    lastMvp: {\n`;
-            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
-            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    players: [\n`;
-            workingData.players.forEach((p, i) => {
-                let comma = i === workingData.players.length - 1 ? "" : ",";
-                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    matches: [\n`;
-            workingData.matches.forEach((m, i) => {
-                let comma = i === workingData.matches.length - 1 ? "" : ",";
-                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    round2Matches: [\n`;
-            if (workingData.round2Matches) {
-                workingData.round2Matches.forEach((m, i) => {
-                    let comma = i === workingData.round2Matches.length - 1 ? "" : ",";
-                    fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
-                });
-            }
-            fileContent += `    ],\n\n`;
-
-            if (workingData.finalMatch) {
-                fileContent += `    finalMatch: {\n`;
-                fileContent += `        team1: "${workingData.finalMatch.team1}", score1: ${workingData.finalMatch.score1},\n`;
-                fileContent += `        team2: "${workingData.finalMatch.team2}", score2: ${workingData.finalMatch.score2},\n`;
-                fileContent += `        status: "${workingData.finalMatch.status}"\n`;
-                fileContent += `    },\n\n`;
-            }
-
-            fileContent += `    history: [\n`;
-            let historyArr = workingData.history || [];
-            historyArr.forEach((h, i) => {
-                let comma = i === historyArr.length - 1 ? "" : ",";
-                let winnersArr = h.winners || [];
-                let winnersStr = winnersArr.map(w => `"${w}"`).join(", ");
-                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
-            });
-            fileContent += `    ]\n};`;
-
-            navigator.clipboard.writeText(fileContent).then(() => {
-                let msg = document.getElementById('success-msg');
-                msg.style.display = 'block';
-                setTimeout(() => { msg.style.display = 'none'; }, 4000);
-            }).catch(err => {
-                alert("حدث خطأ أثناء النسخ.");
-            });
-        }
-    </script>
-</body>
-</html>
+            fileContent
