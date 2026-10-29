@@ -4,7 +4,7 @@ const DB = {
     settings: {
         showBanner: true,
         bannerText: "🚨مبروك للفائز بالدوري ((فهـــد اليـــامي))🏆",
-        leagueEnded: true
+        leagueEnded: false
     },
 
     lastMvp: {
@@ -61,7 +61,10 @@ const DB = {
     ],
 
     matches: [
-        { team1: "علي", score1: 10, team2: "فهد", score2: 14, status: "finished" }
+        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" },
+        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" },
+        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" },
+        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" }
     ],
 
     history: [
