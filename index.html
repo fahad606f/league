@@ -7,8 +7,8 @@
     <script src="data.js"></script>
     <style>
         :root {
-            --bg-color: #243456; 
-            --card-bg: #354a78; 
+            --bg-color: #1a233a; 
+            --card-bg: rgba(36, 52, 86, 0.85); 
             --score-bg: #465f9a; 
             --finished-bg: #1c2742; 
             --text-main: #ffffff;
@@ -175,78 +175,128 @@
             font-family: inherit; font-size: 14px; font-weight: bold;
         }
 
-        /* زر تبديل وضع العرض الشجري / الجدول */
-        .view-toggle-container {
-            margin: 10px auto 20px auto;
-            max-width: 80%;
-            text-align: center;
-        }
+        /* زر تبديل وضع العرض */
         .toggle-btn {
             background: linear-gradient(135deg, #FFD700, #ff9900);
             color: #1c2742;
             border: none;
-            padding: 8px 18px;
+            padding: 6px 16px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             box-shadow: 0 3px 8px rgba(0,0,0,0.3);
             font-family: inherit;
         }
 
-        /* تصميم الرسم الشجري المتجاوب والمنظم داخل الشاشة */
-        .bracket-container {
-            max-width: 85%;
+        /* تصميم الرسم الشجري المطابق للصورة بأسماء الفرق وخلفية الكاس الشفافة */
+        .bracket-master-container {
+            position: relative;
+            background: linear-gradient(135deg, #162238 0%, #243456 50%, #162238 100%);
+            border-radius: 16px;
+            padding: 20px 10px;
             margin: 0 auto;
+            max-width: 95%;
+            overflow: hidden;
+            border: 1px solid rgba(255,215,0,0.2);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        /* صورة الكأس الشفافة في الخلفية مع عبارة بطل الدوري */
+        .bracket-master-container::before {
+            content: "🏆";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 160px;
+            opacity: 0.06;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bracket-grid-layout {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .bracket-side-column {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            text-align: right;
+            gap: 12px;
         }
-        .bracket-round {
-            background: rgba(0, 0, 0, 0.2);
+
+        .bracket-center-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 5px;
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 12px;
-            padding: 10px 14px;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,215,0,0.3);
+            min-width: 95px;
         }
-        .bracket-round-title {
-            color: var(--gold);
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 4px;
-            text-align: center;
+
+        .bracket-node-box {
+            background: rgba(35, 50, 80, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 6px 8px;
+            font-size: 11px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
-        .bracket-match-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 8px 10px;
-            margin-bottom: 8px;
-            font-size: 13px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+        .bracket-node-teams {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
-        .bracket-match-card:last-child { margin-bottom: 0; }
-        .bracket-teams-row {
+
+        .bracket-team-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            gap: 5px;
         }
-        .bracket-team {
-            flex: 1;
+
+        .bracket-team-name {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            max-width: 65px;
+            text-align: right;
         }
-        .bracket-score {
+
+        .bracket-team-score {
             background: var(--score-bg);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 13px;
-            min-width: 25px;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 11px;
+            min-width: 18px;
             text-align: center;
+        }
+
+        .center-trophy-title {
+            color: var(--gold);
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .center-final-match {
+            font-size: 11px;
+            color: var(--text-main);
+            background: rgba(255,215,0,0.15);
+            padding: 4px 6px;
+            border-radius: 6px;
+            width: 100%;
+            margin-top: 4px;
         }
     </style>
 </head>
@@ -295,12 +345,11 @@
     <div id="matches-section-wrapper">
         <div class="section-main-title" style="display: flex; justify-content: space-between; align-items: center;">
             <span>⚔️ مواجهات الدوري</span>
-            <div class="view-toggle-container" style="margin: 0;">
+            <div style="margin: 0;">
                 <button type="button" class="toggle-btn" id="toggleViewBtn" onclick="toggleViewMode()">🔀 عرض شجري</button>
             </div>
         </div>
         
-        <!-- الحاوية التي ستعرض الجدول العادي أو الشجري حسب اختيار المستخدم -->
         <div id="matches-display-area"></div>
     </div>
 
@@ -347,7 +396,6 @@
         });
         document.getElementById('top-assists').innerHTML = topAssistsHtml;
 
-        // متغير لحفظ وضع العرض الحالي (false = جدول عادي، true = رسم شجري)
         let isBracketView = false;
 
         function toggleViewMode() {
@@ -374,45 +422,67 @@
             }
 
             if (isBracketView) {
-                // عرض النظام الشجري (مقسم حسب مراحل البطولة بمرونة تامة داخل الشاشة)
-                let bracketHtml = `<div class="bracket-container">`;
-                
-                // تقسيم المباريات افتراضياً مراحل (أو عرضها مرتبة تنازلياً حسب المراحل)
-                bracketHtml += `
-                    <div class="bracket-round">
-                        <div class="bracket-round-title">🏆 الأدوار الإقصائية / النهائي</div>
-                `;
-                
-                DB.matches.forEach((m, index) => {
-                    let score1 = m.status === 'finished' ? m.score1 : '-';
-                    let score2 = m.status === 'finished' ? m.score2 : '-';
-                    let t1Class = "", t2Class = "";
-                    if(m.status === "finished") {
-                        if(m.score1 > m.score2) { t1Class = "winner"; t2Class = "loser"; }
-                        else if(m.score2 > m.score1) { t2Class = "winner"; t1Class = "loser"; }
-                    }
+                // توليد الرسم الشجري المطابق للصورة بأسماء الفرق والخلفية الشفافة وكتابة "بطل الدوري"
+                let m = DB.matches;
+                let getTeam = (idx, side) => (m[idx] ? (side === 1 ? m[idx].team1 : m[idx].team2) : "---");
+                let getScore = (idx, side) => (m[idx] && m[idx].status === 'finished' ? (side === 1 ? m[idx].score1 : m[idx].score2) : "-");
 
-                    bracketHtml += `
-                        <div class="bracket-match-card">
-                            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-align: center;">مباراة (${index + 1}) - ${m.status === 'finished' ? 'انتهت' : 'لم تبدأ'}</div>
-                            <div class="bracket-teams-row">
-                                <span class="bracket-team team-right ${t1Class}">${m.team1}</span>
-                                <div style="display: flex; align-items: center; gap: 5px;">
-                                    <span class="bracket-score">${score1}</span>
-                                    <span style="font-size: 11px; color: var(--text-muted);">VS</span>
-                                    <span class="bracket-score">${score2}</span>
+                let bracketHtml = `
+                <div class="bracket-master-container">
+                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--gold); margin-bottom: 10px; font-weight: bold; padding: 0 10px;">
+                        <span>دور الـ 8</span>
+                        <span>ربع النهائي</span>
+                        <span>نصف النهائي</span>
+                    </div>
+                    <div class="bracket-grid-layout">
+                        <!-- الجانب الأيمن -->
+                        <div class="bracket-side-column">
+                            <div class="bracket-node-box">
+                                <div class="bracket-node-teams">
+                                    <div class="bracket-team-row"><span class="bracket-team-name">${getTeam(0, 1)}</span><span class="bracket-team-score">${getScore(0, 1)}</span></div>
+                                    <div class="bracket-team-row"><span class="bracket-team-name">${getTeam(0, 2)}</span><span class="bracket-team-score">${getScore(0, 2)}</span></div>
                                 </div>
-                                <span class="bracket-team team-left ${t2Class}">${m.team2}</span>
+                            </div>
+                            <div class="bracket-node-box">
+                                <div class="bracket-node-teams">
+                                    <div class="bracket-team-row"><span class="bracket-team-name">${getTeam(1, 1)}</span><span class="bracket-team-score">${getScore(1, 1)}</span></div>
+                                    <div class="bracket-team-row"><span class="bracket-team-name">${getTeam(1, 2)}</span><span class="bracket-team-score">${getScore(1, 2)}</span></div>
+                                </div>
                             </div>
                         </div>
-                    `;
-                });
+
+                        <!-- المنتصف (النهائي والكأس) -->
+                        <div class="bracket-center-column">
+                            <div class="center-trophy-title">🏆 الكأس</div>
+                            <div style="font-size: 9px; color: var(--text-muted); font-weight: bold;">بطل الدوري</div>
+                            <div class="center-final-match">
+                                <div style="font-size: 9px; color: var(--gold); margin-bottom: 2px;">النهائي</div>
+                                <div style="font-weight: bold; font-size: 10px;">${getTeam(4, 1)} vs ${getTeam(4, 2)}</div>
+                            </div>
+                        </div>
+
+                        <!-- الجانب الأيسر -->
+                        <div class="bracket-side-column">
+                            <div class="bracket-node-box">
+                                <div class="bracket-node-teams">
+                                    <div class="bracket-team-row"><span class="bracket-team-name">${getTeam(2, 1)}</span><span class="bracket-team-score">${getScore(2, 1)}</span></div>
+                                    <div class="bracket-team-row"><span class="bracket-team-name">${getTeam(2, 2)}</span><span class="bracket-team-score">${getScore(2, 2)}</span></div>
+                                </div>
+                            </div>
+                            <div class="bracket-node-box">
+                                <div class="bracket-node-teams">
+                                    <div class="bracket-team-row"><span class="bracket-team-name">${getTeam(3, 1)}</span><span class="bracket-team-score">${getScore(3, 1)}</span></div>
+                                    <div class="bracket-team-row"><span class="bracket-team-name">${getTeam(3, 2)}</span><span class="bracket-team-score">${getScore(3, 2)}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
                 
-                bracketHtml += `</div></div>`;
                 document.getElementById('matches-display-area').innerHTML = bracketHtml;
 
             } else {
-                // عرض الجدول العادي السابق
+                // عرض الجدول العادي
                 let matchesHtml = "";
                 DB.matches.forEach((m, index) => {
                     let t1Class = "", t2Class = "", check1 = "", check2 = "";
@@ -449,7 +519,6 @@
             }
         }
 
-        // تشغيل العرض الافتراضي عند تحميل الصفحة
         renderMatchesSection();
     </script>
 </body>
