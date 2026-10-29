@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الرئيسية | دوري الأبطال</title>
-    <!-- استدعاء ديناميكي يمنع الكاش ويجلب البيانات المحدثة تلقائياً مع كل تحديث -->
+    <!-- استدعاء ديناميكي يمنع الكاش ويجلب أحدث نسخة من data.js فوراً -->
     <script>
         document.write('<script src="data.js?v=' + Date.now() + '"><\/script>');
     </script>
@@ -424,10 +424,10 @@
                 return;
             }
 
-            // قراءة الدور الأول حصرياً من الداتا الحالية
+            // 1. قراءة الدور الأول مباشرة من الداتا
             let round1 = DB.matches || [];
             
-            // توليد الدور الثاني برمجياً بناءً على حجم الدور الأول الجديد حصرياً
+            // 2. توليد الدور الثاني ديناميكياً حصرياً بناءً على نتائج مباريات الدور الأول الحالية
             let round2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
@@ -435,18 +435,18 @@
                 let teamA = getWinnerAndClass(m1).winner || "[متأهل 1]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[متأهل 2]") : "---";
                 
-                // جلب نتائج دور 2 المحفوظة إذا كانت متطابقة في الطول، أو إنشاء فارغة جديدة
-                let savedM = (DB.round2Matches && DB.round2Matches.length === Math.ceil(round1.length / 2)) ? DB.round2Matches[Math.floor(i/2)] : null;
-                if (savedM) {
-                    savedM.team1 = teamA;
-                    savedM.team2 = teamB;
-                    round2.push(savedM);
-                } else {
-                    round2.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
-                }
+                // جلب نتيجة مباراة دور 2 المحفوظة إذا كانت مطابقة في الترتيب، وإلا إنشاء كائن جديد فارغ
+                let savedM = (DB.round2Matches && DB.round2Matches[Math.floor(i/2)]) ? DB.round2Matches[Math.floor(i/2)] : null;
+                round2.push({
+                    team1: teamA,
+                    team2: teamB,
+                    score1: savedM ? savedM.score1 : 0,
+                    score2: savedM ? savedM.score2 : 0,
+                    status: savedM ? savedM.status : 'pending'
+                });
             }
 
-            // توليد نصف النهائي برمجياً بناءً على الدور الثاني
+            // 3. توليد نصف النهائي ديناميكياً حصرياً بناءً على نتائج الدور الثاني الحالية
             let semiFinal = [];
             for (let i = 0; i < round2.length; i += 2) {
                 let m1 = round2[i];
@@ -454,17 +454,17 @@
                 let teamA = getWinnerAndClass(m1).winner || "[متأهل دور 2 - 1]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[متأهل دور 2 - 2]") : "---";
                 
-                let savedM = (DB.semiFinalMatches && DB.semiFinalMatches.length === Math.ceil(round2.length / 2)) ? DB.semiFinalMatches[Math.floor(i/2)] : null;
-                if (savedM) {
-                    savedM.team1 = teamA;
-                    savedM.team2 = teamB;
-                    semiFinal.push(savedM);
-                } else {
-                    semiFinal.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
-                }
+                let savedM = (DB.semiFinalMatches && DB.semiFinalMatches[Math.floor(i/2)]) ? DB.semiFinalMatches[Math.floor(i/2)] : null;
+                semiFinal.push({
+                    team1: teamA,
+                    team2: teamB,
+                    score1: savedM ? savedM.score1 : 0,
+                    score2: savedM ? savedM.score2 : 0,
+                    status: savedM ? savedM.status : 'pending'
+                });
             }
 
-            // توليد النهائي الكبير تلقائياً بناءً على نصف النهائي
+            // 4. توليد النهائي الكبير ديناميكياً بناءً على نصف النهائي
             let finalTeam1 = semiFinal.length > 0 ? (getWinnerAndClass(semiFinal[0]).winner || "[طرف 1]") : "[طرف 1]";
             let finalTeam2 = semiFinal.length > 1 ? (getWinnerAndClass(semiFinal[1]).winner || "[طرف 2]") : "[طرف 2]";
             let finalMatch = DB.finalMatch || { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: 0, score2: 0 };
@@ -502,7 +502,7 @@
                 <div class="bracket-scroll-wrapper">
                     <div class="bracket-master-container">
                         <div style="font-size: 10px; color: var(--gold); margin-bottom: 6px; font-weight: bold; text-align: center;">
-                            📊 مسار الأدوار الشجري (متزامن تلقائياً مع الداتا)
+                            📊 مسار الأدوار الشجري (متزامن تلقائياً)
                         </div>
                         <div class="tree-columns-flex">
                             <div class="tree-round-col" style="max-width: 110px;">
@@ -530,7 +530,6 @@
                 let matchesHtml = "";
                 let globalMatchIndex = 1;
 
-                // المنطق الآمن والصحيح لعرض الأدوار بالترتيب بناءً على الداتا المحدثة:
                 if (!isRound1Complete) {
                     round1.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
