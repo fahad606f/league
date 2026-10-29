@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><!DOCTYPE html>
-<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,6 +22,7 @@
             color: var(--text-main);
             margin: 0; padding: 10px; text-align: center;
             box-sizing: border-box;
+            font-size: 16px; /* خط رئيسي كبير وواضح */
         }
 
         *, *::before, *::after {
@@ -31,7 +30,7 @@
         }
 
         #login-screen {
-            max-width: 350px;
+            max-width: 380px;
             margin: 80px auto;
             background-color: var(--card-bg);
             padding: 25px;
@@ -40,16 +39,16 @@
         }
         #login-screen h2 { color: var(--gold); margin-bottom: 20px; font-size: 20px; }
         #login-screen input {
-            width: 70%; padding: 8px; font-size: 15px; border-radius: 8px; border: none;
+            width: 80%; padding: 10px; font-size: 16px; border-radius: 8px; border: none;
             text-align: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); color: white;
         }
         #login-screen button {
-            padding: 8px 20px; background: var(--score-bg); color: white; border: none;
-            border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer;
+            padding: 10px 25px; background: var(--score-bg); color: white; border: none;
+            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
         }
-        .error-msg { color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
+        .error-msg { color: var(--red); font-size: 14px; margin-top: 10px; display: none; }
 
-        #admin-panel { display: none; max-width: 600px; margin: 0 auto; text-align: right; width: 100%; }
+        #admin-panel { display: none; max-width: 550px; margin: 0 auto; text-align: right; width: 100%; }
         
         .panel-section {
             background-color: var(--card-bg);
@@ -68,18 +67,18 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            font-size: 15px;
+            font-size: 17px; /* خط العنوان واضح */
             flex-wrap: wrap;
             gap: 8px;
         }
 
         .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; margin-bottom: 4px; font-size: 12px; color: var(--text-muted); }
+        .form-group label { display: block; margin-bottom: 4px; font-size: 14px; color: var(--text-muted); }
         
-        /* تقليل عرض الحقول المنسدلة والمربعات العامة بنسبة 40% إضافية */
+        /* تقليص عرض المربعات مع الحفاظ على خط كبير وواضح 15px */
         .form-group input, .form-group select {
-            width: 60%; max-width: 300px; padding: 5px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; font-size: 12px;
+            width: 65%; max-width: 280px; padding: 7px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; font-size: 15px; font-family: inherit;
         }
 
         .players-grid {
@@ -88,7 +87,7 @@
             gap: 10px;
             width: 100%;
         }
-        @media (min-width: 550px) {
+        @media (min-width: 520px) {
             .players-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -106,13 +105,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 6px;
-            gap: 5px;
+            gap: 4px;
         }
         .inputs-row { display: flex; gap: 4px; width: 100%; }
         .inputs-row div { flex: 1; min-width: 0; }
         .inputs-row input {
-            width: 100%; padding: 4px 2px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 11px;
+            width: 100%; padding: 5px 2px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 14px; font-weight: bold;
         }
 
         .item-card {
@@ -124,10 +123,10 @@
             width: 100%;
         }
 
-        /* تقليص عرض حقول ومربعات قسم المواجهات */
+        /* تخطيط المواجهات ملموم وبخط كبير وواضح */
         .match-row-grid {
             display: grid;
-            grid-template-columns: 1.2fr 0.5fr 20px 0.5fr 1.2fr 0.8fr auto;
+            grid-template-columns: 1fr 0.5fr 20px 0.5fr 1fr 0.8fr auto;
             gap: 4px;
             align-items: center;
             width: 100%;
@@ -147,169 +146,12 @@
             background: rgba(0,0,0,0.2); 
             border: 1px solid rgba(255,255,255,0.2); 
             color: white;
-            padding: 4px; 
+            padding: 6px 4px; 
             border-radius: 5px; 
-            font-size: 11px; 
+            font-size: 14px; 
             width: 100%;
             text-align: center;
-        }
-        .match-row-grid input[type="text"] {
-            text-align: right;
-            padding-right: 5px;
-        }
-
-        .row-flex {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            margin-bottom: 5
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم الشاملة | دوري الأبطال</title>
-    <script src="data.js"></script>
-    <style>
-        :root {
-            --bg-color: #243456; 
-            --card-bg: #354a78; 
-            --score-bg: #465f9a; 
-            --text-main: #ffffff;
-            --text-muted: #c5d2ee; 
-            --gold: #FFD700;
-            --green: #4CAF50;
-            --red: #f44336;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0; padding: 10px; text-align: center;
-            box-sizing: border-box;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        #login-screen {
-            max-width: 400px;
-            margin: 100px auto;
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        #login-screen h2 { color: var(--gold); margin-bottom: 20px; }
-        #login-screen input {
-            width: 80%; padding: 10px; font-size: 16px; border-radius: 8px; border: none;
-            text-align: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); color: white;
-        }
-        #login-screen button {
-            padding: 10px 25px; background: var(--score-bg); color: white; border: none;
-            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
-        }
-        .error-msg { color: var(--red); font-size: 14px; margin-top: 10px; display: none; }
-
-        #admin-panel { display: none; max-width: 750px; margin: 0 auto; text-align: right; width: 100%; }
-        
-        .panel-section {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 100%;
-            overflow: hidden;
-        }
-        .panel-section h3 { 
-            color: var(--gold); 
-            margin-top: 0; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            padding-bottom: 10px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            font-size: 17px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-muted); }
-        .form-group input, .form-group select {
-            width: 80%; max-width: 450px; padding: 7px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; font-size: 13px;
-        }
-
-        .players-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            width: 100%;
-        }
-        @media (min-width: 600px) {
-            .players-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .player-edit-card {
-            background: rgba(0,0,0,0.15);
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.05);
-            width: 100%;
-        }
-        .player-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            gap: 5px;
-        }
-        .inputs-row { display: flex; gap: 6px; width: 100%; }
-        .inputs-row div { flex: 1; min-width: 0; }
-        .inputs-row input {
-            width: 100%; padding: 5px 2px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 12px;
-        }
-
-        .item-card {
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 1px solid rgba(255,255,255,0.05);
-            width: 100%;
-        }
-
-        .match-row-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 0.7fr 25px 0.7fr 1.5fr 1fr auto;
-            gap: 5px;
-            align-items: center;
-            width: 100%;
-        }
-        @media (max-width: 768px) {
-            .match-row-grid {
-                grid-template-columns: 1fr 30px 1fr;
-                gap: 8px;
-            }
-            .match-row-grid input[type="text"]:nth-of-type(1) { grid-column: 1 / -1; }
-            .match-row-grid input[type="text"]:nth-of-type(2) { grid-column: 1 / -1; }
-            .match-row-grid select { grid-column: span 2; }
-            .match-row-grid .btn-delete { grid-column: span 1; }
-        }
-
-        .match-row-grid input, .match-row-grid select {
-            background: rgba(0,0,0,0.2); 
-            border: 1px solid rgba(255,255,255,0.2); 
-            color: white;
-            padding: 5px; 
-            border-radius: 6px; 
-            font-size: 12px; 
-            width: 100%;
-            text-align: center;
+            font-family: inherit;
         }
         .match-row-grid input[type="text"] {
             text-align: right;
@@ -318,47 +160,47 @@
 
         .row-flex {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             width: 100%;
         }
         .row-flex input, .row-flex select {
             background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
-            padding: 7px; border-radius: 6px; font-size: 12px; width: 100%;
+            padding: 6px; border-radius: 5px; font-size: 14px; width: 100%; font-family: inherit;
         }
 
         .btn-add {
-            background: var(--score-bg); color: white; border: none; padding: 5px 10px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px;
+            background: var(--score-bg); color: white; border: none; padding: 6px 10px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
             white-space: nowrap;
         }
         .btn-delete {
             background: var(--red); color: white; border: none; padding: 5px 8px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;
             white-space: nowrap;
         }
 
         .action-bar {
-            position: sticky; bottom: 15px; text-align: center; background: rgba(36, 52, 86, 0.95);
-            padding: 12px; border-radius: 12px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5); z-index: 100;
+            position: sticky; bottom: 10px; text-align: center; background: rgba(36, 52, 86, 0.95);
+            padding: 10px; border-radius: 10px; box-shadow: 0 -4px 10px rgba(0,0,0,0.5); z-index: 100;
             width: 100%;
         }
         .save-btn {
-            background: var(--green); color: white; padding: 10px 20px; font-size: 15px;
-            font-weight: bold; border: none; border-radius: 10px; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background: var(--green); color: white; padding: 10px 20px; font-size: 16px;
+            font-weight: bold; border: none; border-radius: 8px; cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 320px;
+            max-width: 280px;
         }
-        .success-alert { color: var(--green); font-weight: bold; margin-top: 8px; display: none; font-size: 12px; }
+        .success-alert { color: var(--green); font-weight: bold; margin-top: 6px; display: none; font-size: 13px; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h2>🔒 لوحة التحكم الشاملة</h2>
-        <p style="color: var(--text-muted); font-size: 13px;">أدخل الرقم السري للمتابعة</p>
+        <h2>🔒 لوحة التحكم</h2>
+        <p style="color: var(--text-muted); font-size: 14px;">أدخل الرقم السري للمتابعة</p>
         <input type="password" id="pin-input" placeholder="الرقم السري">
         <br>
         <button onclick="checkPin()">دخول</button>
@@ -366,7 +208,7 @@
     </div>
 
     <div id="admin-panel">
-        <h1 style="color: var(--gold); text-align: center; margin-bottom: 20px; font-size: 20px;">⚙️ لوحة إدارة دوري الأبطال</h1>
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 15px; font-size: 20px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <!-- 1. البنر -->
         <div class="panel-section">
@@ -396,311 +238,4 @@
             </div>
         </div>
 
-        <!-- 3. اللاعبين وتحديد نجم الجولة (MVP) مباشرة -->
-        <div class="panel-section">
-            <h3>
-                <span>👥 إحصائيات اللاعبين ونجم الجولة</span>
-                <button class="btn-add" onclick="addPlayer()">➕ إضافة لاعب</button>
-            </h3>
-            <p style="font-size:12px; color:var(--gold); margin-top:0;">⭐ تفعيل (MVP) يحول اللاعب لنجم الجولة ويزيد عداد جوائزه تلقائياً (+1):</p>
-            <div class="players-grid" id="players-edit-container"></div>
-        </div>
-
-        <!-- 4. المواجهات -->
-        <div class="panel-section">
-            <h3>
-                <span>⚔️ إدارة المواجهات</span>
-                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة</button>
-            </h3>
-            <div id="matches-edit-container"></div>
-        </div>
-
-        <!-- 5. السجل الشرفي -->
-        <div class="panel-section">
-            <h3>
-                <span>🏆 السجل الشرفي والبطولات</span>
-                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة</button>
-            </h3>
-            <div id="history-edit-container"></div>
-        </div>
-
-        <!-- زر الحفظ -->
-        <div class="action-bar">
-            <button class="save-btn" onclick="generateNewDataFile()">💾 توليد ونسخ كود التحديث الشامل</button>
-            <div id="success-msg" class="success-alert">تم نسخ الكود بنجاح! الصقه في ملف data.js واحفظه</div>
-        </div>
-    </div>
-
-    <script>
-        function checkPin() {
-            if (document.getElementById('pin-input').value === "322332") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                loadAdminData();
-            } else {
-                document.getElementById('error-msg').style.display = 'block';
-            }
-        }
-
-        let workingData = JSON.parse(JSON.stringify(DB));
-
-        if (workingData.settings.leagueEnded === undefined) {
-            workingData.settings.leagueEnded = false;
-        }
-
-        // حفظ اسم اللاعب الذي كان MVP مسبقاً لنعرف إذا تم تغييره أم لا
-        let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
-
-        function loadAdminData() {
-            document.getElementById('edit-banner-text').value = workingData.settings.bannerText;
-            document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
-            document.getElementById('edit-league-ended').value = workingData.settings.leagueEnded ? "true" : "false";
-
-            renderPlayers();
-            renderMatches();
-            renderHistory();
-        }
-
-        function renderPlayers() {
-            let playersHtml = "";
-            workingData.players.forEach((p, index) => {
-                let isCurrentMvp = (workingData.lastMvp && workingData.lastMvp.name === p.name) ? "checked" : "";
-                
-                playersHtml += `
-                <div class="player-edit-card">
-                    <div class="player-header">
-                        <div style="display:flex; align-items:center; gap:5px; width:75%;">
-                            <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} onchange="handleMvpSelection(${index})" style="cursor:pointer;" title="تعيين كنجْم للجولة">
-                            <input type="text" id="p-name-${index}" value="${p.name}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:gold; padding:3px; border-radius:4px; font-weight:bold; width:100%; font-size:12px;">
-                        </div>
-                        <button class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
-                    </div>
-                    <div class="form-group" style="margin-bottom:5px;">
-                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة" style="font-size:11px; padding:3px; width:100%;">
-                    </div>
-                    <div class="inputs-row">
-                        <div><label style="font-size:10px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals}"></div>
-                        <div><label style="font-size:10px">صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists}"></div>
-                        <div><label style="font-size:10px">MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps}"></div>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('players-edit-container').innerHTML = playersHtml;
-        }
-
-        // عند اختيار لاعب جديد كـ MVP يتم زيادة عداده بـ +1 تلقائياً وإلغاء القديم إن وجد
-        function handleMvpSelection(selectedIndex) {
-            syncFromUIValuesOnly(); // حفظ القيم المؤقتة أولاً
-            
-            let selectedPlayer = workingData.players[selectedIndex];
-
-            // إذا كان هذا اللاعب هو نفسه القديم، لا نضيف تكرار
-            if (previousMvpName === selectedPlayer.name) return;
-
-            // إزالة الزيادة عن اللاعب القديم إن وجد في القائمة
-            if (previousMvpName) {
-                let oldMvp = workingData.players.find(p => p.name === previousMvpName);
-                if (oldMvp && oldMvp.mvps > 0) {
-                    oldMvp.mvps -= 1;
-                }
-            }
-
-            // إضافة +1 للاعب الجديد المحدد
-            selectedPlayer.mvps += 1;
-            previousMvpName = selectedPlayer.name;
-
-            // تحديث الواجهة لتعكس الرقم الجديد مباشرة
-            renderPlayers();
-        }
-
-        function syncFromUIValuesOnly() {
-            workingData.players.forEach((p, index) => {
-                let nameEl = document.getElementById(`p-name-${index}`);
-                let imgEl = document.getElementById(`p-image-${index}`);
-                let goalsEl = document.getElementById(`p-goals-${index}`);
-                let assistsEl = document.getElementById(`p-assists-${index}`);
-                let mvpsEl = document.getElementById(`p-mvps-${index}`);
-
-                if (nameEl) p.name = nameEl.value;
-                if (imgEl) p.image = imgEl.value;
-                if (goalsEl) p.goals = parseInt(goalsEl.value) || 0;
-                if (assistsEl) p.assists = parseInt(assistsEl.value) || 0;
-                if (mvpsEl) p.mvps = parseInt(mvpsEl.value) || 0;
-            });
-        }
-
-        function addPlayer() {
-            syncFromUI();
-            workingData.players.push({ name: "لاعب جديد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 });
-            renderPlayers();
-        }
-
-        function deletePlayer(index) {
-            syncFromUI();
-            let deletedPlayer = workingData.players[index];
-            if (deletedPlayer.name === previousMvpName) {
-                previousMvpName = "";
-            }
-            workingData.players.splice(index, 1);
-            renderPlayers();
-        }
-
-        function renderMatches() {
-            let matchesHtml = "";
-            workingData.matches.forEach((m, index) => {
-                matchesHtml += `
-                <div class="item-card">
-                    <div class="match-row-grid">
-                        <input type="text" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق الأول">
-                        <input type="number" id="m-score1-${index}" value="${m.score1}">
-                        <span style="font-weight:bold; text-align:center; font-size:11px;">VS</span>
-                        <input type="number" id="m-score2-${index}" value="${m.score2}">
-                        <input type="text" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق الثاني">
-                        <select id="m-status-${index}">
-                            <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
-                            <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
-                        </select>
-                        <button class="btn-delete" onclick="deleteMatch(${index})">حذف</button>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('matches-edit-container').innerHTML = matchesHtml;
-        }
-
-        function addMatch() {
-            syncFromUI();
-            workingData.matches.push({ team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" });
-            renderMatches();
-        }
-
-        function deleteMatch(index) {
-            syncFromUI();
-            workingData.matches.splice(index, 1);
-            renderMatches();
-        }
-
-        function renderHistory() {
-            let historyHtml = "";
-            workingData.history.forEach((h, hIndex) => {
-                let winnersList = h.winners ? h.winners.join(", ") : "";
-                historyHtml += `
-                <div class="item-card">
-                    <div class="row-flex" style="margin-bottom:5px;">
-                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة">
-                        <button class="btn-delete" onclick="deleteHistory(${hIndex})">حذف البطولة</button>
-                    </div>
-                    <div class="form-group" style="margin-bottom:3px;">
-                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال بفواصل (مثال: بسام, خالد)" style="width:100%;">
-                    </div>
-                    <small style="color:var(--text-muted); font-size:11px;">افصل بين أسماء الأبطال بـ (فاصلة).</small>
-                </div>`;
-            });
-            document.getElementById('history-edit-container').innerHTML = historyHtml;
-        }
-
-        function addHistorySeason() {
-            syncFromUI();
-            workingData.history.push({ season: "بطولة جديدة", winners: ["اسم البطل"] });
-            renderHistory();
-        }
-
-        function deleteHistory(index) {
-            syncFromUI();
-            workingData.history.splice(index, 1);
-            renderHistory();
-        }
-
-        function syncFromUI() {
-            workingData.settings.bannerText = document.getElementById('edit-banner-text').value;
-            workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
-            workingData.settings.leagueEnded = document.getElementById('edit-league-ended').value === "true";
-
-            syncFromUIValuesOnly();
-
-            // تحديث بيانات نجم الجولة النهائي بناءً على الـ Radio المختار
-            workingData.players.forEach((p, index) => {
-                let radioEl = document.getElementById(`mvp-radio-${index}`);
-                if (radioEl && radioEl.checked) {
-                    workingData.lastMvp = {
-                        name: p.name,
-                        image: p.image
-                    };
-                    previousMvpName = p.name;
-                }
-            });
-
-            workingData.matches.forEach((m, index) => {
-                let t1 = document.getElementById(`m-team1-${index}`);
-                let s1 = document.getElementById(`m-score1-${index}`);
-                let s2 = document.getElementById(`m-score2-${index}`);
-                let t2 = document.getElementById(`m-team2-${index}`);
-                let st = document.getElementById(`m-status-${index}`);
-
-                if(t1) m.team1 = t1.value;
-                if(s1) m.score1 = parseInt(s1.value) || 0;
-                if(s2) m.score2 = parseInt(s2.value) || 0;
-                if(t2) m.team2 = t2.value;
-                if(st) m.status = st.value;
-            });
-
-            workingData.history.forEach((h, hIndex) => {
-                let seasonEl = document.getElementById(`h-season-${hIndex}`);
-                let winnersEl = document.getElementById(`h-winners-${hIndex}`);
-
-                if(seasonEl) h.season = seasonEl.value;
-                if(winnersEl) {
-                    let rawWinners = winnersEl.value;
-                    h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
-                }
-            });
-        }
-
-        function generateNewDataFile() {
-            syncFromUI();
-
-            let fileContent = `// هذا الملف هو قاعدة البيانات الخاصة بك، من هنا تعدل كل شيء في الموقع\n\nconst DB = {\n`;
-            
-            fileContent += `    settings: {\n`;
-            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
-            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
-            fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    lastMvp: {\n`;
-            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
-            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    players: [\n`;
-            workingData.players.forEach((p, i) => {
-                let comma = i === workingData.players.length - 1 ? "" : ",";
-                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    matches: [\n`;
-            workingData.matches.forEach((m, i) => {
-                let comma = i === workingData.matches.length - 1 ? "" : ",";
-                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    history: [\n`;
-            workingData.history.forEach((h, i) => {
-                let comma = i === workingData.history.length - 1 ? "" : ",";
-                let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
-                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
-            });
-            fileContent += `    ]\n};`;
-
-            navigator.clipboard.writeText(fileContent).then(() => {
-                let msg = document.getElementById('success-msg');
-                msg.style.display = 'block';
-                setTimeout(() => { msg.style.display = 'none'; }, 4000);
-            }).catch(err => {
-                alert("حدث خطأ أثناء النسخ التلقائي.");
-            });
-        }
-    </script>
-</body>
-</html>
+        <!-- 
