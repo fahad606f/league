@@ -397,7 +397,6 @@
             renderMatchesSection();
         }
 
-        // دالة تحديد الفائز وتلوين الشطب لأي مباراة
         function getWinnerAndClass(matchObj) {
             if (!matchObj || matchObj.status !== 'finished') {
                 return { winner: null, t1Class: "", t2Class: "" };
@@ -424,38 +423,44 @@
 
             let round1 = DB.matches || [];
             
-            // توليد الدور الثاني وتتبع حالته
+            // قراءة مباريات الدور الثاني الفعلية من DB.round2Matches مع تحديث الأسماء التلقائية عند الحاجة
             let round2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
                 let m2 = round1[i+1];
                 let teamA = getWinnerAndClass(m1).winner || "[متأهل 1]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[متأهل 2]") : "---";
-                // يمكن تحديث نتيجة الدور الثاني إذا أدخلت نتائجه لاحقاً أو افترضنا مباريات معلقة
-                round2.push({ team1: teamA, team2: teamB, status: 'pending', score1: '-', score2: '-' });
+                
+                let savedM = DB.round2Matches && DB.round2Matches[i/2];
+                if (savedM) {
+                    savedM.team1 = teamA;
+                    savedM.team2 = teamB;
+                    round2.push(savedM);
+                } else {
+                    round2.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
+                }
             }
 
-            // توليد الدور الثالث (نصف النهائي)
             let round3 = [];
             for (let i = 0; i < round2.length; i += 2) {
                 let m1 = round2[i];
                 let m2 = round2[i+1];
                 let teamA = getWinnerAndClass(m1).winner || "[تأهل أ]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[تأهل ب]") : "---";
-                round3.push({ team1: teamA, team2: teamB, status: 'pending', score1: '-', score2: '-' });
+                round3.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
             }
 
             let targetFinalRound = round3.length > 0 ? round3 : round2;
             let finalTeam1 = targetFinalRound.length > 0 ? (getWinnerAndClass(targetFinalRound[0]).winner || "[طرف 1]") : "[طرف 1]";
             let finalTeam2 = targetFinalRound.length > 1 ? (getWinnerAndClass(targetFinalRound[1]).winner || "[طرف 2]") : (targetFinalRound.length > 0 ? (targetFinalRound[0].team2 || "[طرف 2]") : "[طرف 2]");
-            let finalMatch = { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: '-', score2: '-' };
+            let finalMatch = DB.finalMatch || { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: 0, score2: 0 };
+            finalMatch.team1 = finalTeam1;
+            finalMatch.team2 = finalTeam2;
 
-            // حالات الاكتمال للوضع العادي
             let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
             let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
 
             if (isBracketView) {
-                // ==================== 1. الوضع الشجري (شامل تلوين الفائز وشطب الخاسر في كل الأدوار) ====================
                 let renderCard = (m, label) => {
                     let s1 = m && m.status === 'finished' ? m.score1 : '-';
                     let s2 = m && m.status === 'finished' ? m.score2 : '-';
@@ -482,7 +487,7 @@
                 <div class="bracket-scroll-wrapper">
                     <div class="bracket-master-container">
                         <div style="font-size: 10px; color: var(--gold); margin-bottom: 6px; font-weight: bold; text-align: center;">
-                            📊 مسار الأدوار الشجري (شطب وتلوين تفعيلي لكل الأدوار)
+                            📊 مسار الأدوار الشجري
                         </div>
                         <div class="tree-columns-flex">
                             <div class="tree-round-col" style="max-width: 110px;">
@@ -507,12 +512,10 @@
                 document.getElementById('matches-display-area').innerHTML = bracketHtml;
 
             } else {
-                // ==================== 2. الوضع العادي (تبديل المراحل مع تفعيل الشطب والتلوين لأي مباراة منتهية) ====================
                 let matchesHtml = "";
                 let globalMatchIndex = 1;
 
                 if (!isRound1Complete) {
-                    // عرض مباريات الدور الأول مع تلوين الفائز وشطب الخاسر
                     round1.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
                         let score1 = m.status === 'finished' ? m.score1 : '0';
@@ -547,7 +550,6 @@
                         </div>`;
                     });
                 } else if (!isRound2Complete) {
-                    // عرض مباريات الدور الثاني بعد اكتمال الدور الأول
                     round2.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
                         let score1 = m.status === 'finished' ? m.score1 : '0';
@@ -582,7 +584,6 @@
                         </div>`;
                     });
                 } else {
-                    // عرض النهائي الكبير مع تفعيل الشطب والتلوين أيضاً
                     let t1Class = "", t2Class = "", check1 = "", check2 = "";
                     let score1 = finalMatch.status === 'finished' ? finalMatch.score1 : '0';
                     let score2 = finalMatch.status === 'finished' ? finalMatch.score2 : '0';
