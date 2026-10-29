@@ -274,10 +274,10 @@
 
         <div class="panel-section">
             <h3>
-                <span>⚔️ إدارة المواجهات (الدور الأول والمتقدمة)</span>
+                <span>⚔️ إدارة المواجهات والأدوار</span>
                 <button type="button" class="btn-add" onclick="addMatch()">➕ إضافة مباراة</button>
             </h3>
-            <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">مباريات الدور الأول تديرها هنا، وبعد انتهائها ستظهر مباريات الدور الثاني تلقائياً:</p>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">إدارة تدريجية تلقائية (الدور الأول $\leftarrow$ الثاني $\leftarrow$ النهائي):</p>
             <div id="matches-edit-container"></div>
         </div>
 
@@ -302,6 +302,7 @@
             players: [],
             matches: [],
             round2Matches: [],
+            finalMatch: null,
             history: []
         };
 
@@ -313,12 +314,8 @@
             console.log("استخدام البيانات الافتراضية");
         }
 
-        if (!workingData.settings) {
-            workingData.settings = { showBanner: true, bannerText: "", leagueEnded: false };
-        }
-        if (workingData.settings.leagueEnded === undefined) {
-            workingData.settings.leagueEnded = false;
-        }
+        if (!workingData.settings) workingData.settings = { showBanner: true, bannerText: "", leagueEnded: false };
+        if (workingData.settings.leagueEnded === undefined) workingData.settings.leagueEnded = false;
         if (!workingData.lastMvp) workingData.lastMvp = { name: "", image: "" };
         if (!workingData.players) workingData.players = [];
         if (!workingData.matches) workingData.matches = [];
@@ -327,22 +324,16 @@
 
         let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
 
-        // ربط أحداث تسجيل الدخول بشكل مضمون وتفاعلي
         document.addEventListener("DOMContentLoaded", function() {
             const loginBtn = document.getElementById('login-btn');
             const pinBox = document.getElementById('pin-input');
 
             if (loginBtn) {
-                loginBtn.addEventListener('click', function() {
-                    checkPin();
-                });
+                loginBtn.addEventListener('click', () => checkPin());
             }
-
             if (pinBox) {
-                pinBox.addEventListener('keyup', function(event) {
-                    if (event.key === 'Enter') {
-                        checkPin();
-                    }
+                pinBox.addEventListener('keyup', (event) => {
+                    if (event.key === 'Enter') checkPin();
                 });
             }
         });
@@ -374,33 +365,19 @@
             let playersHtml = "";
             workingData.players.forEach((p, index) => {
                 let isCurrentMvp = (workingData.lastMvp && workingData.lastMvp.name === p.name) ? "checked" : "";
-                
                 playersHtml += `
                 <div class="player-edit-card">
                     <div class="player-header">
                         <div style="display:flex; align-items:center; gap:10px; width:75%;">
-                            <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} onchange="handleMvpSelection(${index})" style="cursor:pointer; transform:scale(1.4);" title="تعيين كنجْم للجولة">
+                            <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} onchange="handleMvpSelection(${index})" style="cursor:pointer; transform:scale(1.4);">
                             <input type="text" id="p-name-${index}" value="${p.name || ''}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.3); color:gold; padding:8px; border-radius:8px; font-weight:bold; width:100%; font-size:17px;">
                         </div>
                         <button type="button" class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
                     </div>
-                    <div class="form-group" style="margin-bottom:10px;">
-                        <label style="font-size:13px; color:var(--text-muted); margin-bottom:4px; display:block;">مسار الصورة (مثال: images/khalid.jpg):</label>
-                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="images/name.jpg" style="font-size:15px; padding:10px; width:100%;">
-                    </div>
                     <div class="inputs-row">
-                        <div>
-                            <label>أهداف</label>
-                            <input type="number" id="p-goals-${index}" value="${p.goals || 0}">
-                        </div>
-                        <div>
-                            <label>صناعة</label>
-                            <input type="number" id="p-assists-${index}" value="${p.assists || 0}">
-                        </div>
-                        <div>
-                            <label>MVP</label>
-                            <input type="number" id="p-mvps-${index}" value="${p.mvps || 0}">
-                        </div>
+                        <div><label>أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals || 0}"></div>
+                        <div><label>صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists || 0}"></div>
+                        <div><label>MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps || 0}"></div>
                     </div>
                 </div>`;
             });
@@ -410,32 +387,24 @@
         function handleMvpSelection(selectedIndex) {
             syncFromUIValuesOnly();
             let selectedPlayer = workingData.players[selectedIndex];
-
             if (previousMvpName === selectedPlayer.name) return;
-
             if (previousMvpName) {
                 let oldMvp = workingData.players.find(p => p.name === previousMvpName);
-                if (oldMvp && oldMvp.mvps > 0) {
-                    oldMvp.mvps -= 1;
-                }
+                if (oldMvp && oldMvp.mvps > 0) oldMvp.mvps -= 1;
             }
-
             selectedPlayer.mvps += 1;
             previousMvpName = selectedPlayer.name;
-
             renderPlayers();
         }
 
         function syncFromUIValuesOnly() {
             workingData.players.forEach((p, index) => {
                 let nameEl = document.getElementById(`p-name-${index}`);
-                let imgEl = document.getElementById(`p-image-${index}`);
                 let goalsEl = document.getElementById(`p-goals-${index}`);
                 let assistsEl = document.getElementById(`p-assists-${index}`);
                 let mvpsEl = document.getElementById(`p-mvps-${index}`);
 
                 if (nameEl) p.name = nameEl.value;
-                if (imgEl) p.image = imgEl.value;
                 if (goalsEl) p.goals = parseInt(goalsEl.value) || 0;
                 if (assistsEl) p.assists = parseInt(assistsEl.value) || 0;
                 if (mvpsEl) p.mvps = parseInt(mvpsEl.value) || 0;
@@ -450,10 +419,6 @@
 
         function deletePlayer(index) {
             syncFromUI();
-            let deletedPlayer = workingData.players[index];
-            if (deletedPlayer && deletedPlayer.name === previousMvpName) {
-                previousMvpName = "";
-            }
             workingData.players.splice(index, 1);
             renderPlayers();
         }
@@ -469,21 +434,35 @@
             let round1 = workingData.matches || [];
             let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
 
-            let round2 = [];
+            // تجهيز الدور الثاني تلقائياً
+            let calcRound2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
                 let m2 = round1[i+1];
                 let teamA = getMatchWinner(m1) || "[متأهل 1]";
                 let teamB = m2 ? (getMatchWinner(m2) || "[متأهل 2]") : "---";
                 
-                if (!workingData.round2Matches) workingData.round2Matches = [];
-                if (!workingData.round2Matches[i/2]) {
-                    workingData.round2Matches[i/2] = { team1: teamA, team2: teamB, score1: 0, score2: 0, status: 'pending' };
+                let existing = workingData.round2Matches && workingData.round2Matches[i/2];
+                if (existing) {
+                    existing.team1 = teamA;
+                    existing.team2 = teamB;
+                    calcRound2.push(existing);
                 } else {
-                    workingData.round2Matches[i/2].team1 = teamA;
-                    workingData.round2Matches[i/2].team2 = teamB;
+                    calcRound2.push({ team1: teamA, team2: teamB, score1: 0, score2: 0, status: 'pending' });
                 }
-                round2.push(workingData.round2Matches[i/2]);
+            }
+            workingData.round2Matches = calcRound2;
+            let isRound2Complete = calcRound2.length > 0 && calcRound2.every(m => m.status === 'finished');
+
+            // تجهيز النهائي الكبير تلقائياً بناء على الفائزين في الدور الثاني
+            let finalTeam1 = calcRound2.length > 0 ? (getMatchWinner(calcRound2[0]) || "[طرف 1]") : "[طرف 1]";
+            let finalTeam2 = calcRound2.length > 1 ? (getMatchWinner(calcRound2[1]) || "[طرف 2]") : "[طرف 2]";
+            
+            if (!workingData.finalMatch) {
+                workingData.finalMatch = { team1: finalTeam1, team2: finalTeam2, score1: 0, score2: 0, status: 'pending' };
+            } else {
+                workingData.finalMatch.team1 = finalTeam1;
+                workingData.finalMatch.team2 = finalTeam2;
             }
 
             let matchesHtml = "";
@@ -492,56 +471,48 @@
                 round1.forEach((m, index) => {
                     matchesHtml += `
                     <div class="item-card">
-                        <div style="font-size:13px; color:var(--text-muted); margin-bottom:6px; text-align:right;">مباراة رقم ${index + 1} (الدور الأول)</div>
+                        <div style="font-size:13px; color:var(--text-muted); margin-bottom:6px;">مباراة رقم ${index + 1} (الدور الأول)</div>
                         <div class="match-card-grid">
-                            <div class="team-box">
-                                <input type="text" id="m-team1-${index}" value="${m.team1 || ''}" placeholder="الفريق الأول">
-                                <input type="number" id="m-score1-${index}" value="${m.score1 || 0}" placeholder="أهداف">
-                            </div>
-                            <div class="match-center-info">
-                                <span>VS</span>
-                            </div>
-                            <div class="team-box">
-                                <input type="text" id="m-team2-${index}" value="${m.team2 || ''}" placeholder="الفريق الثاني">
-                                <input type="number" id="m-score2-${index}" value="${m.score2 || 0}" placeholder="أهداف">
-                            </div>
+                            <div class="team-box"><input type="text" id="m-team1-${index}" value="${m.team1 || ''}"><input type="number" id="m-score1-${index}" value="${m.score1 || 0}"></div>
+                            <div class="match-center-info"><span>VS</span></div>
+                            <div class="team-box"><input type="text" id="m-team2-${index}" value="${m.team2 || ''}"><input type="number" id="m-score2-${index}" value="${m.score2 || 0}"></div>
                         </div>
                         <div class="match-bottom-row">
-                            <select id="m-status-${index}">
-                                <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
-                                <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
-                            </select>
+                            <select id="m-status-${index}"><option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option></select>
                             <button type="button" class="btn-delete" onclick="deleteMatch(${index})">حذف</button>
                         </div>
                     </div>`;
                 });
-            } else {
-                matchesHtml += `<div style="color:var(--gold); font-size:14px; margin-bottom:10px; font-weight:bold;">✨ اكتمل الدور الأول! يتم إدارة مباريات الدور الثاني الآن:</div>`;
-                round2.forEach((m, index) => {
+            } else if (!isRound2Complete) {
+                matchesHtml += `<div style="color:var(--gold); font-size:14px; margin-bottom:10px; font-weight:bold;">✨ الدور الأول مكتمل! إدارة مباريات الدور الثاني:</div>`;
+                workingData.round2Matches.forEach((m, index) => {
                     matchesHtml += `
                     <div class="item-card" style="border: 1px dashed var(--gold);">
-                        <div style="font-size:13px; color:var(--gold); margin-bottom:6px; text-align:right;">مباراة رقم ${index + 1} (الدور الثاني - تلقائي)</div>
+                        <div style="font-size:13px; color:var(--gold); margin-bottom:6px;">مباراة رقم ${index + 1} (الدور الثاني)</div>
                         <div class="match-card-grid">
-                            <div class="team-box">
-                                <input type="text" value="${m.team1 || ''}" readonly style="color:var(--gold);">
-                                <input type="number" id="r2-score1-${index}" value="${m.score1 || 0}" placeholder="أهداف">
-                            </div>
-                            <div class="match-center-info">
-                                <span>VS</span>
-                            </div>
-                            <div class="team-box">
-                                <input type="text" value="${m.team2 || ''}" readonly style="color:var(--gold);">
-                                <input type="number" id="r2-score2-${index}" value="${m.score2 || 0}" placeholder="أهداف">
-                            </div>
+                            <div class="team-box"><input type="text" value="${m.team1 || ''}" readonly style="color:var(--gold);"><input type="number" id="r2-score1-${index}" value="${m.score1 || 0}"></div>
+                            <div class="match-center-info"><span>VS</span></div>
+                            <div class="team-box"><input type="text" value="${m.team2 || ''}" readonly style="color:var(--gold);"><input type="number" id="r2-score2-${index}" value="${m.score2 || 0}"></div>
                         </div>
                         <div class="match-bottom-row">
-                            <select id="r2-status-${index}">
-                                <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
-                                <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
-                            </select>
+                            <select id="r2-status-${index}"><option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option></select>
                         </div>
                     </div>`;
                 });
+            } else {
+                let fm = workingData.finalMatch;
+                matchesHtml += `
+                <div class="item-card" style="border: 2px solid var(--gold); background: rgba(55,40,85,0.9);">
+                    <div style="font-size:15px; color:var(--gold); margin-bottom:6px; font-weight:bold;">🏆 النهائي الكبير</div>
+                    <div class="match-card-grid">
+                        <div class="team-box"><input type="text" value="${fm.team1 || ''}" readonly style="color:var(--gold);"><input type="number" id="f-score1" value="${fm.score1 || 0}"></div>
+                        <div class="match-center-info"><span>VS</span></div>
+                        <div class="team-box"><input type="text" value="${fm.team2 || ''}" readonly style="color:var(--gold);"><input type="number" id="f-score2" value="${fm.score2 || 0}"></div>
+                    </div>
+                    <div class="match-bottom-row">
+                        <select id="f-status"><option value="pending" ${fm.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${fm.status==='finished'?'selected':''}>انتهت</option></select>
+                    </div>
+                </div>`;
             }
 
             document.getElementById('matches-edit-container').innerHTML = matchesHtml;
@@ -572,7 +543,6 @@
                     <div class="form-group" style="margin-bottom:8px;">
                         <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="الأبطال (مثال: بسام, خالد)" style="width:100%; max-width:none;">
                     </div>
-                    <small style="color:var(--text-muted); font-size:14px;">افصل بين أسماء الأبطال بـ (فاصلة).</small>
                 </div>`;
             });
             document.getElementById('history-edit-container').innerHTML = historyHtml;
@@ -600,16 +570,15 @@
             workingData.players.forEach((p, index) => {
                 let radioEl = document.getElementById(`mvp-radio-${index}`);
                 if (radioEl && radioEl.checked) {
-                    workingData.lastMvp = {
-                        name: p.name,
-                        image: p.image
-                    };
+                    workingData.lastMvp = { name: p.name, image: p.image };
                     previousMvpName = p.name;
                 }
             });
 
             let round1 = workingData.matches || [];
             let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
+            let round2 = workingData.round2Matches || [];
+            let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
 
             if (!isRound1Complete) {
                 workingData.matches.forEach((m, index) => {
@@ -625,7 +594,7 @@
                     if(t2) m.team2 = t2.value;
                     if(st) m.status = st.value;
                 });
-            } else {
+            } else if (!isRound2Complete) {
                 if (workingData.round2Matches) {
                     workingData.round2Matches.forEach((m, index) => {
                         let s1 = document.getElementById(`r2-score1-${index}`);
@@ -636,6 +605,17 @@
                         if(s2) m.score2 = parseInt(s2.value) || 0;
                         if(st) m.status = st.value;
                     });
+                }
+            } else {
+                if (workingData.finalMatch) {
+                    let s1 = document.getElementById(`f-score1`);
+                    let s2 = document.getElementById(`f-score2`);
+                    let st = document.getElementById(`f-status`);
+
+                    if(s1) workingData.finalMatch.score1 = parseInt(s1.value) || 0;
+                    if(s2) workingData.finalMatch.score2 = parseInt(s2.value) || 0;
+                    if(st) workingData.finalMatch.status = st.value;
+                    if(workingData.finalMatch.status === 'finished') workingData.settings.leagueEnded = true;
                 }
             }
 
@@ -689,6 +669,14 @@
                 });
             }
             fileContent += `    ],\n\n`;
+
+            if (workingData.finalMatch) {
+                fileContent += `    finalMatch: {\n`;
+                fileContent += `        team1: "${workingData.finalMatch.team1}", score1: ${workingData.finalMatch.score1},\n`;
+                fileContent += `        team2: "${workingData.finalMatch.team2}", score2: ${workingData.finalMatch.score2},\n`;
+                fileContent += `        status: "${workingData.finalMatch.status}"\n`;
+                fileContent += `    },\n\n`;
+            }
 
             fileContent += `    history: [\n`;
             let historyArr = workingData.history || [];
