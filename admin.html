@@ -11,7 +11,7 @@
             --card-bg: #354a78; 
             --score-bg: #465f9a; 
             --text-main: #ffffff;
-            --text-muted: #c5d2ee; 
+            --text-muted: #d4e0fc; 
             --gold: #FFD700;
             --green: #4CAF50;
             --red: #f44336;
@@ -22,7 +22,7 @@
             color: var(--text-main);
             margin: 0; padding: 15px 10px; text-align: center;
             box-sizing: border-box;
-            font-size: 16px;
+            font-size: 18px; /* تكبير الخط العام للرؤية الواضحة */
         }
 
         *, *::before, *::after {
@@ -30,129 +30,134 @@
         }
 
         #login-screen {
-            max-width: 360px;
+            max-width: 380px;
             margin: 80px auto;
             background-color: var(--card-bg);
             padding: 25px;
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        #login-screen h2 { color: var(--gold); margin-bottom: 15px; font-size: 20px; }
+        #login-screen h2 { color: var(--gold); margin-bottom: 15px; font-size: 22px; }
+        #login-screen p { font-size: 16px; }
         #login-screen input {
-            width: 100%; padding: 10px; font-size: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+            width: 100%; padding: 12px; font-size: 18px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);
             text-align: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); color: white; outline: none;
         }
         #login-screen button {
-            padding: 10px 25px; background: var(--score-bg); color: white; border: none;
-            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;
+            padding: 12px 25px; background: var(--score-bg); color: white; border: none;
+            border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%;
         }
-        .error-msg { color: var(--red); font-size: 14px; margin-top: 10px; display: none; }
+        .error-msg { color: var(--red); font-size: 16px; margin-top: 10px; display: none; }
 
-        /* هوامش جانبية واضحة ومدروسة تماماً مثل عرض الموقع الرئيسي في الصورة */
-        #admin-panel { display: none; max-width: 410px; margin: 0 auto; text-align: right; width: 100%; padding: 0 5px; }
+        /* هوامش جانبية واضحة */
+        #admin-panel { display: none; max-width: 420px; margin: 0 auto; text-align: right; width: 100%; padding: 0 5px; }
         
         .panel-section {
             background-color: var(--card-bg);
             border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 14px;
+            padding: 18px;
+            margin-bottom: 16px;
             box-shadow: 0 6px 15px rgba(0,0,0,0.3);
             width: 100%;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
         }
         .panel-section h3 { 
             color: var(--gold); 
             margin-top: 0; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            padding-bottom: 8px; 
+            border-bottom: 1px solid rgba(255,255,255,0.15); 
+            padding-bottom: 10px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            font-size: 16px; 
+            font-size: 19px; /* تكبير عناوين الأقسام الرئيسية */
             flex-wrap: wrap;
             gap: 6px;
         }
 
-        .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; margin-bottom: 4px; font-size: 13px; color: var(--text-muted); }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 16px; color: var(--text-muted); font-weight: 600; }
         
         .form-group input, .form-group select {
-            width: 100%; max-width: none; padding: 7px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; font-size: 14px; font-family: inherit;
+            width: 100%; max-width: none; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.25); color: white; font-size: 17px; font-family: inherit; font-weight: 600;
         }
 
         .players-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px; /* مسافة مريحة وفاصلة بين كل لاعب والآخر */
             width: 100%;
         }
 
+        /* بطاقة لاعب بارتفاع وخطوط واضحة جداً */
         .player-edit-card {
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.22);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.12);
             width: 100%;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
         }
         .player-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
-            gap: 6px;
+            margin-bottom: 12px;
+            gap: 8px;
         }
-        .inputs-row { display: flex; gap: 6px; width: 100%; }
+        .inputs-row { display: flex; gap: 8px; width: 100%; }
         .inputs-row div { flex: 1; min-width: 0; }
+        .inputs-row label { font-size: 14px !important; color: var(--text-muted); margin-bottom: 4px; display: block; text-align: center; font-weight: bold; }
         .inputs-row input {
-            width: 100%; padding: 6px 4px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 13px; font-weight: bold;
+            width: 100%; padding: 10px 6px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.3); color: white; text-align: center; font-size: 18px; font-weight: bold;
         }
 
         .item-card {
             background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            border: 1px solid rgba(255,255,255,0.08);
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
             width: 100%;
         }
 
-        /* تنسيق المواجهات المنظم والمتوسط */
+        /* تنسيق المواجهات المنظم بخطوط واضحة */
         .match-card-grid {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
         .team-box {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
             width: 100%;
         }
         .team-box input[type="text"] {
             text-align: center;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.3);
             color: var(--gold);
-            padding: 6px;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 17px;
             font-weight: bold;
             width: 100%;
         }
         .team-box input[type="number"] {
             text-align: center;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 6px;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
             width: 100%;
         }
         .match-center-info {
@@ -161,70 +166,71 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 15px;
             color: var(--text-muted);
         }
         .match-bottom-row {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
             justify-content: space-between;
             width: 100%;
         }
         .match-bottom-row select {
             flex: 1;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 6px;
-            border-radius: 6px;
-            font-size: 13px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
             text-align: center;
+            font-weight: bold;
         }
 
         .row-flex {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
             width: 100%;
         }
         .row-flex input, .row-flex select {
-            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
-            padding: 6px; border-radius: 6px; font-size: 13px; width: 100%; font-family: inherit;
+            background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.3); color: white;
+            padding: 10px; border-radius: 8px; font-size: 16px; width: 100%; font-family: inherit; font-weight: bold;
         }
 
         .btn-add {
-            background: var(--score-bg); color: white; border: none; padding: 5px 10px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;
+            background: var(--score-bg); color: white; border: none; padding: 8px 14px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;
             white-space: nowrap;
         }
         .btn-delete {
-            background: var(--red); color: white; border: none; padding: 6px 12px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;
+            background: var(--red); color: white; border: none; padding: 10px 16px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;
             white-space: nowrap;
         }
 
         .action-bar {
             position: sticky; bottom: 10px; text-align: center; background: rgba(36, 52, 86, 0.95);
-            padding: 10px; border-radius: 10px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5); z-index: 100;
+            padding: 14px; border-radius: 12px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5); z-index: 100;
             width: 100%;
         }
         .save-btn {
-            background: var(--green); color: white; padding: 10px 20px; font-size: 15px;
-            font-weight: bold; border: none; border-radius: 8px; cursor: pointer;
+            background: var(--green); color: white; padding: 14px 28px; font-size: 18px;
+            font-weight: bold; border: none; border-radius: 10px; cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 240px;
+            max-width: 280px;
         }
-        .success-alert { color: var(--green); font-weight: bold; margin-top: 6px; display: none; font-size: 12px; }
+        .success-alert { color: var(--green); font-weight: bold; margin-top: 8px; display: none; font-size: 15px; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <h2>🔒 لوحة التحكم</h2>
-        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">أدخل الرقم السري للمتابعة</p>
+        <p style="color: var(--text-muted); font-size: 16px; margin-bottom: 15px;">أدخل الرقم السري للمتابعة</p>
         <input type="password" id="pin-input" placeholder="الرقم السري">
         <br>
         <button type="button" onclick="checkPin()">دخول</button>
@@ -232,7 +238,7 @@
     </div>
 
     <div id="admin-panel">
-        <h1 style="color: var(--gold); text-align: center; margin-bottom: 15px; font-size: 19px;">⚙️ لوحة إدارة دوري الأبطال</h1>
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 18px; font-size: 22px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <!-- 1. البنر -->
         <div class="panel-section">
@@ -268,7 +274,7 @@
                 <span>👥 إحصائيات اللاعبين ونجم الجولة</span>
                 <button type="button" class="btn-add" onclick="addPlayer()">➕ إضافة لاعب</button>
             </h3>
-            <p style="font-size:12px; color:var(--gold); margin-top:0;">⭐ تفعيل (MVP) يحول اللاعب لنجم الجولة ويزيد عداد جوائزه تلقائياً (+1):</p>
+            <p style="font-size:14px; color:var(--gold); margin-top:4px;">⭐ تفعيل (MVP) يحول اللاعب لنجم الجولة ويزيد عداد جوائزه تلقائياً (+1):</p>
             <div class="players-grid" id="players-edit-container"></div>
         </div>
 
@@ -367,19 +373,28 @@
                 playersHtml += `
                 <div class="player-edit-card">
                     <div class="player-header">
-                        <div style="display:flex; align-items:center; gap:6px; width:75%;">
-                            <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} onchange="handleMvpSelection(${index})" style="cursor:pointer; transform:scale(1.2);" title="تعيين كنجْم للجولة">
-                            <input type="text" id="p-name-${index}" value="${p.name || ''}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:gold; padding:5px; border-radius:6px; font-weight:bold; width:100%; font-size:14px;">
+                        <div style="display:flex; align-items:center; gap:10px; width:75%;">
+                            <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} onchange="handleMvpSelection(${index})" style="cursor:pointer; transform:scale(1.4);" title="تعيين كنجْم للجولة">
+                            <input type="text" id="p-name-${index}" value="${p.name || ''}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.3); color:gold; padding:8px; border-radius:8px; font-weight:bold; width:100%; font-size:17px;">
                         </div>
                         <button type="button" class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
                     </div>
-                    <div class="form-group" style="margin-bottom:6px;">
-                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة" style="font-size:12px; padding:5px; width:100%; max-width:none;">
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة" style="font-size:15px; padding:8px; width:100%; max-width:none;">
                     </div>
                     <div class="inputs-row">
-                        <div><label style="font-size:11px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals || 0}"></div>
-                        <div><label style="font-size:11px">صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists || 0}"></div>
-                        <div><label style="font-size:11px">MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps || 0}"></div>
+                        <div>
+                            <label>أهداف</label>
+                            <input type="number" id="p-goals-${index}" value="${p.goals || 0}">
+                        </div>
+                        <div>
+                            <label>صناعة</label>
+                            <input type="number" id="p-assists-${index}" value="${p.assists || 0}">
+                        </div>
+                        <div>
+                            <label>MVP</label>
+                            <input type="number" id="p-mvps-${index}" value="${p.mvps || 0}">
+                        </div>
                     </div>
                 </div>`;
             });
@@ -408,10 +423,8 @@
         function syncFromUIValuesOnly() {
             workingData.players.forEach((p, index) => {
                 let nameEl = document.getElementById(`p-name-${index}`);
-                let imgEl = document.getElementById(`p-image-${index}`);
-                let goalsEl = document.getElementById(`p-goals-${index}`);
-                let assistsEl = document.getElementById(`p-assists-${index}`);
-                let mvpsEl = document.getElementById(`p-mvps-${index}`);
+                let imgEl = document.getElementById(`p-image-${index}`); let goalsEl = document.getElementById(`p-goals-${index}`);
+                let assistsEl = document.getElementById(`p-assists-${index}`); let mvpsEl = document.getElementById(`p-mvps-${index}`);
 
                 if (nameEl) p.name = nameEl.value;
                 if (imgEl) p.image = imgEl.value;
@@ -485,14 +498,14 @@
                 let winnersList = h.winners ? h.winners.join(", ") : "";
                 historyHtml += `
                 <div class="item-card">
-                    <div class="row-flex" style="margin-bottom:6px;">
+                    <div class="row-flex" style="margin-bottom:10px;">
                         <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season || ''}" placeholder="اسم البطولة">
                         <button type="button" class="btn-delete" onclick="deleteHistory(${hIndex})">حذف</button>
                     </div>
-                    <div class="form-group" style="margin-bottom:4px;">
+                    <div class="form-group" style="margin-bottom:8px;">
                         <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="الأبطال (مثال: بسام, خالد)" style="width:100%; max-width:none;">
                     </div>
-                    <small style="color:var(--text-muted); font-size:12px;">افصل بين أسماء الأبطال بـ (فاصلة).</small>
+                    <small style="color:var(--text-muted); font-size:14px;">افصل بين أسماء الأبطال بـ (فاصلة).</small>
                 </div>`;
             });
             document.getElementById('history-edit-container').innerHTML = historyHtml;
@@ -518,88 +531,4 @@
             syncFromUIValuesOnly();
 
             workingData.players.forEach((p, index) => {
-                let radioEl = document.getElementById(`mvp-radio-${index}`);
-                if (radioEl && radioEl.checked) {
-                    workingData.lastMvp = {
-                        name: p.name,
-                        image: p.image
-                    };
-                    previousMvpName = p.name;
-                }
-            });
-
-            workingData.matches.forEach((m, index) => {
-                let t1 = document.getElementById(`m-team1-${index}`);
-                let s1 = document.getElementById(`m-score1-${index}`);
-                let s2 = document.getElementById(`m-score2-${index}`);
-                let t2 = document.getElementById(`m-team2-${index}`);
-                let st = document.getElementById(`m-status-${index}`);
-
-                if(t1) m.team1 = t1.value;
-                if(s1) m.score1 = parseInt(s1.value) || 0;
-                if(s2) m.score2 = parseInt(s2.value) || 0;
-                if(t2) m.team2 = t2.value;
-                if(st) m.status = st.value;
-            });
-
-            workingData.history.forEach((h, hIndex) => {
-                let seasonEl = document.getElementById(`h-season-${hIndex}`);
-                let winnersEl = document.getElementById(`h-winners-${hIndex}`);
-
-                if(seasonEl) h.season = seasonEl.value;
-                if(winnersEl) {
-                    let rawWinners = winnersEl.value;
-                    h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
-                }
-            });
-        }
-
-        function generateNewDataFile() {
-            syncFromUI();
-
-            let fileContent = `// هذا الملف هو قاعدة البيانات الخاصة بك، من هنا تعدل كل شيء في الموقع\n\nconst DB = {\n`;
-            
-            fileContent += `    settings: {\n`;
-            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
-            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
-            fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    lastMvp: {\n`;
-            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
-            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    players: [\n`;
-            workingData.players.forEach((p, i) => {
-                let comma = i === workingData.players.length - 1 ? "" : ",";
-                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    matches: [\n`;
-            workingData.matches.forEach((m, i) => {
-                let comma = i === workingData.matches.length - 1 ? "" : ",";
-                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    history: [\n`;
-            workingData.history.forEach((h, i) => {
-                let comma = i === workingData.history.length - 1 ? "" : ",";
-                let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
-                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
-            });
-            fileContent += `    ]\n};`;
-
-            navigator.clipboard.writeText(fileContent).then(() => {
-                let msg = document.getElementById('success-msg');
-                msg.style.display = 'block';
-                setTimeout(() => { msg.style.display = 'none'; }, 4000);
-            }).catch(err => {
-                alert("حدث خطأ أثناء النسخ التلقائي.");
-            });
-        }
-    </script>
-</body>
-</html>
+                let radioEl = document.getElementById(`mvp
