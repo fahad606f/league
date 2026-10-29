@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم الشاملة | دوري الأبطال</title>
-    <script src="data.js?v=2030"></script>
+    <script src="data.js?v=9999"></script>
     <style>
         :root {
             --bg-color: #243456; 
@@ -245,7 +245,6 @@
             history: []
         };
 
-        // تحميل البيانات بأمان تام لتجنب أي توقف للسكربت
         try {
             if (typeof DB !== 'undefined') {
                 workingData = JSON.parse(JSON.stringify(DB));
@@ -265,21 +264,23 @@
 
         let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
 
-        // دالة تسجيل الدخول المحصنة والمباشرة
+        // دالة الفحص المباشر للزر
         function verifyLogin() {
+            alert("تم الضغط على زر الدخول بنجاح!"); // هذا التنبيه سيؤكد لنا هل الزر يستجيب أم لا
+            
             let pinInput = document.getElementById('pin-input');
             let errEl = document.getElementById('error-msg');
             
-            if (!pinInput) return;
+            if (!pinInput) {
+                alert("خطأ: حقل الرقم السري غير موجود!");
+                return;
+            }
+            
             let pinVal = pinInput.value.trim();
             
             if (pinVal === "322332") {
-                let loginScreen = document.getElementById('login-screen');
-                let adminPanel = document.getElementById('admin-panel');
-                
-                if (loginScreen) loginScreen.style.display = 'none';
-                if (adminPanel) adminPanel.style.display = 'block';
-                
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
                 loadAdminData();
             } else {
                 if (errEl) {
@@ -289,7 +290,6 @@
             }
         }
 
-        // تفعيل زر Enter للاستجابة الفورية
         document.addEventListener("DOMContentLoaded", function() {
             const pinBox = document.getElementById('pin-input');
             if (pinBox) {
@@ -311,7 +311,7 @@
                 renderMatches();
                 renderHistory();
             } catch (err) {
-                console.error("خطأ أثناء تحميل بيانات اللوحة:", err);
+                alert("حدث خطأ في تحميل البيانات: " + err.message);
             }
         }
 
@@ -358,8 +358,10 @@
         function syncFromUIValuesOnly() {
             workingData.players.forEach((p, index) => {
                 let nameEl = document.getElementById(`p-name-${index}`);
-                let imgEl = document.getElementById(`p-image-${index}`); let goalsEl = document.getElementById(`p-goals-${index}`);
-                let assistsEl = document.getElementById(`p-assists-${index}`); let mvpsEl = document.getElementById(`p-mvps-${index}`);
+                let imgEl = document.getElementById(`p-image-${index}`);
+                let goalsEl = document.getElementById(`p-goals-${index}`);
+                let assistsEl = document.getElementById(`p-assists-${index}`);
+                let mvpsEl = document.getElementById(`p-mvps-${index}`);
 
                 if (nameEl) p.name = nameEl.value;
                 if (imgEl) p.image = imgEl.value;
@@ -575,10 +577,24 @@
 
             if (!isRound1Complete) {
                 workingData.matches.forEach((m, index) => {
-                    let t1 = document.getElementById(`m-team1-${index}`); let s1 = document.getElementById(`m-score1-${index}`);
-                    let s2 = document.getElementById(`m-score2-${index}`); let t2 = document.getElementById(`m-team2-${index}`);
-                    let st = document.getElementById(`m-status-${index}`);  if(t1) m.team1 = t1.value; if(s1) m.score1 = parseInt(s1.value) \vert{}\vert{} 0; if(s2) m.score2 = parseInt(s2.value) \vert{}\vert{} 0; if(t2) m.team2 = t2.value; if(st) m.status = st.value; }); } else if (!isRound2Complete) { if (workingData.round2Matches) { workingData.round2Matches.forEach((m, index) => { let s1 = document.getElementById(`r2-score1-${index}`);
-                        let s2 = document.getElementById(`r2-score2-${index}`); let st = document.getElementById(`r2-status-${index}`);
+                    let t1 = document.getElementById(`m-team1-${index}`);
+                    let s1 = document.getElementById(`m-score1-${index}`);
+                    let s2 = document.getElementById(`m-score2-${index}`);
+                    let t2 = document.getElementById(`m-team2-${index}`);
+                    let st = document.getElementById(`m-status-${index}`);
+
+                    if(t1) m.team1 = t1.value;
+                    if(s1) m.score1 = parseInt(s1.value) || 0;
+                    if(s2) m.score2 = parseInt(s2.value) || 0;
+                    if(t2) m.team2 = t2.value;
+                    if(st) m.status = st.value;
+                });
+            } else if (!isRound2Complete) {
+                if (workingData.round2Matches) {
+                    workingData.round2Matches.forEach((m, index) => {
+                        let s1 = document.getElementById(`r2-score1-${index}`);
+                        let s2 = document.getElementById(`r2-score2-${index}`);
+                        let st = document.getElementById(`r2-status-${index}`);
 
                         if(s1) m.score1 = parseInt(s1.value) || 0;
                         if(s2) m.score2 = parseInt(s2.value) || 0;
@@ -588,20 +604,60 @@
             } else if (!isSemiFinalComplete) {
                 if (workingData.semiFinalMatches) {
                     workingData.semiFinalMatches.forEach((m, index) => {
-                        let s1 = document.getElementById(`sf-score1-${index}`); let s2 = document.getElementById(`sf-score2-${index}`);
-                        let st = document.getElementById(`sf-status-${index}`);  if(s1) m.score1 = parseInt(s1.value) \vert{}\vert{} 0; if(s2) m.score2 = parseInt(s2.value) \vert{}\vert{} 0; if(st) m.status = st.value; }); } } else { if (workingData.finalMatch) { let s1 = document.getElementById(`f-score1`); let s2 = document.getElementById(`f-score2`); let st = document.getElementById(`f-status`);  if(s1) workingData.finalMatch.score1 = parseInt(s1.value) \vert{}\vert{} 0; if(s2) workingData.finalMatch.score2 = parseInt(s2.value) \vert{}\vert{} 0; if(st) workingData.finalMatch.status = st.value; if(workingData.finalMatch.status === 'finished') workingData.settings.leagueEnded = true; } }  workingData.history.forEach((h, hIndex) => { let seasonEl = document.getElementById(`h-season-${hIndex}`);
-                let winnersEl = document.getElementById(`h-winners-${hIndex}`);  if(seasonEl) h.season = seasonEl.value; if(winnersEl) { let rawWinners = winnersEl.value; h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0); } }); }  function generateNewDataFile() { syncFromUI();  let fileContent = `// قاعدة البيانات\n\nconst DB = {\n`;  fileContent += `    settings: {\n`; fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
-            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`; fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
+                        let s1 = document.getElementById(`sf-score1-${index}`);
+                        let s2 = document.getElementById(`sf-score2-${index}`);
+                        let st = document.getElementById(`sf-status-${index}`);
+
+                        if(s1) m.score1 = parseInt(s1.value) || 0;
+                        if(s2) m.score2 = parseInt(s2.value) || 0;
+                        if(st) m.status = st.value;
+                    });
+                }
+            } else {
+                if (workingData.finalMatch) {
+                    let s1 = document.getElementById(`f-score1`);
+                    let s2 = document.getElementById(`f-score2`);
+                    let st = document.getElementById(`f-status`);
+
+                    if(s1) workingData.finalMatch.score1 = parseInt(s1.value) || 0;
+                    if(s2) workingData.finalMatch.score2 = parseInt(s2.value) || 0;
+                    if(st) workingData.finalMatch.status = st.value;
+                    if(workingData.finalMatch.status === 'finished') workingData.settings.leagueEnded = true;
+                }
+            }
+
+            workingData.history.forEach((h, hIndex) => {
+                let seasonEl = document.getElementById(`h-season-${hIndex}`);
+                let winnersEl = document.getElementById(`h-winners-${hIndex}`);
+
+                if(seasonEl) h.season = seasonEl.value;
+                if(winnersEl) {
+                    let rawWinners = winnersEl.value;
+                    h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
+                }
+            });
+        }
+
+        function generateNewDataFile() {
+            syncFromUI();
+
+            let fileContent = `// قاعدة البيانات\n\nconst DB = {\n`;
+            
+            fileContent += `    settings: {\n`;
+            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
+            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
+            fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
             fileContent += `    },\n\n`;
 
             fileContent += `    lastMvp: {\n`;
-            fileContent += `        name: "${workingData.lastMvp.name}",\n`; fileContent += `        image: "${workingData.lastMvp.image}"\n`;
+            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
+            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
             fileContent += `    },\n\n`;
 
             fileContent += `    players: [\n`;
             workingData.players.forEach((p, i) => {
                 let comma = i === workingData.players.length - 1 ? "" : ",";
-                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists:${p.assists}, mvps: ${p.mvps} }${comma}\n`;
+                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
             });
             fileContent += `    ],\n\n`;
 
@@ -632,4 +688,25 @@
 
             if (workingData.finalMatch) {
                 fileContent += `    finalMatch: {\n`;
-                fileContent += `        team1: "${workingData.finalMatch.team1}", score1: ${workingData.finalMatch.
+                fileContent += `        team1: "${workingData.finalMatch.team1}", score1: ${workingData.finalMatch.score1},\n`;
+                fileContent += `        team2: "${workingData.finalMatch.team2}", score2: ${workingData.finalMatch.score2},\n`;
+                fileContent += `        status: "${workingData.finalMatch.status}"\n`;
+                fileContent += `    },\n\n`;
+            }
+
+            fileContent += `    history: [\n`;
+            let historyArr = workingData.history || [];
+            historyArr.forEach((h, i) => {
+                let comma = i === historyArr.length - 1 ? "" : ",";
+                let winnersArr = h.winners || [];
+                let winnersStr = winnersArr.map(w => `"${w}"`).join(", ");
+                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
+            });
+            fileContent += `    ]\n};`;
+
+            navigator.clipboard.writeText(fileContent).then(() => {
+                let msg = document.getElementById('success-msg');
+                msg.style.display = 'block';
+                setTimeout(() => { msg.style.display = 'none'; }, 4000);
+            }).catch(err => {
+                alert("حدث خطأ
