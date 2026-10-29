@@ -4,7 +4,7 @@ const DB = {
     settings: {
         showBanner: true,
         bannerText: "🚨مبروك للفائز بالدوري ((فهـــد اليـــامي))🏆",
-        leagueEnded: false
+        leagueEnded: true
     },
 
     lastMvp: {
@@ -61,9 +61,19 @@ const DB = {
     ],
 
     matches: [
-          ],
+    ],
 
-    
+    round2Matches: [
+    ],
+
+    semiFinalMatches: [
+    ],
+
+    finalMatch: {
+        team1: "[طرف 1]", score1: 0,
+        team2: "[طرف 2]", score2: 0,
+        status: "pending"
+    },
 
     history: [
         { season: "الدوري الرمضاني", winners: ["بسام", "خالد فايز"] },
