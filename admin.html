@@ -75,9 +75,9 @@
         .form-group { margin-bottom: 10px; }
         .form-group label { display: block; margin-bottom: 4px; font-size: 14px; color: var(--text-muted); }
         
-        /* تقليص عرض الحقول والمربعات بنسبة 38% إضافية لتكون نحيفة وأنيقة */
+        /* تقليص عرض الحقول والمربعات بنسبة إضافية لتكون نحيفة وأنيقة */
         .form-group input, .form-group select {
-            width: 40%; max-width: 180px; padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
+            width: 35%; max-width: 150px; padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
             background: rgba(0,0,0,0.2); color: white; font-size: 15px; font-family: inherit;
         }
 
@@ -125,7 +125,7 @@
 
         .match-row-grid {
             display: grid;
-            grid-template-columns: 1fr 0.4fr 15px 0.4fr 1fr 0.7fr auto;
+            grid-template-columns: 1fr 0.35fr 15px 0.35fr 1fr 0.6fr auto;
             gap: 4px;
             align-items: center;
             width: 100%;
@@ -371,10 +371,8 @@
         function syncFromUIValuesOnly() {
             workingData.players.forEach((p, index) => {
                 let nameEl = document.getElementById(`p-name-${index}`);
-                let imgEl = document.getElementById(`p-image-${index}`);
-                let goalsEl = document.getElementById(`p-goals-${index}`);
-                let assistsEl = document.getElementById(`p-assists-${index}`);
-                let mvpsEl = document.getElementById(`p-mvps-${index}`);
+                let imgEl = document.getElementById(`p-image-${index}`); let goalsEl = document.getElementById(`p-goals-${index}`);
+                let assistsEl = document.getElementById(`p-assists-${index}`); let mvpsEl = document.getElementById(`p-mvps-${index}`);
 
                 if (nameEl) p.name = nameEl.value;
                 if (imgEl) p.image = imgEl.value;
@@ -386,7 +384,7 @@
 
         function addPlayer() {
             syncFromUI();
-            // إضافة اللاعب الجديد في أول المصفوفة (الأعلى) لسهولة التعديل
+            // إضافة اللاعب الجديد في أول المصفوفة (في الأعلى) لتسهيل التعديل عليه
             workingData.players.unshift({ name: "لاعب جديد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 });
             renderPlayers();
         }
@@ -410,152 +408,4 @@
                         <input type="text" id="m-team1-${index}" value="${m.team1 || ''}" placeholder="الفريق 1">
                         <input type="number" id="m-score1-${index}" value="${m.score1 || 0}">
                         <span style="font-weight:bold; text-align:center; font-size:12px;">VS</span>
-                        <input type="number" id="m-score2-${index}" value="${m.score2 || 0}">
-                        <input type="text" id="m-team2-${index}" value="${m.team2 || ''}" placeholder="الفريق 2">
-                        <select id="m-status-${index}">
-                            <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
-                            <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
-                        </select>
-                        <button type="button" class="btn-delete" onclick="deleteMatch(${index})">حذف</button>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('matches-edit-container').innerHTML = matchesHtml;
-        }
-
-        function addMatch() {
-            syncFromUI();
-            workingData.matches.push({ team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" });
-            renderMatches();
-        }
-
-        function deleteMatch(index) {
-            syncFromUI();
-            workingData.matches.splice(index, 1);
-            renderMatches();
-        }
-
-        function renderHistory() {
-            let historyHtml = "";
-            workingData.history.forEach((h, hIndex) => {
-                let winnersList = h.winners ? h.winners.join(", ") : "";
-                historyHtml += `
-                <div class="item-card">
-                    <div class="row-flex" style="margin-bottom:4px;">
-                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season || ''}" placeholder="اسم البطولة">
-                        <button type="button" class="btn-delete" onclick="deleteHistory(${hIndex})">حذف</button>
-                    </div>
-                    <div class="form-group" style="margin-bottom:2px;">
-                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="الأبطال (مثال: بسام, خالد)" style="width:100%; max-width:none;">
-                    </div>
-                    <small style="color:var(--text-muted); font-size:12px;">افصل بين أسماء الأبطال بـ (فاصلة).</small>
-                </div>`;
-            });
-            document.getElementById('history-edit-container').innerHTML = historyHtml;
-        }
-
-        function addHistorySeason() {
-            syncFromUI();
-            workingData.history.push({ season: "بطولة جديدة", winners: ["اسم البطل"] });
-            renderHistory();
-        }
-
-        function deleteHistory(index) {
-            syncFromUI();
-            workingData.history.splice(index, 1);
-            renderHistory();
-        }
-
-        function syncFromUI() {
-            workingData.settings.bannerText = document.getElementById('edit-banner-text').value;
-            workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
-            workingData.settings.leagueEnded = document.getElementById('edit-league-ended').value === "true";
-
-            syncFromUIValuesOnly();
-
-            workingData.players.forEach((p, index) => {
-                let radioEl = document.getElementById(`mvp-radio-${index}`);
-                if (radioEl && radioEl.checked) {
-                    workingData.lastMvp = {
-                        name: p.name,
-                        image: p.image
-                    };
-                    previousMvpName = p.name;
-                }
-            });
-
-            workingData.matches.forEach((m, index) => {
-                let t1 = document.getElementById(`m-team1-${index}`);
-                let s1 = document.getElementById(`m-score1-${index}`);
-                let s2 = document.getElementById(`m-score2-${index}`);
-                let t2 = document.getElementById(`m-team2-${index}`);
-                let st = document.getElementById(`m-status-${index}`);
-
-                if(t1) m.team1 = t1.value;
-                if(s1) m.score1 = parseInt(s1.value) || 0;
-                if(s2) m.score2 = parseInt(s2.value) || 0;
-                if(t2) m.team2 = t2.value;
-                if(st) m.status = st.value;
-            });
-
-            workingData.history.forEach((h, hIndex) => {
-                let seasonEl = document.getElementById(`h-season-${hIndex}`);
-                let winnersEl = document.getElementById(`h-winners-${hIndex}`);
-
-                if(seasonEl) h.season = seasonEl.value;
-                if(winnersEl) {
-                    let rawWinners = winnersEl.value;
-                    h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
-                }
-            });
-        }
-
-        function generateNewDataFile() {
-            syncFromUI();
-
-            let fileContent = `// هذا الملف هو قاعدة البيانات الخاصة بك، من هنا تعدل كل شيء في الموقع\n\nconst DB = {\n`;
-            
-            fileContent += `    settings: {\n`;
-            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
-            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
-            fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    lastMvp: {\n`;
-            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
-            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    players: [\n`;
-            workingData.players.forEach((p, i) => {
-                let comma = i === workingData.players.length - 1 ? "" : ",";
-                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    matches: [\n`;
-            workingData.matches.forEach((m, i) => {
-                let comma = i === workingData.matches.length - 1 ? "" : ",";
-                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    history: [\n`;
-            workingData.history.forEach((h, i) => {
-                let comma = i === workingData.history.length - 1 ? "" : ",";
-                let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
-                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
-            });
-            fileContent += `    ]\n};`;
-
-            navigator.clipboard.writeText(fileContent).then(() => {
-                let msg = document.getElementById('success-msg');
-                msg.style.display = 'block';
-                setTimeout(() => { msg.style.display = 'none'; }, 4000);
-            }).catch(err => {
-                alert("حدث خطأ أثناء النسخ التلقائي.");
-            });
-        }
-    </script>
-</body>
-</html>
+                        <input type="number" id="m-score2-${index}" value="${m.score
