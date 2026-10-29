@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>السجل الشرفي | دوري الأبطال</title>
+    <script src="data.js"></script>
+    <style>
+        :root {
+            --bg-color: #243456; 
+            --card-bg: #354a78; 
+            --score-bg: #465f9a; 
+            --text-main: #ffffff;
+            --text-muted: #c5d2ee; 
+            --gold: #FFD700;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0; padding: 15px; text-align: center;
+        }
+
+        .nav-buttons { margin-bottom: 25px; }
+        .nav-buttons a {
+            display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
+            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.15);
+            font-weight: bold; font-size: 15px;
+        }
+
+        .page-title {
+            color: var(--gold);
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            width: 100%; 
+            margin: 0 auto 30px auto;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: var(--score-bg);
+            padding: 12px 10px;
+            color: var(--gold);
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        th.text-right {
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        td {
+            padding: 12px 10px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 16px;
+            font-weight: bold;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        tr:last-child td { 
+            border-bottom: none; 
+        }
+
+        .history-info {
+            display: flex; 
+            align-items: center; 
+            justify-content: start; 
+            gap: 12px;
+            padding-right: 5px;
+        }
+
+        .season-box {
+            min-width: 28px;
+            height: 28px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--gold);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* حاوية الأبطال (تدعم أكثر من بطل بجانب بعضهم) */
+        .winners-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* تنسيق صورة البطل وتحتها اسمه */
+        .winner-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .winner-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+
+        .winner-name {
+            font-size: 14px;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-buttons">
+        <a href="index.html">⬅️ العودة للرئيسية</a>
+        <a href="league.html">📊 إحصائيات اللاعبين</a>
+    </div>
+
+    <div class="page-title">🏆 السجل الشرفي للأبطال</div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-right">الموسم / البطولة</th>
+                    <th>🥇 البطل</th>
+                </tr>
+            </thead>
+            <tbody id="history-table-body">
+                <!-- سيتم جلب البيانات وتعبئتها هنا -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let historyData = (typeof DB !== 'undefined' && DB.history) ? DB.history : [];
+        let playersData = (typeof DB !== 'undefined' && DB.players) ? DB.players : [];
+
+        // دالة لتوليد شكل البطل (صورة وتحتها اسمه) أو عرض الرمز إذا لم يكن اسماً معتاداً
+        function getWinnerCardHtml(name) {
+            if (!name || name === '-' || name === '⏳') {
+                return `<span>${name || '-'}</span>`;
+            }
+
+            let foundPlayer = playersData.find(p => p.name === name);
+            let imgSrc = foundPlayer ? foundPlayer.image : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+
+            return `
+            <div class="winner-card">
+                <img src="${imgSrc}" class="winner-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <span class="winner-name">${name}</span>
+            </div>`;
+        }
+        
+        let tableHtml = "";
+        if (historyData.length > 0) {
+            historyData.forEach((h, index) => {
+                let seasonNum = index + 1;
+                let seasonName = h.season || `الموسم ${seasonNum}`;
+                
+                let winnersHtml = '';
+
+                // التعامل مع مصفوفة الأبطال أياً كان عددهم
+                if (Array.isArray(h.winners) && h.winners.length > 0) {
+                    let cards = h.winners.map(wName => getWinnerCardHtml(wName));
+                    winnersHtml = `<div class="winners-container">${cards.join('')}</div>`;
+                } else if (h.champion || h.winner) {
+                    let singleWinner = h.champion || h.winner;
+                    winnersHtml = getWinnerCardHtml(singleWinner);
+                } else {
+                    winnersHtml = '-';
+                }
+
+                tableHtml += `
+                <tr>
+                    <td class="text-right">
+                        <div class="history-info">
+                            <div class="season-box">${seasonNum}</div>
+                            <span>${seasonName}</span>
+                        </div>
+                    </td>
+                    <td>${winnersHtml}</td>
+                </tr>`;
+            });
+        } else {
+            tableHtml = `
+            <tr>
+                <td colspan="2" style="text-align: center; padding: 20px; color: var(--text-muted);">
+                    لا توجد بيانات مسجلة في السجل الشرفي حالياً
+                </td>
+            </tr>`;
+        }
+        
+        document.getElementById('history-table-body').innerHTML = tableHtml;
+    </script>
+</body>
+</html>
