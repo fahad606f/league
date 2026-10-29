@@ -88,10 +88,10 @@ const DB = {
     ],
 
     semiFinalMatches: [
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 1", score2: 0, status: "pending" },
-        { team1: "الفريق 2", score1: 0, team2: "[متأهل دور 2 - 2]", score2: 0, status: "pending" },
-        { team1: "الفريق 2", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" },
-        { team1: "الفريق 1", score1: 0, team2: "---", score2: 0, status: "pending" }
+        { team1: "الفريق 1", score1: 9, team2: "الفريق 1", score2: 0, status: "finished" },
+        { team1: "الفريق 2", score1: 0, team2: "الفريق 1", score2: 4, status: "finished" },
+        { team1: "الفريق 2", score1: 4, team2: "الفريق 2", score2: 0, status: "finished" },
+        { team1: "الفريق 1", score1: 1, team2: "---", score2: 0, status: "finished" }
     ],
 
     finalMatch: {
