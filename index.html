@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الرئيسية | دوري الأبطال</title>
-    <script src="data.js?v=2041"></script>
+    <script src="data.js?v=2042"></script>
     <style>
         :root {
             --bg-color: #1a233a; 
@@ -431,8 +431,7 @@
                 let teamA = getWinnerAndClass(m1).winner || "[متأهل 1]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[متأهل 2]") : "---";
                 
-                // مطابقة النتائج مع DB.round2Matches فقط إذا كان الطول متطابقاً تماماً مع الدوري الجديد
-                let savedM = (DB.round2Matches && DB.round2Matches.length === Math.ceil(round1.length / 2)) ? DB.round2Matches[Math.floor(i/2)] : null;
+                let savedM = (DB.round2Matches && DB.round2Matches[Math.floor(i/2)]) ? DB.round2Matches[Math.floor(i/2)] : null;
                 if (savedM) {
                     savedM.team1 = teamA;
                     savedM.team2 = teamB;
@@ -442,7 +441,7 @@
                 }
             }
 
-            // توليد نصف النهائي ديناميكياً بالكامل
+            // توليد نصف النهائي ديناميكياً بالكامل بناءً على الدور الثاني
             let semiFinal = [];
             for (let i = 0; i < round2.length; i += 2) {
                 let m1 = round2[i];
@@ -450,7 +449,7 @@
                 let teamA = getWinnerAndClass(m1).winner || "[متأهل دور 2 - 1]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[متأهل دور 2 - 2]") : "---";
                 
-                let savedM = (DB.semiFinalMatches && DB.semiFinalMatches.length === Math.ceil(round2.length / 2)) ? DB.semiFinalMatches[Math.floor(i/2)] : null;
+                let savedM = (DB.semiFinalMatches && DB.semiFinalMatches[Math.floor(i/2)]) ? DB.semiFinalMatches[Math.floor(i/2)] : null;
                 if (savedM) {
                     savedM.team1 = teamA;
                     savedM.team2 = teamB;
@@ -460,7 +459,7 @@
                 }
             }
 
-            // توليد النهائي الكبير تلقائياً
+            // توليد النهائي الكبير تلقائياً بناءً على نصف النهائي
             let finalTeam1 = semiFinal.length > 0 ? (getWinnerAndClass(semiFinal[0]).winner || "[طرف 1]") : "[طرف 1]";
             let finalTeam2 = semiFinal.length > 1 ? (getWinnerAndClass(semiFinal[1]).winner || "[طرف 2]") : "[طرف 2]";
             let finalMatch = DB.finalMatch || { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: 0, score2: 0 };
@@ -485,6 +484,7 @@
                     </div>`;
                 };
 
+                // التعديل الجذري والذكي هنا: توليد البطاقات في الشجرة بناءً على طول المصفوفات الحالية تماماً ودون أي ثبات قديم
                 let r1Html = ""; round1.forEach((m, idx) => { r1Html += renderCard(m, `مباراة ${idx+1}`); });
                 let r2Html = ""; round2.forEach((m, idx) => { r2Html += renderCard(m, `دور 2 - ${idx+1}`); });
                 let sfHtml = ""; semiFinal.forEach((m, idx) => { sfHtml += renderCard(m, `نصف نهائي ${idx+1}`); });
@@ -498,7 +498,7 @@
                 <div class="bracket-scroll-wrapper">
                     <div class="bracket-master-container">
                         <div style="font-size: 10px; color: var(--gold); margin-bottom: 6px; font-weight: bold; text-align: center;">
-                            📊 مسار الأدوار الشجري (متزامن تلقائياً)
+                            📊 مسار الأدوار الشجري (متزامن تلقائياً مع الداتا)
                         </div>
                         <div class="tree-columns-flex">
                             <div class="tree-round-col" style="max-width: 110px;">
