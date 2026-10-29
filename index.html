@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الرئيسية | دوري الأبطال</title>
-    <script src="data.js?v=2042"></script>
+    <script src="data.js?v=4000"></script>
     <style>
         :root {
             --bg-color: #1a233a; 
@@ -342,18 +342,20 @@
     </div>
 
     <script>
-        if(DB.settings.showBanner) {
+        if(DB && DB.settings && DB.settings.showBanner) {
             document.getElementById('ad-banner').style.display = 'block';
             document.getElementById('ad-text').innerText = DB.settings.bannerText;
         }
 
-        document.getElementById('mvp-img').src = DB.lastMvp.image;
-        document.getElementById('mvp-name').innerText = DB.lastMvp.name;
+        if(DB && DB.lastMvp) {
+            document.getElementById('mvp-img').src = DB.lastMvp.image;
+            document.getElementById('mvp-name').innerText = DB.lastMvp.name;
+        }
 
-        let players = DB.players.slice();
+        let players = DB && DB.players ? [...DB.players] : [];
         
         let topScorersHtml = "";
-        let topScorers = players.sort((a, b) => b.goals - a.goals).slice(0, 3);
+        let topScorers = [...players].sort((a, b) => b.goals - a.goals).slice(0, 3);
         topScorers.forEach((p, index) => {
             let rank = index + 1;
             topScorersHtml += `
@@ -369,7 +371,7 @@
         document.getElementById('top-scorers').innerHTML = topScorersHtml;
 
         let topAssistsHtml = "";
-        let topAssists = players.sort((a, b) => b.assists - a.assists).slice(0, 3);
+        let topAssists = [...players].sort((a, b) => b.assists - a.assists).slice(0, 3);
         topAssists.forEach((p, index) => {
             let rank = index + 1;
             topAssistsHtml += `
@@ -410,7 +412,7 @@
         }
 
         function renderMatchesSection() {
-            if (DB.settings.leagueEnded) {
+            if (DB && DB.settings && DB.settings.leagueEnded) {
                 document.getElementById('matches-display-area').innerHTML = `
                     <div class="styled-box" style="padding: 30px 20px; text-align: center; margin-top: 10px;">
                         <div style="color: var(--gold); font-size: 20px; font-weight: bold; line-height: 1.6;">
@@ -421,50 +423,33 @@
                 return;
             }
 
-            let round1 = DB.matches || [];
+            // الاعتماد حصرياً على الدور الأول القادم من ملف data.js فقط
+            let round1 = (DB && DB.matches) ? DB.matches : [];
             
-            // توليد الدور الثاني ديناميكياً بالكامل من نتائج الدور الأول الحالية
+            // توليد الدور الثاني ديناميكياً حصرياً من حجم الدور الأول الحالي
             let round2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
                 let m2 = round1[i+1];
                 let teamA = getWinnerAndClass(m1).winner || "[متأهل 1]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[متأهل 2]") : "---";
-                
-                let savedM = (DB.round2Matches && DB.round2Matches[Math.floor(i/2)]) ? DB.round2Matches[Math.floor(i/2)] : null;
-                if (savedM) {
-                    savedM.team1 = teamA;
-                    savedM.team2 = teamB;
-                    round2.push(savedM);
-                } else {
-                    round2.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
-                }
+                round2.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
             }
 
-            // توليد نصف النهائي ديناميكياً بالكامل بناءً على الدور الثاني
+            // توليد نصف النهائي ديناميكياً حصرياً من الدور الثاني الناتج
             let semiFinal = [];
             for (let i = 0; i < round2.length; i += 2) {
                 let m1 = round2[i];
                 let m2 = round2[i+1];
                 let teamA = getWinnerAndClass(m1).winner || "[متأهل دور 2 - 1]";
                 let teamB = m2 ? (getWinnerAndClass(m2).winner || "[متأهل دور 2 - 2]") : "---";
-                
-                let savedM = (DB.semiFinalMatches && DB.semiFinalMatches[Math.floor(i/2)]) ? DB.semiFinalMatches[Math.floor(i/2)] : null;
-                if (savedM) {
-                    savedM.team1 = teamA;
-                    savedM.team2 = teamB;
-                    semiFinal.push(savedM);
-                } else {
-                    semiFinal.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
-                }
+                semiFinal.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
             }
 
-            // توليد النهائي الكبير تلقائياً بناءً على نصف النهائي
+            // توليد النهائي الكبير ديناميكياً حصرياً من نصف النهائي الناتج
             let finalTeam1 = semiFinal.length > 0 ? (getWinnerAndClass(semiFinal[0]).winner || "[طرف 1]") : "[طرف 1]";
             let finalTeam2 = semiFinal.length > 1 ? (getWinnerAndClass(semiFinal[1]).winner || "[طرف 2]") : "[طرف 2]";
-            let finalMatch = DB.finalMatch || { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: 0, score2: 0 };
-            finalMatch.team1 = finalTeam1;
-            finalMatch.team2 = finalTeam2;
+            let finalMatch = { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: 0, score2: 0 };
 
             let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
             let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
@@ -484,7 +469,6 @@
                     </div>`;
                 };
 
-                // التعديل الجذري والذكي هنا: توليد البطاقات في الشجرة بناءً على طول المصفوفات الحالية تماماً ودون أي ثبات قديم
                 let r1Html = ""; round1.forEach((m, idx) => { r1Html += renderCard(m, `مباراة ${idx+1}`); });
                 let r2Html = ""; round2.forEach((m, idx) => { r2Html += renderCard(m, `دور 2 - ${idx+1}`); });
                 let sfHtml = ""; semiFinal.forEach((m, idx) => { sfHtml += renderCard(m, `نصف نهائي ${idx+1}`); });
@@ -498,7 +482,7 @@
                 <div class="bracket-scroll-wrapper">
                     <div class="bracket-master-container">
                         <div style="font-size: 10px; color: var(--gold); margin-bottom: 6px; font-weight: bold; text-align: center;">
-                            📊 مسار الأدوار الشجري (متزامن تلقائياً مع الداتا)
+                            📊 مسار الأدوار الشجري (يعتمد على الدور الأول من الداتا حصرياً)
                         </div>
                         <div class="tree-columns-flex">
                             <div class="tree-round-col" style="max-width: 110px;">
