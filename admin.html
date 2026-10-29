@@ -207,11 +207,6 @@
             border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;
             white-space: nowrap;
         }
-        .btn-upload {
-            background: #2196F3; color: white; border: none; padding: 10px 14px;
-            border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;
-            white-space: nowrap; display: inline-flex; align-items: center; gap: 5px;
-        }
 
         .action-bar {
             position: sticky; bottom: 10px; text-align: center; background: rgba(36, 52, 86, 0.95);
@@ -299,8 +294,6 @@
         </div>
     </div>
 
-    <input type="file" id="hidden-file-input" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
-
     <script>
         let workingData = {
             settings: { showBanner: true, bannerText: "", leagueEnded: false },
@@ -330,7 +323,6 @@
         if (!workingData.history) workingData.history = [];
 
         let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
-        let activePlayerImageIndex = null;
 
         function checkPin() {
             var pinInput = document.getElementById('pin-input').value.trim();
@@ -379,10 +371,8 @@
                         <button type="button" class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
                     </div>
                     <div class="form-group" style="margin-bottom:10px;">
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة أو مسارها" style="font-size:15px; padding:10px; flex:1;">
-                            <button type="button" class="btn-upload" onclick="triggerImageSelect(${index})">📁 أستوديو</button>
-                        </div>
+                        <label style="font-size:13px; color:var(--text-muted); margin-bottom:4px; display:block;">مسار الصورة (مثال: images/khalid.jpg):</label>
+                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="images/name.jpg" style="font-size:15px; padding:10px; width:100%;">
                     </div>
                     <div class="inputs-row">
                         <div>
@@ -401,31 +391,6 @@
                 </div>`;
             });
             document.getElementById('players-edit-container').innerHTML = playersHtml;
-        }
-
-        function triggerImageSelect(index) {
-            syncFromUIValuesOnly();
-            activePlayerImageIndex = index;
-            document.getElementById('hidden-file-input').click();
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                let base64String = e.target.result;
-                if (activePlayerImageIndex !== null) {
-                    workingData.players[activePlayerImageIndex].image = base64String;
-                    let imgInput = document.getElementById(`p-image-${activePlayerImageIndex}`);
-                    if (imgInput) {
-                        imgInput.value = base64String;
-                    }
-                }
-                event.target.value = "";
-            };
-            reader.readAsDataURL(file);
         }
 
         function handleMvpSelection(selectedIndex) {
@@ -465,7 +430,7 @@
 
         function addPlayer() {
             syncFromUI();
-            workingData.players.unshift({ name: "لاعب جديد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 });
+            workingData.players.unshift({ name: "لاعب جديد", image: "images/default.jpg", goals: 0, assists: 0, mvps: 0 });
             renderPlayers();
         }
 
@@ -599,7 +564,7 @@
         function generateNewDataFile() {
             syncFromUI();
 
-            let fileContent = `// هذا الملف هو قاعدة البيانات الخاصة بك، من هنا تعدل كل شيء في الموقع\n\nconst DB = {\n`;
+            let fileContent = `// قاعدة البيانات\n\nconst DB = {\n`;
             
             fileContent += `    settings: {\n`;
             fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
@@ -627,7 +592,11 @@
             fileContent += `    ],\n\n`;
 
             fileContent += `    history: [\n`;
-            workingData.history.forEach((h, i) => {
+            workingData.history.history ? workingData.history.forEach((h, i) => {
+                let comma = i === workingData.history.length - 1 ? "" : ",";
+                let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
+                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
+            }) : workingData.history.forEach((h, i) => {
                 let comma = i === workingData.history.length - 1 ? "" : ",";
                 let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
                 fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
@@ -639,7 +608,7 @@
                 msg.style.display = 'block';
                 setTimeout(() => { msg.style.display = 'none'; }, 4000);
             }).catch(err => {
-                alert("حدث خطأ أثناء النسخ التلقائي.");
+                alert("حدث خطأ أثناء النسخ.");
             });
         }
     </script>
