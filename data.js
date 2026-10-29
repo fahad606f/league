@@ -77,6 +77,16 @@ const DB = {
         { team1: "الفريق 1", score1: 7, team2: "الفريق 2", score2: 0, status: "finished" }
     ],
 
+    round2Matches: [
+        { team1: "الفريق 1", score1: 1, team2: "الفريق 1", score2: 0, status: "finished" },
+        { team1: "الفريق 2", score1: 0, team2: "الفريق 1", score2: 3, status: "finished" },
+        { team1: "الفريق 2", score1: 4, team2: "الفريق 2", score2: 0, status: "finished" },
+        { team1: "الفريق 1", score1: 5, team2: "الفريق 2", score2: 0, status: "finished" },
+        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 6, status: "finished" },
+        { team1: "الفريق 2", score1: 7, team2: "الفريق 1", score2: 0, status: "finished" },
+        { team1: "الفريق 2", score1: 0, team2: "الفريق 1", score2: 6, status: "finished" }
+    ],
+
     history: [
         { season: "الدوري الرمضاني", winners: ["بسام", "خالد فايز"] },
         { season: "الدوري 1", winners: ["فهد اليامي"] },
