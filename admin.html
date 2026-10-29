@@ -36,6 +36,7 @@
             padding: 25px;
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: block;
         }
         #login-screen h2 { color: var(--gold); margin-bottom: 15px; font-size: 22px; }
         #login-screen p { font-size: 16px; }
@@ -267,7 +268,7 @@
         <div id="error-msg" class="error-msg">الرقم السري غير صحيح!</div>
     </div>
 
-    <div id="admin-panel">
+    <div id="admin-panel" style="display: none;">
         <h1 style="color: var(--gold); text-align: center; margin-bottom: 18px; font-size: 22px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <div class="panel-section">
@@ -363,8 +364,321 @@
 
         let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
 
+        // تفعيل زر Enter في حقل الرمز
         document.addEventListener("DOMContentLoaded", function() {
             const pinBox = document.getElementById('pin-input');
             if (pinBox) {
                 pinBox.addEventListener('keyup', function(event) {
-                    if (
+                    if (event.key === 'Enter') {
+                        checkPin();
+                    }
+                });
+            }
+        });
+
+        function checkPin() {
+            var pinInput = document.getElementById('pin-input').value.trim();
+            if (pinInput === "322332") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                loadAdminData();
+            } else {
+                let errEl = document.getElementById('error-msg');
+                errEl.style.display = 'block';
+                errEl.innerText = "الرقم السري غير صحيح!";
+            }
+        }
+
+        function loadAdminData() {
+            document.getElementById('edit-banner-text').value = workingData.settings.bannerText || "";
+            document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
+            document.getElementById('edit-league-ended').value = workingData.settings.leagueEnded ? "true" : "false";
+
+            renderPlayers();
+            renderMatches();
+            renderHistory();
+        }
+
+        function renderPlayers() {
+            let playersHtml = "";
+            workingData.players.forEach((p, index) => {
+                let isCurrentMvp = (workingData.lastMvp && workingData.lastMvp.name === p.name) ? "checked" : "";
+                playersHtml += `
+                <div class="player-edit-card">
+                    <div class="player-header">
+                        <div style="display:flex; align-items:center; gap:10px; width:75%;">
+                            <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} onchange="handleMvpSelection(${index})" style="cursor:pointer; transform:scale(1.4);">
+                            <input type="text" id="p-name-${index}" value="${p.name || ''}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.3); color:gold; padding:8px; border-radius:8px; font-weight:bold; width:100%; font-size:17px;">
+                        </div>
+                        <button type="button" class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label style="font-size:13px; color:var(--text-muted); margin-bottom:4px; display:block;">مسار الصورة (مثال: images/khalid.jpg):</label>
+                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="images/name.jpg" style="font-size:15px; padding:10px; width:100%;">
+                    </div>
+                    <div class="inputs-row">
+                        <div><label>أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals || 0}"></div>
+                        <div><label>صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists || 0}"></div>
+                        <div><label>MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps || 0}"></div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('players-edit-container').innerHTML = playersHtml;
+        }
+
+        function handleMvpSelection(selectedIndex) {
+            syncFromUIValuesOnly();
+            let selectedPlayer = workingData.players[selectedIndex];
+            if (previousMvpName === selectedPlayer.name) return;
+            if (previousMvpName) {
+                let oldMvp = workingData.players.find(p => p.name === previousMvpName);
+                if (oldMvp && oldMvp.mvps > 0) oldMvp.mvps -= 1;
+            }
+            selectedPlayer.mvps += 1;
+            previousMvpName = selectedPlayer.name;
+            renderPlayers();
+        }
+
+        function syncFromUIValuesOnly() {
+            workingData.players.forEach((p, index) => {
+                let nameEl = document.getElementById(`p-name-${index}`);
+                let imgEl = document.getElementById(`p-image-${index}`);
+                let goalsEl = document.getElementById(`p-goals-${index}`);
+                let assistsEl = document.getElementById(`p-assists-${index}`);
+                let mvpsEl = document.getElementById(`p-mvps-${index}`);
+
+                if (nameEl) p.name = nameEl.value;
+                if (imgEl) p.image = imgEl.value;
+                if (goalsEl) p.goals = parseInt(goalsEl.value) || 0;
+                if (assistsEl) p.assists = parseInt(assistsEl.value) || 0;
+                if (mvpsEl) p.mvps = parseInt(mvpsEl.value) || 0;
+            });
+        }
+
+        function addPlayer() {
+            syncFromUI();
+            workingData.players.unshift({ name: "لاعب جديد", image: "images/default.jpg", goals: 0, assists: 0, mvps: 0 });
+            renderPlayers();
+        }
+
+        function deletePlayer(index) {
+            syncFromUI();
+            workingData.players.splice(index, 1);
+            renderPlayers();
+        }
+
+        function getMatchWinner(matchObj) {
+            if (!matchObj || matchObj.status !== 'finished') return null;
+            if (matchObj.score1 > matchObj.score2) return matchObj.team1;
+            if (matchObj.score2 > matchObj.score1) return matchObj.team2;
+            return null;
+        }
+
+        function renderMatches() {
+            let round1 = workingData.matches || [];
+            let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
+
+            let calcRound2 = [];
+            for (let i = 0; i < round1.length; i += 2) {
+                let m1 = round1[i];
+                let m2 = round1[i+1];
+                let teamA = getMatchWinner(m1) || "[متأهل 1]";
+                let teamB = m2 ? (getMatchWinner(m2) || "[متأهل 2]") : "---";
+                
+                let existing = workingData.round2Matches && workingData.round2Matches[i/2];
+                if (existing) {
+                    existing.team1 = teamA;
+                    existing.team2 = teamB;
+                    calcRound2.push(existing);
+                } else {
+                    calcRound2.push({ team1: teamA, team2: teamB, score1: 0, score2: 0, status: 'pending' });
+                }
+            }
+            workingData.round2Matches = calcRound2;
+            let isRound2Complete = calcRound2.length > 0 && calcRound2.every(m => m.status === 'finished');
+
+            let finalTeam1 = calcRound2.length > 0 ? (getMatchWinner(calcRound2[0]) || "[طرف 1]") : "[طرف 1]";
+            let finalTeam2 = calcRound2.length > 1 ? (getMatchWinner(calcRound2[1]) || "[طرف 2]") : "[طرف 2]";
+            
+            if (!workingData.finalMatch) {
+                workingData.finalMatch = { team1: finalTeam1, team2: finalTeam2, score1: 0, score2: 0, status: 'pending' };
+            } else {
+                workingData.finalMatch.team1 = finalTeam1;
+                workingData.finalMatch.team2 = finalTeam2;
+            }
+
+            let matchesHtml = "";
+
+            if (!isRound1Complete) {
+                round1.forEach((m, index) => {
+                    matchesHtml += `
+                    <div class="item-card">
+                        <div style="font-size:13px; color:var(--text-muted); margin-bottom:6px;">مباراة رقم ${index + 1} (الدور الأول)</div>
+                        <div class="match-card-grid">
+                            <div class="team-box"><input type="text" id="m-team1-${index}" value="${m.team1 || ''}"><input type="number" id="m-score1-${index}" value="${m.score1 || 0}"></div>
+                            <div class="match-center-info"><span>VS</span></div>
+                            <div class="team-box"><input type="text" id="m-team2-${index}" value="${m.team2 || ''}"><input type="number" id="m-score2-${index}" value="${m.score2 || 0}"></div>
+                        </div>
+                        <div class="match-bottom-row">
+                            <select id="m-status-${index}"><option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option></select>
+                            <button type="button" class="btn-delete" onclick="deleteMatch(${index})">حذف</button>
+                        </div>
+                    </div>`;
+                });
+            } else if (!isRound2Complete) {
+                matchesHtml += `<div style="color:var(--gold); font-size:14px; margin-bottom:10px; font-weight:bold;">✨ الدور الأول مكتمل! إدارة مباريات الدور الثاني:</div>`;
+                workingData.round2Matches.forEach((m, index) => {
+                    matchesHtml += `
+                    <div class="item-card" style="border: 1px dashed var(--gold);">
+                        <div style="font-size:13px; color:var(--gold); margin-bottom:6px;">مباراة رقم ${index + 1} (الدور الثاني)</div>
+                        <div class="match-card-grid">
+                            <div class="team-box"><input type="text" value="${m.team1 || ''}" readonly style="color:var(--gold);"><input type="number" id="r2-score1-${index}" value="${m.score1 || 0}"></div>
+                            <div class="match-center-info"><span>VS</span></div>
+                            <div class="team-box"><input type="text" value="${m.team2 || ''}" readonly style="color:var(--gold);"><input type="number" id="r2-score2-${index}" value="${m.score2 || 0}"></div>
+                        </div>
+                        <div class="match-bottom-row">
+                            <select id="r2-status-${index}"><option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option></select>
+                        </div>
+                    </div>`;
+                });
+            } else {
+                let fm = workingData.finalMatch;
+                matchesHtml += `
+                <div class="item-card" style="border: 2px solid var(--gold); background: rgba(55,40,85,0.9);">
+                    <div style="font-size:15px; color:var(--gold); margin-bottom:6px; font-weight:bold;">🏆 النهائي الكبير</div>
+                    <div class="match-card-grid">
+                        <div class="team-box"><input type="text" value="${fm.team1 || ''}" readonly style="color:var(--gold);"><input type="number" id="f-score1" value="${fm.score1 || 0}"></div>
+                        <div class="match-center-info"><span>VS</span></div>
+                        <div class="team-box"><input type="text" value="${fm.team2 || ''}" readonly style="color:var(--gold);"><input type="number" id="f-score2" value="${fm.score2 || 0}"></div>
+                    </div>
+                    <div class="match-bottom-row">
+                        <select id="f-status"><option value="pending" ${fm.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${fm.status==='finished'?'selected':''}>انتهت</option></select>
+                    </div>
+                </div>`;
+            }
+
+            document.getElementById('matches-edit-container').innerHTML = matchesHtml;
+        }
+
+        function addMatch() {
+            syncFromUI();
+            workingData.matches.push({ team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" });
+            renderMatches();
+        }
+
+        function deleteMatch(index) {
+            syncFromUI();
+            workingData.matches.splice(index, 1);
+            renderMatches();
+        }
+
+        function renderHistory() {
+            let historyHtml = "";
+            workingData.history.forEach((h, hIndex) => {
+                let winnersList = h.winners ? h.winners.join(", ") : "";
+                historyHtml += `
+                <div class="item-card">
+                    <div class="row-flex" style="margin-bottom:10px;">
+                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season || ''}" placeholder="اسم البطولة">
+                        <button type="button" class="btn-delete" onclick="deleteHistory(${hIndex})">حذف</button>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="الأبطال (مثال: بسام, خالد)" style="width:100%; max-width:none;">
+                    </div>
+                </div>`;
+            });
+            document.getElementById('history-edit-container').innerHTML = historyHtml;
+        }
+
+        function addHistorySeason() {
+            syncFromUI();
+            workingData.history.push({ season: "بطولة جديدة", winners: ["اسم البطل"] });
+            renderHistory();
+        }
+
+        function deleteHistory(index) {
+            syncFromUI();
+            workingData.history.splice(index, 1);
+            renderHistory();
+        }
+
+        function syncFromUI() {
+            workingData.settings.bannerText = document.getElementById('edit-banner-text').value;
+            workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
+            workingData.settings.leagueEnded = document.getElementById('edit-league-ended').value === "true";
+
+            syncFromUIValuesOnly();
+
+            workingData.players.forEach((p, index) => {
+                let radioEl = document.getElementById(`mvp-radio-${index}`);
+                if (radioEl && radioEl.checked) {
+                    workingData.lastMvp = { name: p.name, image: p.image };
+                    previousMvpName = p.name;
+                }
+            });
+
+            let round1 = workingData.matches || [];
+            let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
+            let round2 = workingData.round2Matches || [];
+            let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
+
+            if (!isRound1Complete) {
+                workingData.matches.forEach((m, index) => {
+                    let t1 = document.getElementById(`m-team1-${index}`);
+                    let s1 = document.getElementById(`m-score1-${index}`);
+                    let s2 = document.getElementById(`m-score2-${index}`);
+                    let t2 = document.getElementById(`m-team2-${index}`);
+                    let st = document.getElementById(`m-status-${index}`);
+
+                    if(t1) m.team1 = t1.value;
+                    if(s1) m.score1 = parseInt(s1.value) || 0;
+                    if(s2) m.score2 = parseInt(s2.value) || 0;
+                    if(t2) m.team2 = t2.value;
+                    if(st) m.status = st.value;
+                });
+            } else if (!isRound2Complete) {
+                if (workingData.round2Matches) {
+                    workingData.round2Matches.forEach((m, index) => {
+                        let s1 = document.getElementById(`r2-score1-${index}`);
+                        let s2 = document.getElementById(`r2-score2-${index}`);
+                        let st = document.getElementById(`r2-status-${index}`);
+
+                        if(s1) m.score1 = parseInt(s1.value) || 0;
+                        if(s2) m.score2 = parseInt(s2.value) || 0;
+                        if(st) m.status = st.value;
+                    });
+                }
+            } else {
+                if (workingData.finalMatch) {
+                    let s1 = document.getElementById(`f-score1`);
+                    let s2 = document.getElementById(`f-score2`);
+                    let st = document.getElementById(`f-status`);
+
+                    if(s1) workingData.finalMatch.score1 = parseInt(s1.value) || 0;
+                    if(s2) workingData.finalMatch.score2 = parseInt(s2.value) || 0;
+                    if(st) workingData.finalMatch.status = st.value;
+                    if(workingData.finalMatch.status === 'finished') workingData.settings.leagueEnded = true;
+                }
+            }
+
+            workingData.history.forEach((h, hIndex) => {
+                let seasonEl = document.getElementById(`h-season-${hIndex}`);
+                let winnersEl = document.getElementById(`h-winners-${hIndex}`);
+
+                if(seasonEl) h.season = seasonEl.value;
+                if(winnersEl) {
+                    let rawWinners = winnersEl.value;
+                    h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
+                }
+            });
+        }
+
+        function generateNewDataFile() {
+            syncFromUI();
+
+            let fileContent = `// قاعدة البيانات\n\nconst DB = {\n`;
+            
+            fileContent += `    settings: {\n`;
+            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
+            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
+            fileContent += 
