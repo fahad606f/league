@@ -22,7 +22,7 @@
             color: var(--text-main);
             margin: 0; padding: 15px 10px; text-align: center;
             box-sizing: border-box;
-            font-size: 18px; /* تكبير الخط العام للرؤية الواضحة */
+            font-size: 18px;
         }
 
         *, *::before, *::after {
@@ -49,7 +49,6 @@
         }
         .error-msg { color: var(--red); font-size: 16px; margin-top: 10px; display: none; }
 
-        /* هوامش جانبية واضحة */
         #admin-panel { display: none; max-width: 420px; margin: 0 auto; text-align: right; width: 100%; padding: 0 5px; }
         
         .panel-section {
@@ -70,7 +69,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            font-size: 19px; /* تكبير عناوين الأقسام الرئيسية */
+            font-size: 19px; 
             flex-wrap: wrap;
             gap: 6px;
         }
@@ -86,11 +85,10 @@
         .players-grid {
             display: flex;
             flex-direction: column;
-            gap: 18px; /* مسافة مريحة وفاصلة بين كل لاعب والآخر */
+            gap: 18px;
             width: 100%;
         }
 
-        /* بطاقة لاعب بارتفاع وخطوط واضحة جداً */
         .player-edit-card {
             background: rgba(0,0,0,0.22);
             padding: 16px;
@@ -123,7 +121,6 @@
             width: 100%;
         }
 
-        /* تنسيق المواجهات المنظم بخطوط واضحة */
         .match-card-grid {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -209,6 +206,11 @@
             background: var(--red); color: white; border: none; padding: 10px 16px;
             border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;
             white-space: nowrap;
+        }
+        .btn-upload {
+            background: #2196F3; color: white; border: none; padding: 8px 12px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px;
+            white-space: nowrap; display: inline-flex; align-items: center; gap: 5px;
         }
 
         .action-bar {
@@ -303,6 +305,9 @@
         </div>
     </div>
 
+    <!-- عنصر مخفي لفتح أستوديو الجوال لاختيار الصور -->
+    <input type="file" id="hidden-file-input" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+
     <script>
         let workingData = {
             settings: { showBanner: true, bannerText: "", leagueEnded: false },
@@ -332,6 +337,7 @@
         if (!workingData.history) workingData.history = [];
 
         let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
+        let activePlayerImageIndex = null;
 
         function checkPin() {
             var pinInput = document.getElementById('pin-input').value.trim();
@@ -380,7 +386,10 @@
                         <button type="button" class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
                     </div>
                     <div class="form-group" style="margin-bottom:10px;">
-                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة" style="font-size:15px; padding:8px; width:100%; max-width:none;">
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة أو مسارها" style="font-size:15px; padding:8px; flex:1;">
+                            <button type="button" class="btn-upload" onclick="triggerImageSelect(${index})">📁 أستوديو</button>
+                        </div>
                     </div>
                     <div class="inputs-row">
                         <div>
@@ -399,6 +408,31 @@
                 </div>`;
             });
             document.getElementById('players-edit-container').innerHTML = playersHtml;
+        }
+
+        function triggerImageSelect(index) {
+            syncFromUIValuesOnly();
+            activePlayerImageIndex = index;
+            document.getElementById('hidden-file-input').click();
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let base64String = e.target.result;
+                if (activePlayerImageIndex !== null) {
+                    workingData.players[activePlayerImageIndex].image = base64String;
+                    let imgInput = document.getElementById(`p-image-${activePlayerImageIndex}`);
+                    if (imgInput) {
+                        imgInput.value = base64String;
+                    }
+                }
+                event.target.value = "";
+            };
+            reader.readAsDataURL(file);
         }
 
         function handleMvpSelection(selectedIndex) {
@@ -423,8 +457,10 @@
         function syncFromUIValuesOnly() {
             workingData.players.forEach((p, index) => {
                 let nameEl = document.getElementById(`p-name-${index}`);
-                let imgEl = document.getElementById(`p-image-${index}`); let goalsEl = document.getElementById(`p-goals-${index}`);
-                let assistsEl = document.getElementById(`p-assists-${index}`); let mvpsEl = document.getElementById(`p-mvps-${index}`);
+                let imgEl = document.getElementById(`p-image-${index}`);
+                let goalsEl = document.getElementById(`p-goals-${index}`);
+                let assistsEl = document.getElementById(`p-assists-${index}`);
+                let mvpsEl = document.getElementById(`p-mvps-${index}`);
 
                 if (nameEl) p.name = nameEl.value;
                 if (imgEl) p.image = imgEl.value;
@@ -531,4 +567,88 @@
             syncFromUIValuesOnly();
 
             workingData.players.forEach((p, index) => {
-                let radioEl = document.getElementById(`mvp
+                let radioEl = document.getElementById(`mvp-radio-${index}`);
+                if (radioEl && radioEl.checked) {
+                    workingData.lastMvp = {
+                        name: p.name,
+                        image: p.image
+                    };
+                    previousMvpName = p.name;
+                }
+            });
+
+            workingData.matches.forEach((m, index) => {
+                let t1 = document.getElementById(`m-team1-${index}`);
+                let s1 = document.getElementById(`m-score1-${index}`);
+                let s2 = document.getElementById(`m-score2-${index}`);
+                let t2 = document.getElementById(`m-team2-${index}`);
+                let st = document.getElementById(`m-status-${index}`);
+
+                if(t1) m.team1 = t1.value;
+                if(s1) m.score1 = parseInt(s1.value) || 0;
+                if(s2) m.score2 = parseInt(s2.value) || 0;
+                if(t2) m.team2 = t2.value;
+                if(st) m.status = st.value;
+            });
+
+            workingData.history.forEach((h, hIndex) => {
+                let seasonEl = document.getElementById(`h-season-${hIndex}`);
+                let winnersEl = document.getElementById(`h-winners-${hIndex}`);
+
+                if(seasonEl) h.season = seasonEl.value;
+                if(winnersEl) {
+                    let rawWinners = winnersEl.value;
+                    h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
+                }
+            });
+        }
+
+        function generateNewDataFile() {
+            syncFromUI();
+
+            let fileContent = `// هذا الملف هو قاعدة البيانات الخاصة بك، من هنا تعدل كل شيء في الموقع\n\nconst DB = {\n`;
+            
+            fileContent += `    settings: {\n`;
+            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
+            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
+            fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
+            fileContent += `    },\n\n`;
+
+            fileContent += `    lastMvp: {\n`;
+            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
+            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
+            fileContent += `    },\n\n`;
+
+            fileContent += `    players: [\n`;
+            workingData.players.forEach((p, i) => {
+                let comma = i === workingData.players.length - 1 ? "" : ",";
+                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
+            });
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    matches: [\n`;
+            workingData.matches.forEach((m, i) => {
+                let comma = i === workingData.matches.length - 1 ? "" : ",";
+                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
+            });
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    history: [\n`;
+            workingData.history.forEach((h, i) => {
+                let comma = i === workingData.history.length - 1 ? "" : ",";
+                let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
+                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
+            });
+            fileContent += `    ]\n};`;
+
+            navigator.clipboard.writeText(fileContent).then(() => {
+                let msg = document.getElementById('success-msg');
+                msg.style.display = 'block';
+                setTimeout(() => { msg.style.display = 'none'; }, 4000);
+            }).catch(err => {
+                alert("حدث خطأ أثناء النسخ التلقائي.");
+            });
+        }
+    </script>
+</body>
+</html>
