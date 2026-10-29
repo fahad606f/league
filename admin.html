@@ -75,8 +75,9 @@
         .form-group { margin-bottom: 10px; }
         .form-group label { display: block; margin-bottom: 4px; font-size: 14px; color: var(--text-muted); }
         
+        /* تقليص عرض الحقول والمربعات بنسبة 38% إضافية لتكون نحيفة وأنيقة */
         .form-group input, .form-group select {
-            width: 65%; max-width: 280px; padding: 7px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
+            width: 40%; max-width: 180px; padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
             background: rgba(0,0,0,0.2); color: white; font-size: 15px; font-family: inherit;
         }
 
@@ -124,7 +125,7 @@
 
         .match-row-grid {
             display: grid;
-            grid-template-columns: 1fr 0.5fr 20px 0.5fr 1fr 0.8fr auto;
+            grid-template-columns: 1fr 0.4fr 15px 0.4fr 1fr 0.7fr auto;
             gap: 4px;
             align-items: center;
             width: 100%;
@@ -213,7 +214,7 @@
             <h3>📢 إعدادات الإعلان (البنر)</h3>
             <div class="form-group">
                 <label>نص الإعلان المتحرك:</label>
-                <input type="text" id="edit-banner-text">
+                <input type="text" id="edit-banner-text" style="width: 75%; max-width: none;">
             </div>
             <div class="form-group">
                 <label>حالة الإعلان:</label>
@@ -272,7 +273,6 @@
     </div>
 
     <script>
-        // التأكد من تحميل البيانات بأمان تام بدون توقف
         let workingData = {
             settings: { showBanner: true, bannerText: "", leagueEnded: false },
             lastMvp: { name: "", image: "" },
@@ -286,7 +286,7 @@
                 workingData = JSON.parse(JSON.stringify(DB));
             }
         } catch (e) {
-            console.log("خطأ في قراءة ملف data.js، سيتم استخدام بيانات افتراضية.");
+            console.log("خطأ في قراءة ملف data.js");
         }
 
         if (workingData.settings.leagueEnded === undefined) {
@@ -386,7 +386,8 @@
 
         function addPlayer() {
             syncFromUI();
-            workingData.players.push({ name: "لاعب جديد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 });
+            // إضافة اللاعب الجديد في أول المصفوفة (الأعلى) لسهولة التعديل
+            workingData.players.unshift({ name: "لاعب جديد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 });
             renderPlayers();
         }
 
