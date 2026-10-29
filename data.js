@@ -61,44 +61,9 @@ const DB = {
     ],
 
     matches: [
-        { team1: "الفريق 1", score1: 1, team2: "الفريق 2", score2: 0, status: "finished" },
-        { team1: "الفريق 1", score1: 2, team2: "الفريق 2", score2: 0, status: "finished" },
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 4, status: "finished" },
-        { team1: "الفريق 1", score1: 3, team2: "الفريق 2", score2: 0, status: "finished" },
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 1, status: "finished" },
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 1, status: "finished" },
-        { team1: "الفريق 1", score1: 6, team2: "الفريق 2", score2: 0, status: "finished" },
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 5, status: "finished" },
-        { team1: "الفريق 1", score1: 6, team2: "الفريق 2", score2: 0, status: "finished" },
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 2, status: "finished" },
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 4, status: "finished" },
-        { team1: "الفريق 1", score1: 5, team2: "الفريق 2", score2: 0, status: "finished" },
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 6, status: "finished" },
-        { team1: "الفريق 1", score1: 7, team2: "الفريق 2", score2: 0, status: "finished" }
-    ],
+          ],
 
-    round2Matches: [
-        { team1: "الفريق 1", score1: 1, team2: "الفريق 1", score2: 0, status: "finished" },
-        { team1: "الفريق 2", score1: 0, team2: "الفريق 1", score2: 3, status: "finished" },
-        { team1: "الفريق 2", score1: 4, team2: "الفريق 2", score2: 0, status: "finished" },
-        { team1: "الفريق 1", score1: 2, team2: "الفريق 2", score2: 0, status: "finished" },
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 6, status: "finished" },
-        { team1: "الفريق 2", score1: 7, team2: "الفريق 1", score2: 0, status: "finished" },
-        { team1: "الفريق 2", score1: 0, team2: "الفريق 1", score2: 6, status: "finished" }
-    ],
-
-    semiFinalMatches: [
-        { team1: "الفريق 1", score1: 0, team2: "الفريق 1", score2: 0, status: "pending" },
-        { team1: "الفريق 2", score1: 0, team2: "الفريق 1", score2: 0, status: "pending" },
-        { team1: "الفريق 2", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" },
-        { team1: "الفريق 1", score1: 0, team2: "---", score2: 0, status: "pending" }
-    ],
-
-    finalMatch: {
-        team1: "[طرف 1]", score1: 0,
-        team2: "[طرف 2]", score2: 0,
-        status: "pending"
-    },
+    
 
     history: [
         { season: "الدوري الرمضاني", winners: ["بسام", "خالد فايز"] },
