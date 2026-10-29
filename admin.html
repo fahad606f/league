@@ -20,7 +20,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            margin: 0; padding: 20px; text-align: center;
+            margin: 0; padding: 10px; text-align: center;
+            box-sizing: border-box;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
         #login-screen {
@@ -42,110 +47,150 @@
         }
         .error-msg { color: var(--red); font-size: 14px; margin-top: 10px; display: none; }
 
-        #admin-panel { display: none; max-width: 850px; margin: 0 auto; text-align: right; }
+        #admin-panel { display: none; max-width: 850px; margin: 0 auto; text-align: right; width: 100%; }
         
         .panel-section {
             background-color: var(--card-bg);
             border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 100%;
+            overflow: hidden;
         }
-        .panel-section h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .panel-section h3 { 
+            color: var(--gold); 
+            margin-top: 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            padding-bottom: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 17px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: var(--text-muted); }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-muted); }
         .form-group input, .form-group select {
-            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; font-size: 15px; box-sizing: border-box;
+            width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; font-size: 14px;
         }
 
+        /* تعديل شبكة اللاعبين لتناسب الجوال بشكل مرتب داخل الإطار */
         .players-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            width: 100%;
         }
+        @media (min-width: 600px) {
+            .players-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         .player-edit-card {
             background: rgba(0,0,0,0.15);
-            padding: 12px;
+            padding: 10px;
             border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.05);
+            width: 100%;
         }
         .player-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            gap: 5px;
         }
-        .player-edit-card h4 { margin: 0; color: var(--gold); font-size: 16px; }
-        .inputs-row { display: flex; gap: 10px; }
-        .inputs-row div { flex: 1; }
+        .inputs-row { display: flex; gap: 6px; width: 100%; }
+        .inputs-row div { flex: 1; min-width: 0; }
         .inputs-row input {
-            width: 100%; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; text-align: center; box-sizing: border-box;
+            width: 100%; padding: 6px 2px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 13px;
         }
 
         .item-card {
             background: rgba(0,0,0,0.2);
-            padding: 12px;
+            padding: 10px;
             border-radius: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             border: 1px solid rgba(255,255,255,0.05);
+            width: 100%;
         }
 
-        .match-row-compact {
-            display: flex;
-            gap: 6px;
+        /* تنسيق مرن ومضبوط لقسم المواجهات ليبقى داخل الإطار تماماً */
+        .match-row-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 0.8fr 30px 0.8fr 1.5fr 1.1fr auto;
+            gap: 5px;
             align-items: center;
-            margin-bottom: 8px;
+            width: 100%;
         }
-        .match-row-compact input[type="text"] {
-            flex: 2; padding: 6px 8px; font-size: 13px; height: 34px;
+        @media (max-width: 768px) {
+            .match-row-grid {
+                grid-template-columns: 1fr 35px 1fr;
+                gap: 8px;
+            }
+            .match-row-grid input[type="text"]:nth-of-type(1) { grid-column: 1 / -1; }
+            .match-row-grid input[type="text"]:nth-of-type(2) { grid-column: 1 / -1; }
+            .match-row-grid select { grid-column: span 2; }
+            .match-row-grid .btn-delete { grid-column: span 1; }
         }
-        .match-row-compact input[type="number"] {
-            flex: 0.8; padding: 6px; font-size: 13px; text-align: center; height: 34px;
+
+        .match-row-grid input, .match-row-grid select {
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid rgba(255,255,255,0.2); 
+            color: white;
+            padding: 6px; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            width: 100%;
+            text-align: center;
         }
-        .match-row-compact select {
-            flex: 1.2; padding: 6px; font-size: 13px; height: 34px;
-        }
-        .match-row-compact span {
-            font-weight: bold; font-size: 13px; padding: 0 2px;
-        }
-        .match-row-compact input, .match-row-compact select {
-            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; box-sizing: border-box;
+        .match-row-grid input[type="text"] {
+            text-align: right;
+            padding-right: 8px;
         }
 
         .row-flex {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            width: 100%;
         }
         .row-flex input, .row-flex select {
             background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
-            padding: 8px; border-radius: 6px; font-size: 14px; box-sizing: border-box;
+            padding: 8px; border-radius: 6px; font-size: 13px; width: 100%;
         }
 
         .btn-add {
-            background: var(--score-bg); color: white; border: none; padding: 8px 15px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
+            background: var(--score-bg); color: white; border: none; padding: 6px 12px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;
+            white-space: nowrap;
         }
         .btn-delete {
             background: var(--red); color: white; border: none; padding: 6px 10px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; height: 34px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;
+            white-space: nowrap;
         }
 
         .action-bar {
-            position: sticky; bottom: 20px; text-align: center; background: rgba(36, 52, 86, 0.95);
-            padding: 15px; border-radius: 12px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5); z-index: 100;
+            position: sticky; bottom: 15px; text-align: center; background: rgba(36, 52, 86, 0.95);
+            padding: 12px; border-radius: 12px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5); z-index: 100;
+            width: 100%;
         }
         .save-btn {
-            background: var(--green); color: white; padding: 12px 30px; font-size: 18px;
+            background: var(--green); color: white; padding: 10px 20px; font-size: 16px;
             font-weight: bold; border: none; border-radius: 10px; cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 350px;
         }
-        .save-btn:hover { background: #45a049; }
-        .success-alert { color: var(--green); font-weight: bold; margin-top: 10px; display: none; }
+        .success-alert { color: var(--green); font-weight: bold; margin-top: 8px; display: none; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -160,7 +205,7 @@
     </div>
 
     <div id="admin-panel">
-        <h1 style="color: var(--gold); text-align: center; margin-bottom: 25px;">⚙️ لوحة إدارة دوري الأبطال</h1>
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 20px; font-size: 22px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <!-- 1. البنر -->
         <div class="panel-section">
@@ -207,7 +252,7 @@
         <div class="panel-section">
             <h3>
                 <span>👥 إحصائيات اللاعبين</span>
-                <button class="btn-add" onclick="addPlayer()">➕ إضافة لاعب جديد</button>
+                <button class="btn-add" onclick="addPlayer()">➕ إضافة لاعب</button>
             </h3>
             <div class="players-grid" id="players-edit-container"></div>
         </div>
@@ -216,7 +261,7 @@
         <div class="panel-section">
             <h3>
                 <span>⚔️ إدارة المواجهات</span>
-                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة جديدة</button>
+                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة</button>
             </h3>
             <div id="matches-edit-container"></div>
         </div>
@@ -225,7 +270,7 @@
         <div class="panel-section">
             <h3>
                 <span>🏆 السجل الشرفي والبطولات</span>
-                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة جديدة</button>
+                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة</button>
             </h3>
             <div id="history-edit-container"></div>
         </div>
@@ -250,7 +295,6 @@
 
         let workingData = JSON.parse(JSON.stringify(DB));
 
-        // التأكد من وجود قيمة leagueEnded في الس إعدادات افتراضياً
         if (workingData.settings.leagueEnded === undefined) {
             workingData.settings.leagueEnded = false;
         }
@@ -268,23 +312,22 @@
             renderHistory();
         }
 
-        // عرض اللاعبين
         function renderPlayers() {
             let playersHtml = "";
             workingData.players.forEach((p, index) => {
                 playersHtml += `
                 <div class="player-edit-card">
                     <div class="player-header">
-                        <h4><input type="text" id="p-name-${index}" value="${p.name}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:gold; padding:4px; border-radius:4px; font-weight:bold; width:130px;"></h4>
+                        <input type="text" id="p-name-${index}" value="${p.name}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:gold; padding:4px; border-radius:4px; font-weight:bold; width:70%; font-size:13px;">
                         <button class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
                     </div>
-                    <div class="form-group" style="margin-bottom:8px;">
-                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط أو مسار الصورة" style="font-size:11px; padding:4px;">
+                    <div class="form-group" style="margin-bottom:6px;">
+                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة" style="font-size:11px; padding:4px;">
                     </div>
                     <div class="inputs-row">
-                        <div><label style="font-size:11px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals}"></div>
-                        <div><label style="font-size:11px">صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists}"></div>
-                        <div><label style="font-size:11px">MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps}"></div>
+                        <div><label style="font-size:10px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals}"></div>
+                        <div><label style="font-size:10px">صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists}"></div>
+                        <div><label style="font-size:10px">MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps}"></div>
                     </div>
                 </div>`;
             });
@@ -303,16 +346,15 @@
             renderPlayers();
         }
 
-        // عرض المباريات
         function renderMatches() {
             let matchesHtml = "";
             workingData.matches.forEach((m, index) => {
                 matchesHtml += `
                 <div class="item-card">
-                    <div class="match-row-compact">
+                    <div class="match-row-grid">
                         <input type="text" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق الأول">
                         <input type="number" id="m-score1-${index}" value="${m.score1}">
-                        <span>VS</span>
+                        <span style="font-weight:bold; text-align:center; font-size:12px;">VS</span>
                         <input type="number" id="m-score2-${index}" value="${m.score2}">
                         <input type="text" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق الثاني">
                         <select id="m-status-${index}">
@@ -338,21 +380,20 @@
             renderMatches();
         }
 
-        // عرض السجل الشرفي
         function renderHistory() {
             let historyHtml = "";
             workingData.history.forEach((h, hIndex) => {
                 let winnersList = h.winners ? h.winners.join(", ") : "";
                 historyHtml += `
                 <div class="item-card">
-                    <div class="row-flex" style="margin-bottom:10px;">
-                        <input type="text" style="flex:3" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة أو الموسم">
+                    <div class="row-flex" style="margin-bottom:6px;">
+                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة">
                         <button class="btn-delete" onclick="deleteHistory(${hIndex})">حذف البطولة</button>
                     </div>
-                    <div class="row-flex">
-                        <input type="text" style="flex:1" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال مفصولة بفواصل (مثال: بسام, خالد فايز)">
+                    <div class="form-group" style="margin-bottom:4px;">
+                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال بفواصل (مثال: بسام, خالد)">
                     </div>
-                    <small style="color:var(--text-muted)">اكتب أسماء الأبطال وافصل بينهم بـ (فاصلة) ليظهروا كأبطال للبطولة.</small>
+                    <small style="color:var(--text-muted); font-size:11px;">افصل بين أسماء الأبطال بـ (فاصلة).</small>
                 </div>`;
             });
             document.getElementById('history-edit-container').innerHTML = historyHtml;
@@ -370,7 +411,6 @@
             renderHistory();
         }
 
-        // سحب البيانات من الحقول لواجهة الذاكرة
         function syncFromUI() {
             workingData.settings.bannerText = document.getElementById('edit-banner-text').value;
             workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
@@ -402,7 +442,6 @@
             });
         }
 
-        // توليد الكود النهائي ونسخه
         function generateNewDataFile() {
             syncFromUI();
 
@@ -434,7 +473,6 @@
             fileContent += `    ],\n\n`;
 
             fileContent += `    history: [\n`;
-            workingData.history.history?.forEach ? "" : ""; // safe fallback
             workingData.history.forEach((h, i) => {
                 let comma = i === workingData.history.length - 1 ? "" : ",";
                 let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
