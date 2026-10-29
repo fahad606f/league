@@ -79,7 +79,6 @@
             border-radius: 10px; font-weight: bold; font-size: 14px;
         }
 
-        /* نافذة تسجيل الدخول بالرقم السري */
         #auth-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(26, 35, 58, 0.95); z-index: 9999;
@@ -104,7 +103,6 @@
 </head>
 <body>
 
-    <!-- نافذة الحماية بالرقم السري -->
     <div id="auth-overlay">
         <div class="auth-card">
             <h3 style="color: var(--gold); margin-top: 0;">🔒 لوحة التحكم</h3>
@@ -127,7 +125,6 @@
     </div>
 
     <script>
-        // التحقق من الرقم السري 322332
         function checkPin() {
             let enteredPin = document.getElementById('pin-input').value;
             if (enteredPin === "322332") {
@@ -139,7 +136,6 @@
             }
         }
 
-        // دالة معرفة الفائز من المباراة
         function getMatchWinner(matchObj) {
             if (!matchObj || matchObj.status !== 'finished') return null;
             if (matchObj.score1 > matchObj.score2) return matchObj.team1;
@@ -148,17 +144,24 @@
         }
 
         function renderAdminMatches() {
-            let round1 = DB.matches || [];
-            
-            // توليد الدور الثاني تلقائياً
+            if (typeof DB === 'undefined' || !DB.matches) {
+                document.getElementById('admin-matches-area').innerHTML = `
+                    <div class="styled-box"><p style="color:var(--red);">خطأ في بيانات المباريات</p></div>`;
+                return;
+            }
+
+            let round1 = DB.matches;
+            let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
+
+            // تجهيز الدور الثاني
+            if (!DB.round2Matches) DB.round2Matches = [];
             let round2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
                 let m2 = round1[i+1];
                 let teamA = getMatchWinner(m1) || "[متأهل 1]";
                 let teamB = m2 ? (getMatchWinner(m2) || "[متأهل 2]") : "---";
-                // يمكن حفظ نتائج الدور الثاني مؤقتاً أو إنشاؤها هنا
-                if (!DB.round2Matches) DB.round2Matches = [];
+                
                 if (!DB.round2Matches[i/2]) {
                     DB.round2Matches[i/2] = { team1: teamA, team2: teamB, score1: 0, score2: 0, status: 'pending' };
                 } else {
@@ -168,26 +171,11 @@
                 round2.push(DB.round2Matches[i/2]);
             }
 
-            // توليد الدور الثالث (نصف النهائي)
-            let round3 = [];
-            for (let i = 0; i < round2.length; i += 2) {
-                let m1 = round2[i];
-                let m2 = round2[i+1];
-                let teamA = getMatchWinner(m1) || "[تأهل أ]";
-                let teamB = m2 ? (getWinnerAndClass ? getMatchWinner(m2) : (getMatchWinner(m2) || "[تأهل ب]")) : "---";
-                if (!DB.round3Matches) DB.round3Matches = [];
-                if (!DB.round3Matches[i/2]) {
-                    DB.round3Matches[i/2] = { team1: teamA, team2: teamB, score1: 0, score2: 0, status: 'pending' };
-                } else {
-                    DB.round3Matches[i/2].team1 = teamA;
-                    DB.round3Matches[i/2].team2 = teamB;
-                }
-                round3.push(DB.round3Matches[i/2]);
-            }
+            let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
 
-            let targetFinalRound = round3.length > 0 ? round3 : round2;
-            let finalTeam1 = targetFinalRound.length > 0 ? (getMatchWinner(targetFinalRound[0]) || "[طرف 1]") : "[طرف 1]";
-            let finalTeam2 = targetFinalRound.length > 1 ? (getMatchWinner(targetFinalRound[1]) || "[طرف 2]") : (targetFinalRound.length > 0 ? (targetFinalRound[0].team2 || "[طرف 2]") : "[طرف 2]");
+            // تجهيز النهائي أو الدور المتقدم
+            let finalTeam1 = round2.length > 0 ? (getMatchWinner(round2[0]) || "[طرف 1]") : "[طرف 1]";
+            let finalTeam2 = round2.length > 1 ? (getMatchWinner(round2[1]) || "[طرف 2]") : (round2.length > 0 ? (round2[0].team2 || "[طرف 2]") : "[طرف 2]");
             
             if (!DB.finalMatch) {
                 DB.finalMatch = { team1: finalTeam1, team2: finalTeam2, score1: 0, score2: 0, status: 'pending' };
@@ -196,15 +184,11 @@
                 DB.finalMatch.team2 = finalTeam2;
             }
 
-            // حالات الاكتمال
-            let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
-            let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
-
             let html = "";
             let globalIndex = 1;
 
             if (!isRound1Complete) {
-                // عرض الدور الأول لإدخال نتائجه
+                // عرض الدور الأول
                 round1.forEach((m, index) => {
                     html += `
                     <div class="styled-box">
@@ -227,7 +211,7 @@
                     </div>`;
                 });
             } else if (!isRound2Complete) {
-                // بعد انتهاء الدور الأول، تختفي مباريات الدور الأول وتظهر مباريات الدور الثاني تلقائياً
+                // عرض الدور الثاني بعد اكتمال الدور الأول
                 round2.forEach((m, index) => {
                     html += `
                     <div class="styled-box" style="border: 1px dashed var(--gold);">
@@ -250,7 +234,7 @@
                     </div>`;
                 });
             } else {
-                // بعد انتهاء الدور الثاني، يظهر النهائي الكبير
+                // عرض النهائي الكبير
                 let m = DB.finalMatch;
                 html += `
                 <div class="styled-box" style="border: 2px solid var(--gold); background: rgba(55,40,85,0.9);">
@@ -276,7 +260,6 @@
             document.getElementById('admin-matches-area').innerHTML = html;
         }
 
-        // حفظ مباريات الدور الأول
         function saveMatch(index) {
             DB.matches[index].score1 = parseInt(document.getElementById(`score1-${index}`).value) || 0;
             DB.matches[index].score2 = parseInt(document.getElementById(`score2-${index}`).value) || 0;
@@ -286,7 +269,6 @@
             renderAdminMatches();
         }
 
-        // حفظ مباريات الدور الثاني
         function saveRound2Match(index) {
             DB.round2Matches[index].score1 = parseInt(document.getElementById(`r2-score1-${index}`).value) || 0;
             DB.round2Matches[index].score2 = parseInt(document.getElementById(`r2-score2-${index}`).value) || 0;
@@ -296,7 +278,6 @@
             renderAdminMatches();
         }
 
-        // حفظ المباراة النهائية
         function saveFinalMatch() {
             DB.finalMatch.score1 = parseInt(document.getElementById(`final-score1`).value) || 0;
             DB.finalMatch.score2 = parseInt(document.getElementById(`final-score2`).value) || 0;
