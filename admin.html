@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم الشاملة | دوري الأبطال</title>
-    <!-- تم جلب البيانات بطريقة آمنة لا توقف الموقع لو حدث خطأ -->
-    <script src="data.js" onerror="console.log('data.js not loaded yet')"></script>
+    <script src="data.js"></script>
     <style>
         :root {
             --bg-color: #243456; 
@@ -49,13 +48,14 @@
         }
         .error-msg { color: var(--red); font-size: 14px; margin-top: 10px; display: none; }
 
-        #admin-panel { display: none; max-width: 550px; margin: 0 auto; text-align: right; width: 100%; }
+        /* تقليص عرض الحاوية العامة من الجوانب ليصغر العرض الكلي */
+        #admin-panel { display: none; max-width: 440px; margin: 0 auto; text-align: right; width: 100%; }
         
         .panel-section {
             background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 12px;
+            border-radius: 14px;
+            padding: 8px 10px; /* تقليص الحشو الداخلي من الجوانب */
+            margin-bottom: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             width: 100%;
             overflow: hidden;
@@ -64,61 +64,58 @@
             color: var(--gold); 
             margin-top: 0; 
             border-bottom: 1px solid rgba(255,255,255,0.1); 
-            padding-bottom: 8px; 
+            padding-bottom: 6px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            font-size: 17px; 
+            font-size: 16px; 
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; margin-bottom: 4px; font-size: 14px; color: var(--text-muted); }
+        .form-group { margin-bottom: 8px; }
+        .form-group label { display: block; margin-bottom: 3px; font-size: 13px; color: var(--text-muted); }
         
         .form-group input, .form-group select {
-            width: 35%; max-width: 150px; padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; font-size: 15px; font-family: inherit;
+            width: 100%; max-width: none; padding: 5px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; font-size: 14px; font-family: inherit;
         }
 
         .players-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
-        }
-        @media (min-width: 520px) {
-            .players-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
 
+        /* تقليص عرض بطاقة اللاعب من الجوانب تماماً كما طلبت */
         .player-edit-card {
             background: rgba(0,0,0,0.15);
-            padding: 8px;
-            border-radius: 10px;
+            padding: 6px 8px; /* تقليص الحواف الجانبية للبطاقة */
+            border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.05);
             width: 100%;
+            margin: 0 auto;
         }
         .player-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             gap: 4px;
         }
         .inputs-row { display: flex; gap: 4px; width: 100%; }
         .inputs-row div { flex: 1; min-width: 0; }
         .inputs-row input {
-            width: 100%; padding: 5px 2px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 14px; font-weight: bold;
+            width: 100%; padding: 4px 2px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 13px; font-weight: bold;
         }
 
         .item-card {
             background: rgba(0,0,0,0.2);
-            padding: 8px;
-            border-radius: 10px;
-            margin-bottom: 8px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            margin-bottom: 6px;
             border: 1px solid rgba(255,255,255,0.05);
             width: 100%;
         }
@@ -126,14 +123,14 @@
         .match-row-grid {
             display: grid;
             grid-template-columns: 1fr 0.35fr 15px 0.35fr 1fr 0.6fr auto;
-            gap: 4px;
+            gap: 3px;
             align-items: center;
             width: 100%;
         }
         @media (max-width: 768px) {
             .match-row-grid {
-                grid-template-columns: 1fr 25px 1fr;
-                gap: 6px;
+                grid-template-columns: 1fr 20px 1fr;
+                gap: 5px;
             }
             .match-row-grid input[type="text"]:nth-of-type(1) { grid-column: 1 / -1; }
             .match-row-grid input[type="text"]:nth-of-type(2) { grid-column: 1 / -1; }
@@ -145,59 +142,58 @@
             background: rgba(0,0,0,0.2); 
             border: 1px solid rgba(255,255,255,0.2); 
             color: white;
-            padding: 6px 4px; 
-            border-radius: 5px; 
-            font-size: 14px; 
+            padding: 5px 3px; 
+            border-radius: 4px; 
+            font-size: 13px; 
             width: 100%;
             text-align: center;
             font-family: inherit;
         }
         .match-row-grid input[type="text"] {
             text-align: right;
-            padding-right: 6px;
+            padding-right: 5px;
         }
 
         .row-flex {
             display: flex;
-            gap: 6px;
+            gap: 5px;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             width: 100%;
         }
         .row-flex input, .row-flex select {
             background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
-            padding: 6px; border-radius: 5px; font-size: 14px; width: 100%; font-family: inherit;
+            padding: 5px; border-radius: 4px; font-size: 13px; width: 100%; font-family: inherit;
         }
 
         .btn-add {
-            background: var(--score-bg); color: white; border: none; padding: 6px 10px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
+            background: var(--score-bg); color: white; border: none; padding: 4px 8px;
+            border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 12px;
             white-space: nowrap;
         }
         .btn-delete {
-            background: var(--red); color: white; border: none; padding: 5px 8px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;
+            background: var(--red); color: white; border: none; padding: 4px 6px;
+            border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px;
             white-space: nowrap;
         }
 
         .action-bar {
             position: sticky; bottom: 10px; text-align: center; background: rgba(36, 52, 86, 0.95);
-            padding: 10px; border-radius: 10px; box-shadow: 0 -4px 10px rgba(0,0,0,0.5); z-index: 100;
+            padding: 8px; border-radius: 8px; box-shadow: 0 -4px 10px rgba(0,0,0,0.5); z-index: 100;
             width: 100%;
         }
         .save-btn {
-            background: var(--green); color: white; padding: 10px 20px; font-size: 16px;
+            background: var(--green); color: white; padding: 8px 16px; font-size: 15px;
             font-weight: bold; border: none; border-radius: 8px; cursor: pointer;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 280px;
+            max-width: 240px;
         }
-        .success-alert { color: var(--green); font-weight: bold; margin-top: 6px; display: none; font-size: 13px; }
+        .success-alert { color: var(--green); font-weight: bold; margin-top: 5px; display: none; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <!-- شاشة تسجيل الدخول مضمونة الظهور بالكامل -->
     <div id="login-screen">
         <h2>🔒 لوحة التحكم</h2>
         <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">أدخل الرقم السري للمتابعة</p>
@@ -208,14 +204,14 @@
     </div>
 
     <div id="admin-panel">
-        <h1 style="color: var(--gold); text-align: center; margin-bottom: 15px; font-size: 20px;">⚙️ لوحة إدارة دوري الأبطال</h1>
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 12px; font-size: 18px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <!-- 1. البنر -->
         <div class="panel-section">
             <h3>📢 إعدادات الإعلان (البنر)</h3>
             <div class="form-group">
                 <label>نص الإعلان المتحرك:</label>
-                <input type="text" id="edit-banner-text" style="width: 75%; max-width: none;">
+                <input type="text" id="edit-banner-text">
             </div>
             <div class="form-group">
                 <label>حالة الإعلان:</label>
@@ -244,7 +240,7 @@
                 <span>👥 إحصائيات اللاعبين ونجم الجولة</span>
                 <button type="button" class="btn-add" onclick="addPlayer()">➕ إضافة لاعب</button>
             </h3>
-            <p style="font-size:13px; color:var(--gold); margin-top:0;">⭐ تفعيل (MVP) يحول اللاعب لنجم الجولة ويزيد عداد جوائزه تلقائياً (+1):</p>
+            <p style="font-size:12px; color:var(--gold); margin-top:0;">⭐ تفعيل (MVP) يحول اللاعب لنجم الجولة ويزيد عداد جوائزه تلقائياً (+1):</p>
             <div class="players-grid" id="players-edit-container"></div>
         </div>
 
@@ -274,7 +270,6 @@
     </div>
 
     <script>
-        // إعداد بيانات آمنة 100% لا تتعطل أبدأ
         let workingData = {
             settings: { showBanner: true, bannerText: "", leagueEnded: false },
             lastMvp: { name: "", image: "" },
