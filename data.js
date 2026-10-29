@@ -3,7 +3,8 @@
 const DB = {
     settings: {
         showBanner: true,
-        bannerText: "🚨مبروك للفائز بالدوري ((فهـــد اليـــامي))🏆"
+        bannerText: "🚨مبروك للفائز بالدوري ((فهـــد اليـــامي))🏆",
+        leagueEnded: true
     },
 
     lastMvp: {
@@ -51,8 +52,8 @@ const DB = {
         { name: "احمد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 7, assists: 4, mvps: 0 },
         { name: "عزوز2", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 2, mvps: 0 },
         { name: "انس", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 0, mvps: 0 },
-             { name: "محمد حسين", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
-              { name: "خالدمحمد ", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
+        { name: "محمد حسين", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
+        { name: "خالدمحمد ", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "محمد المساعد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "حسام", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 1, mvps: 0 },
         { name: "عبدالله المنتشري", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 11, assists: 0, mvps: 0 },
