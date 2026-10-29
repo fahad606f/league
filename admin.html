@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم الشاملة | دوري الأبطال</title>
-    <script src="data.js" onerror="console.log('data.js loaded')"></script>
+    <script src="data.js?v=2026" onerror="console.log('data.js loaded')"></script>
     <style>
         :root {
             --bg-color: #243456; 
@@ -329,12 +329,15 @@
 
         function checkPin() {
             var pinInput = document.getElementById('pin-input').value.trim();
+            // التحقق المباشر والآمن بغض النظر عن حالة ملف البيانات الخارجي
             if (pinInput === "322332") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
                 loadAdminData();
             } else {
-                document.getElementById('error-msg').style.display = 'block';
+                let errEl = document.getElementById('error-msg');
+                errEl.style.display = 'block';
+                errEl.innerText = "الرقم السري غير صحيح!";
             }
         }
 
@@ -458,7 +461,6 @@
             let round1 = workingData.matches || [];
             let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
 
-            // توليد الدور الثاني تلقائياً في الإدارة إذا اكتمل الدور الأول
             let round2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
@@ -479,7 +481,6 @@
             let matchesHtml = "";
 
             if (!isRound1Complete) {
-                // عرض مباريات الدور الأول
                 round1.forEach((m, index) => {
                     matchesHtml += `
                     <div class="item-card">
@@ -507,7 +508,6 @@
                     </div>`;
                 });
             } else {
-                // عرض مباريات الدور الثاني تلقائياً بعد اكتمال الأول
                 matchesHtml += `<div style="color:var(--gold); font-size:14px; margin-bottom:10px; font-weight:bold;">✨ اكتمل الدور الأول! يتم إدارة مباريات الدور الثاني الآن:</div>`;
                 round2.forEach((m, index) => {
                     matchesHtml += `
@@ -633,65 +633,4 @@
 
             workingData.history.forEach((h, hIndex) => {
                 let seasonEl = document.getElementById(`h-season-${hIndex}`);
-                let winnersEl = document.getElementById(`h-winners-${hIndex}`);
-
-                if(seasonEl) h.season = seasonEl.value;
-                if(winnersEl) {
-                    let rawWinners = winnersEl.value;
-                    h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
-                }
-            });
-        }
-
-        function generateNewDataFile() {
-            syncFromUI();
-
-            let fileContent = `// قاعدة البيانات\n\nconst DB = {\n`;
-            
-            fileContent += `    settings: {\n`;
-            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
-            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`;
-            fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    lastMvp: {\n`;
-            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
-            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
-            fileContent += `    },\n\n`;
-
-            fileContent += `    players: [\n`;
-            workingData.players.forEach((p, i) => {
-                let comma = i === workingData.players.length - 1 ? "" : ",";
-                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    matches: [\n`;
-            workingData.matches.forEach((m, i) => {
-                let comma = i === workingData.matches.length - 1 ? "" : ",";
-                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
-            });
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    round2Matches: [\n`;
-            if (workingData.round2Matches) {
-                workingData.round2Matches.forEach((m, i) => {
-                    let comma = i === workingData.round2Matches.length - 1 ? "" : ",";
-                    fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
-                });
-            }
-            fileContent += `    ],\n\n`;
-
-            fileContent += `    history: [\n`;
-            let historyArr = workingData.history || [];
-            historyArr.forEach((h, i) => {
-                let comma = i === historyArr.length - 1 ? "" : ",";
-                let winnersArr = h.winners || [];
-                let winnersStr = winnersArr.map(w => `"${w}"`).join(", ");
-                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
-            });
-            fileContent += `    ]\n};`;
-
-            navigator.clipboard.writeText(fileContent).then(() => {
-                let msg = document.getElementById('success-msg');
-                msg.style.display = 'block';
+                let winnersEl
