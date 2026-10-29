@@ -189,7 +189,7 @@
             font-family: inherit;
         }
 
-        /* الشجرة المفتوحة والمرنة */
+        /* الشجرة المصغرة والمضغوطة بنسبة 40% */
         .bracket-scroll-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -200,13 +200,13 @@
         .bracket-master-container {
             position: relative;
             background: linear-gradient(135deg, #162238 0%, #243456 50%, #162238 100%);
-            border-radius: 16px;
-            padding: 15px 10px;
+            border-radius: 14px;
+            padding: 12px 8px;
             margin: 0 auto;
-            min-width: 550px;
+            min-width: 500px;
             overflow: hidden;
             border: 1px solid rgba(255,215,0,0.25);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
         }
 
         .bracket-master-container::before {
@@ -215,83 +215,72 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 200px;
+            font-size: 160px;
             opacity: 0.04;
             z-index: 0;
             pointer-events: none;
         }
 
-        .dynamic-tree-flex {
+        .tree-columns-flex {
             position: relative;
             z-index: 1;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
 
-        .bracket-column {
+        .tree-round-col {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
         }
 
-        .bracket-node-card {
-            background: rgba(30, 45, 75, 0.92);
+        .mini-node-card {
+            background: rgba(30, 45, 75, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            padding: 5px;
-            font-size: 11px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            border-radius: 6px;
+            padding: 3px 5px;
+            font-size: 9.5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        .bracket-row-match {
+        .mini-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            margin: 2px 0;
+            margin: 1px 0;
         }
 
-        .bracket-team-txt {
+        .mini-team-txt {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 70px;
+            max-width: 55px;
         }
 
-        .bracket-num-badge {
+        .mini-score-badge {
             background: var(--score-bg);
-            padding: 1px 4px;
-            border-radius: 4px;
-            font-size: 10px;
-            min-width: 16px;
+            padding: 0px 3px;
+            border-radius: 3px;
+            font-size: 9px;
+            min-width: 14px;
             text-align: center;
         }
 
-        .hub-trophy-label {
+        .hub-trophy-title {
             color: var(--gold);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             background: rgba(0,0,0,0.3);
-            padding: 4px 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,215,0,0.3);
-            margin-bottom: 6px;
-            text-align: center;
-        }
-
-        .hub-match-box {
-            background: rgba(40, 60, 95, 0.95);
-            border: 1px solid rgba(255,215,0,0.4);
+            padding: 2px 6px;
             border-radius: 8px;
-            padding: 6px;
-            width: 100%;
+            border: 1px solid rgba(255,215,0,0.3);
+            margin-bottom: 4px;
             text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
-            margin-bottom: 6px;
         }
     </style>
 </head>
@@ -404,12 +393,11 @@
             renderMatchesSection();
         }
 
-        function getWinner(matchIndex, defaultName) {
-            let m = DB.matches[matchIndex];
-            if (!m) return defaultName;
-            if (m.status !== 'finished') return defaultName;
-            if (m.score1 > m.score2) return m.team1;
-            if (m.score2 > m.score1) return m.team2;
+        // دالة ذكية لمعرفة الفائز من أي مباراة
+        function getMatchWinner(matchObj, defaultText) {
+            if (!matchObj || matchObj.status !== 'finished') return defaultText;
+            if (matchObj.score1 > matchObj.score2) return matchObj.team1;
+            if (matchObj.score2 > matchObj.score1) return matchObj.team2;
             return "تعادل";
         }
 
@@ -427,51 +415,66 @@
 
             if (isBracketView) {
                 let matches = DB.matches || [];
-                let totalMatches = matches.length;
+                let round1 = matches; 
+                
+                let round2 = [];
+                for (let i = 0; i < round1.length; i += 2) {
+                    let teamA = getMatchWinner(round1[i], `[فائز ${i+1}]`);
+                    let teamB = round1[i+1] ? getMatchWinner(round1[i+1], `[فائز ${i+2}]`) : "---";
+                    round2.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
+                }
 
-                // توليد كروت المباريات بشكل ديناميكي حسب العدد المضاف
-                let leftCards = "";
-                let rightCards = "";
-                let centerHub = `<div class="hub-trophy-label">🏆 بطل الدوري</div>`;
+                let round3 = [];
+                for (let i = 0; i < round2.length; i += 2) {
+                    let teamA = getMatchWinner(round2[i], `[تأهل أ]`);
+                    let teamB = round2[i+1] ? getMatchWinner(round2[i+1], `[تأهل ب]`) : "---";
+                    round3.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
+                }
 
-                let half = Math.ceil(totalMatches / 2);
+                let finalTeam1 = round3.length > 0 ? getMatchWinner(round3[0], "[طرف النهائي 1]") : "[طرف 1]";
+                let finalTeam2 = round3.length > 1 ? getMatchWinner(round3[1], "[طرف النهائي 2]") : (round3.length > 0 && round3[0].team2 !== "---" ? getMatchWinner(round3[0], "[طرف 2]") : "[طرف 2]");
+                
+                let finalMatch = { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: 0, score2: 0 };
 
-                matches.forEach((m, idx) => {
-                    let score1 = m.status === 'finished' ? m.score1 : '-';
-                    let score2 = m.status === 'finished' ? m.score2 : '-';
-                    
-                    let cardHtml = `
-                    <div class="bracket-node-card">
-                        <div style="font-size: 8px; color: var(--text-muted); text-align: center; margin-bottom: 2px;">مباراة ${idx + 1}</div>
-                        <div class="bracket-row-match"><span class="bracket-team-txt">${m.team1 || '---'}</span><span class="bracket-num-badge">${score1}</span></div>
-                        <div class="bracket-row-match"><span class="bracket-team-txt">${m.team2 || '---'}</span><span class="bracket-num-badge">${score2}</span></div>
+                let renderCard = (m, label) => {
+                    let s1 = m && m.status === 'finished' ? m.score1 : '-';
+                    let s2 = m && m.status === 'finished' ? m.score2 : '-';
+                    return `
+                    <div class="mini-node-card">
+                        <div style="font-size: 7.5px; color: var(--text-muted); text-align: center; margin-bottom: 1px;">${label}</div>
+                        <div class="mini-row"><span class="mini-team-txt">${m ? (m.team1 || '---') : '---'}</span><span class="mini-score-badge">${s1}</span></div>
+                        <div class="mini-row"><span class="mini-team-txt">${m ? (m.team2 || '---') : '---'}</span><span class="mini-score-badge">${s2}</span></div>
                     </div>`;
+                };
 
-                    // إذا كانت المباراة الأخيرة وغالباً هي النهائي
-                    if (idx === totalMatches - 1 && totalMatches > 1) {
-                        centerHub += `
-                        <div class="hub-match-box" style="border-color: var(--gold); background: rgba(55, 40, 85, 0.95);">
-                            <div style="font-size: 9px; color: var(--gold); font-weight: bold;">النهائي الكبير (مباره ${idx + 1})</div>
-                            <div class="bracket-row-match"><span class="bracket-team-txt">${m.team1 || '---'}</span><span class="bracket-num-badge">${score1}</span></div>
-                            <div class="bracket-row-match"><span class="bracket-team-txt">${m.team2 || '---'}</span><span class="bracket-num-badge">${score2}</span></div>
-                        </div>`;
-                    } else if (idx < half) {
-                        leftCards += cardHtml;
-                    } else {
-                        rightCards += cardHtml;
-                    }
-                });
+                let r1Html = "";
+                round1.forEach((m, idx) => { r1Html += renderCard(m, `مباراة ${idx+1}`); });
+
+                let r2Html = "";
+                round2.forEach((m, idx) => { r2Html += renderCard(m, `دور 2 - ${idx+1}`); });
+
+                let r3Html = "";
+                round3.forEach((m, idx) => { r3Html += renderCard(m, `نصف نهائي ${idx+1}`); });
+
+                let finalHtml = `
+                <div class="hub-trophy-title">🏆 بطل الدوري</div>
+                <div class="mini-node-card" style="border-color: var(--gold); background: rgba(50, 35, 75, 0.95);">
+                    <div style="font-size: 8px; color: var(--gold); font-weight: bold; text-align: center;">النهائي الكبير</div>
+                    <div class="mini-row"><span class="mini-team-txt">${finalMatch.team1}</span><span class="mini-score-badge">-</span></div>
+                    <div class="mini-row"><span class="mini-team-txt">${finalMatch.team2}</span><span class="mini-score-badge">-</span></div>
+                </div>`;
 
                 let bracketHtml = `
                 <div class="bracket-scroll-wrapper">
                     <div class="bracket-master-container">
-                        <div style="font-size: 11px; color: var(--gold); margin-bottom: 8px; font-weight: bold; text-align: center;">
-                            📊 مخطط المواجهات (عدد المباريات: ${totalMatches})
+                        <div style="font-size: 10px; color: var(--gold); margin-bottom: 6px; font-weight: bold; text-align: center;">
+                            📊 مسار الأدوار الإقصائية (توليد تلقائي بالكامل)
                         </div>
-                        <div class="dynamic-tree-flex">
-                            <div class="bracket-column">${leftCards || '<div style="color:var(--text-muted);font-size:11px;">لا توجد مباريات</div>'}</div>
-                            <div class="bracket-column" style="max-width: 130px; justify-content: center;">${centerHub}</div>
-                            <div class="bracket-column">${rightCards || '<div style="color:var(--text-muted);font-size:11px;">لا توجد مباريات</div>'}</div>
+                        <div class="tree-columns-flex">
+                            <div class="tree-round-col" style="max-width: 110px;">${r1Html}</div>
+                            <div class="tree-round-col" style="max-width: 100px;">${r2Html || '<div style="font-size:9px;color:var(--text-muted);">بانتظار النتائج</div>'}</div>
+                            <div class="tree-round-col" style="max-width: 120px; justify-content: center;">${finalHtml}</div>
+                            <div class="tree-round-col" style="max-width: 100px;">${r3Html}</div>
                         </div>
                     </div>
                 </div>`;
@@ -479,7 +482,7 @@
                 document.getElementById('matches-display-area').innerHTML = bracketHtml;
 
             } else {
-                // عرض الجدول العادي المفتوح لكل المباريات
+                // عرض الجدول العادي مع شطب الخاسر وتلوين الفائز
                 let matchesHtml = "";
                 DB.matches.forEach((m, index) => {
                     let t1Class = "", t2Class = "", check1 = "", check2 = "";
@@ -490,8 +493,15 @@
                     let boxClass = m.status === 'finished' ? 'styled-box finished-box' : 'styled-box';
 
                     if(m.status === "finished") {
-                        if(m.score1 > m.score2) { t1Class = "winner"; t2Class = "loser"; check1 = "✅"; }
-                        else if(m.score2 > m.score1) { t2Class = "winner"; t1Class = "loser"; check2 = "✅"; }
+                        if(m.score1 > m.score2) { 
+                            t1Class = "winner"; 
+                            t2Class = "loser"; 
+                            check1 = "✅"; 
+                        } else if(m.score2 > m.score1) { 
+                            t2Class = "winner"; 
+                            t1Class = "loser"; 
+                            check2 = "✅"; 
+                        }
                     }
                     
                     matchesHtml += `
