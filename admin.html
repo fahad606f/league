@@ -38,7 +38,7 @@
         }
         #login-screen h2 { color: var(--gold); margin-bottom: 20px; }
         #login-screen input {
-            width: 80%; padding: 12px; font-size: 18px; border-radius: 8px; border: none;
+            width: 80%; padding: 10px; font-size: 16px; border-radius: 8px; border: none;
             text-align: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); color: white;
         }
         #login-screen button {
@@ -47,7 +47,7 @@
         }
         .error-msg { color: var(--red); font-size: 14px; margin-top: 10px; display: none; }
 
-        #admin-panel { display: none; max-width: 850px; margin: 0 auto; text-align: right; width: 100%; }
+        #admin-panel { display: none; max-width: 750px; margin: 0 auto; text-align: right; width: 100%; }
         
         .panel-section {
             background-color: var(--card-bg);
@@ -73,12 +73,13 @@
 
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-muted); }
+        
+        /* تصغير عرض الحقول العامة بنسبة 20% لتكون أصغر ومرتبة */
         .form-group input, .form-group select {
-            width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; font-size: 14px;
+            width: 80%; max-width: 450px; padding: 7px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; font-size: 13px;
         }
 
-        /* تعديل شبكة اللاعبين لتناسب الجوال بشكل مرتب داخل الإطار */
         .players-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -108,8 +109,8 @@
         .inputs-row { display: flex; gap: 6px; width: 100%; }
         .inputs-row div { flex: 1; min-width: 0; }
         .inputs-row input {
-            width: 100%; padding: 6px 2px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 13px;
+            width: 100%; padding: 5px 2px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; text-align: center; font-size: 12px;
         }
 
         .item-card {
@@ -121,17 +122,17 @@
             width: 100%;
         }
 
-        /* تنسيق مرن ومضبوط لقسم المواجهات ليبقى داخل الإطار تماماً */
+        /* تنسيق مرن لقسم المواجهات */
         .match-row-grid {
             display: grid;
-            grid-template-columns: 1.5fr 0.8fr 30px 0.8fr 1.5fr 1.1fr auto;
+            grid-template-columns: 1.5fr 0.7fr 25px 0.7fr 1.5fr 1fr auto;
             gap: 5px;
             align-items: center;
             width: 100%;
         }
         @media (max-width: 768px) {
             .match-row-grid {
-                grid-template-columns: 1fr 35px 1fr;
+                grid-template-columns: 1fr 30px 1fr;
                 gap: 8px;
             }
             .match-row-grid input[type="text"]:nth-of-type(1) { grid-column: 1 / -1; }
@@ -144,15 +145,15 @@
             background: rgba(0,0,0,0.2); 
             border: 1px solid rgba(255,255,255,0.2); 
             color: white;
-            padding: 6px; 
+            padding: 5px; 
             border-radius: 6px; 
-            font-size: 13px; 
+            font-size: 12px; 
             width: 100%;
             text-align: center;
         }
         .match-row-grid input[type="text"] {
             text-align: right;
-            padding-right: 8px;
+            padding-right: 6px;
         }
 
         .row-flex {
@@ -164,17 +165,17 @@
         }
         .row-flex input, .row-flex select {
             background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
-            padding: 8px; border-radius: 6px; font-size: 13px; width: 100%;
+            padding: 7px; border-radius: 6px; font-size: 12px; width: 100%;
         }
 
         .btn-add {
-            background: var(--score-bg); color: white; border: none; padding: 6px 12px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;
+            background: var(--score-bg); color: white; border: none; padding: 5px 10px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px;
             white-space: nowrap;
         }
         .btn-delete {
-            background: var(--red); color: white; border: none; padding: 6px 10px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;
+            background: var(--red); color: white; border: none; padding: 5px 8px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px;
             white-space: nowrap;
         }
 
@@ -184,20 +185,20 @@
             width: 100%;
         }
         .save-btn {
-            background: var(--green); color: white; padding: 10px 20px; font-size: 16px;
+            background: var(--green); color: white; padding: 10px 20px; font-size: 15px;
             font-weight: bold; border: none; border-radius: 10px; cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 350px;
+            max-width: 320px;
         }
-        .success-alert { color: var(--green); font-weight: bold; margin-top: 8px; display: none; font-size: 13px; }
+        .success-alert { color: var(--green); font-weight: bold; margin-top: 8px; display: none; font-size: 12px; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <h2>🔒 لوحة التحكم الشاملة</h2>
-        <p style="color: var(--text-muted); font-size: 14px;">أدخل الرقم السري للمتابعة</p>
+        <p style="color: var(--text-muted); font-size: 13px;">أدخل الرقم السري للمتابعة</p>
         <input type="password" id="pin-input" placeholder="الرقم السري">
         <br>
         <button onclick="checkPin()">دخول</button>
@@ -205,7 +206,7 @@
     </div>
 
     <div id="admin-panel">
-        <h1 style="color: var(--gold); text-align: center; margin-bottom: 20px; font-size: 22px;">⚙️ لوحة إدارة دوري الأبطال</h1>
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 20px; font-size: 20px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
         <!-- 1. البنر -->
         <div class="panel-section">
@@ -235,29 +236,17 @@
             </div>
         </div>
 
-        <!-- 3. نجم الجولة (Last MVP) -->
-        <div class="panel-section">
-            <h3>🌟 نجم الجولة الأخيرة (MVP)</h3>
-            <div class="form-group">
-                <label>اسم نجم الجولة:</label>
-                <input type="text" id="edit-mvp-name">
-            </div>
-            <div class="form-group">
-                <label>مسار/رابط صورة نجم الجولة:</label>
-                <input type="text" id="edit-mvp-image">
-            </div>
-        </div>
-
-        <!-- 4. اللاعبين -->
+        <!-- 3. اللاعبين وتحديد نجم الجولة (MVP) مباشرة -->
         <div class="panel-section">
             <h3>
-                <span>👥 إحصائيات اللاعبين</span>
+                <span>👥 إحصائيات اللاعبين ونجم الجولة</span>
                 <button class="btn-add" onclick="addPlayer()">➕ إضافة لاعب</button>
             </h3>
+            <p style="font-size:12px; color:var(--gold); margin-top:0;">⭐ حدد خيار (MVP) بجانب اللاعب الذي تريد ظهوره كنجم للجولة في الصفحة الرئيسية تلقائياً:</p>
             <div class="players-grid" id="players-edit-container"></div>
         </div>
 
-        <!-- 5. المواجهات -->
+        <!-- 4. المواجهات -->
         <div class="panel-section">
             <h3>
                 <span>⚔️ إدارة المواجهات</span>
@@ -266,7 +255,7 @@
             <div id="matches-edit-container"></div>
         </div>
 
-        <!-- 6. السجل الشرفي -->
+        <!-- 5. السجل الشرفي -->
         <div class="panel-section">
             <h3>
                 <span>🏆 السجل الشرفي والبطولات</span>
@@ -304,9 +293,6 @@
             document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
             document.getElementById('edit-league-ended').value = workingData.settings.leagueEnded ? "true" : "false";
 
-            document.getElementById('edit-mvp-name').value = workingData.lastMvp.name || "";
-            document.getElementById('edit-mvp-image').value = workingData.lastMvp.image || "";
-
             renderPlayers();
             renderMatches();
             renderHistory();
@@ -315,14 +301,20 @@
         function renderPlayers() {
             let playersHtml = "";
             workingData.players.forEach((p, index) => {
+                // التحقق هل هذا اللاعب هو نجم الجولة الحالي
+                let isCurrentMvp = (workingData.lastMvp && workingData.lastMvp.name === p.name) ? "checked" : "";
+                
                 playersHtml += `
                 <div class="player-edit-card">
                     <div class="player-header">
-                        <input type="text" id="p-name-${index}" value="${p.name}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:gold; padding:4px; border-radius:4px; font-weight:bold; width:70%; font-size:13px;">
+                        <div style="display:flex; align-items:center; gap:5px; width:75%;">
+                            <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} style="cursor:pointer;" title="تعيين كنجْم للجولة">
+                            <input type="text" id="p-name-${index}" value="${p.name}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:gold; padding:3px; border-radius:4px; font-weight:bold; width:100%; font-size:12px;">
+                        </div>
                         <button class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
                     </div>
-                    <div class="form-group" style="margin-bottom:6px;">
-                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة" style="font-size:11px; padding:4px;">
+                    <div class="form-group" style="margin-bottom:5px;">
+                        <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة" style="font-size:11px; padding:3px; width:100%;">
                     </div>
                     <div class="inputs-row">
                         <div><label style="font-size:10px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals}"></div>
@@ -354,7 +346,7 @@
                     <div class="match-row-grid">
                         <input type="text" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق الأول">
                         <input type="number" id="m-score1-${index}" value="${m.score1}">
-                        <span style="font-weight:bold; text-align:center; font-size:12px;">VS</span>
+                        <span style="font-weight:bold; text-align:center; font-size:11px;">VS</span>
                         <input type="number" id="m-score2-${index}" value="${m.score2}">
                         <input type="text" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق الثاني">
                         <select id="m-status-${index}">
@@ -386,12 +378,12 @@
                 let winnersList = h.winners ? h.winners.join(", ") : "";
                 historyHtml += `
                 <div class="item-card">
-                    <div class="row-flex" style="margin-bottom:6px;">
+                    <div class="row-flex" style="margin-bottom:5px;">
                         <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة">
                         <button class="btn-delete" onclick="deleteHistory(${hIndex})">حذف البطولة</button>
                     </div>
-                    <div class="form-group" style="margin-bottom:4px;">
-                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال بفواصل (مثال: بسام, خالد)">
+                    <div class="form-group" style="margin-bottom:3px;">
+                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال بفواصل (مثال: بسام, خالد)" style="width:100%;">
                     </div>
                     <small style="color:var(--text-muted); font-size:11px;">افصل بين أسماء الأبطال بـ (فاصلة).</small>
                 </div>`;
@@ -416,15 +408,21 @@
             workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
             workingData.settings.leagueEnded = document.getElementById('edit-league-ended').value === "true";
 
-            workingData.lastMvp.name = document.getElementById('edit-mvp-name').value;
-            workingData.lastMvp.image = document.getElementById('edit-mvp-image').value;
-
+            // قراءة اللاعبين وتحديث نجم الجولة بناءً على الزر المفعل (Radio)
             workingData.players.forEach((p, index) => {
                 p.name = document.getElementById(`p-name-${index}`).value;
                 p.image = document.getElementById(`p-image-${index}`).value;
                 p.goals = parseInt(document.getElementById(`p-goals-${index}`).value) || 0;
                 p.assists = parseInt(document.getElementById(`p-assists-${index}`).value) || 0;
                 p.mvps = parseInt(document.getElementById(`p-mvps-${index}`).value) || 0;
+
+                // إذا كان هذا اللاعب هو المحدد كـ MVP
+                if (document.getElementById(`mvp-radio-${index}`).checked) {
+                    workingData.lastMvp = {
+                        name: p.name,
+                        image: p.image
+                    };
+                }
             });
 
             workingData.matches.forEach((m, index) => {
