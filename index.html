@@ -189,7 +189,7 @@
             font-family: inherit;
         }
 
-        /* الشجرة المصغرة والمضغوطة بنسبة 40% */
+        /* الشجرة المصغرة */
         .bracket-scroll-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -436,14 +436,22 @@
                 
                 let finalMatch = { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: 0, score2: 0 };
 
+                // دالة رسم كارت الشجرة مع تفعيل الشطب والتلوين للفائز والخاسر
                 let renderCard = (m, label) => {
                     let s1 = m && m.status === 'finished' ? m.score1 : '-';
                     let s2 = m && m.status === 'finished' ? m.score2 : '-';
+                    
+                    let t1Class = "", t2Class = "";
+                    if (m && m.status === 'finished') {
+                        if (m.score1 > m.score2) { t1Class = "winner"; t2Class = "loser"; }
+                        else if (m.score2 > m.score1) { t2Class = "winner"; t1Class = "loser"; }
+                    }
+
                     return `
                     <div class="mini-node-card">
                         <div style="font-size: 7.5px; color: var(--text-muted); text-align: center; margin-bottom: 1px;">${label}</div>
-                        <div class="mini-row"><span class="mini-team-txt">${m ? (m.team1 || '---') : '---'}</span><span class="mini-score-badge">${s1}</span></div>
-                        <div class="mini-row"><span class="mini-team-txt">${m ? (m.team2 || '---') : '---'}</span><span class="mini-score-badge">${s2}</span></div>
+                        <div class="mini-row"><span class="mini-team-txt ${t1Class}">${m ? (m.team1 || '---') : '---'}</span><span class="mini-score-badge">${s1}</span></div>
+                        <div class="mini-row"><span class="mini-team-txt ${t2Class}">${m ? (m.team2 || '---') : '---'}</span><span class="mini-score-badge">${s2}</span></div>
                     </div>`;
                 };
 
@@ -458,11 +466,8 @@
 
                 let finalHtml = `
                 <div class="hub-trophy-title">🏆 بطل الدوري</div>
-                <div class="mini-node-card" style="border-color: var(--gold); background: rgba(50, 35, 75, 0.95);">
-                    <div style="font-size: 8px; color: var(--gold); font-weight: bold; text-align: center;">النهائي الكبير</div>
-                    <div class="mini-row"><span class="mini-team-txt">${finalMatch.team1}</span><span class="mini-score-badge">-</span></div>
-                    <div class="mini-row"><span class="mini-team-txt">${finalMatch.team2}</span><span class="mini-score-badge">-</span></div>
-                </div>`;
+                ${renderCard(finalMatch, "النهائي الكبير")}
+                `;
 
                 let bracketHtml = `
                 <div class="bracket-scroll-wrapper">
