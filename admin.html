@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم الشاملة | دوري الأبطال</title>
-    <script src="data.js?v=2028"></script>
+    <script src="data.js?v=2030"></script>
     <style>
         :root {
             --bg-color: #243456; 
@@ -245,6 +245,7 @@
             history: []
         };
 
+        // تحميل البيانات بأمان تام لتجنب أي توقف للسكربت
         try {
             if (typeof DB !== 'undefined') {
                 workingData = JSON.parse(JSON.stringify(DB));
@@ -264,23 +265,35 @@
 
         let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
 
+        // دالة تسجيل الدخول المحصنة والمباشرة
         function verifyLogin() {
-            let pinVal = document.getElementById('pin-input').value.trim();
+            let pinInput = document.getElementById('pin-input');
+            let errEl = document.getElementById('error-msg');
+            
+            if (!pinInput) return;
+            let pinVal = pinInput.value.trim();
+            
             if (pinVal === "322332") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
+                let loginScreen = document.getElementById('login-screen');
+                let adminPanel = document.getElementById('admin-panel');
+                
+                if (loginScreen) loginScreen.style.display = 'none';
+                if (adminPanel) adminPanel.style.display = 'block';
+                
                 loadAdminData();
             } else {
-                let errEl = document.getElementById('error-msg');
-                errEl.style.display = 'block';
-                errEl.innerText = "الرقم السري غير صحيح!";
+                if (errEl) {
+                    errEl.style.display = 'block';
+                    errEl.innerText = "الرقم السري غير صحيح!";
+                }
             }
         }
 
+        // تفعيل زر Enter للاستجابة الفورية
         document.addEventListener("DOMContentLoaded", function() {
             const pinBox = document.getElementById('pin-input');
             if (pinBox) {
-                pinBox.addEventListener('keypress', function(e) {
+                pinBox.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter') {
                         verifyLogin();
                     }
@@ -289,13 +302,17 @@
         });
 
         function loadAdminData() {
-            document.getElementById('edit-banner-text').value = workingData.settings.bannerText || "";
-            document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
-            document.getElementById('edit-league-ended').value = workingData.settings.leagueEnded ? "true" : "false";
+            try {
+                document.getElementById('edit-banner-text').value = workingData.settings.bannerText || "";
+                document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
+                document.getElementById('edit-league-ended').value = workingData.settings.leagueEnded ? "true" : "false";
 
-            renderPlayers();
-            renderMatches();
-            renderHistory();
+                renderPlayers();
+                renderMatches();
+                renderHistory();
+            } catch (err) {
+                console.error("خطأ أثناء تحميل بيانات اللوحة:", err);
+            }
         }
 
         function renderPlayers() {
@@ -316,18 +333,9 @@
                         <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="images/name.jpg" style="font-size:15px; padding:10px; width:100%;">
                     </div>
                     <div class="inputs-row">
-                        <div>
-                            <label>أهداف</label>
-                            <input type="number" id="p-goals-${index}" value="${p.goals || 0}">
-                        </div>
-                        <div>
-                            <label>صناعة</label>
-                            <input type="number" id="p-assists-${index}" value="${p.assists || 0}">
-                        </div>
-                        <div>
-                            <label>MVP</label>
-                            <input type="number" id="p-mvps-${index}" value="${p.mvps || 0}">
-                        </div>
+                        <div><label>أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals || 0}"></div>
+                        <div><label>صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists || 0}"></div>
+                        <div><label>MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps || 0}"></div>
                     </div>
                 </div>`;
             });
@@ -440,21 +448,12 @@
                     <div class="item-card">
                         <div style="font-size:13px; color:var(--text-muted); margin-bottom:6px;">مباراة رقم ${index + 1} (الدور الأول)</div>
                         <div class="match-card-grid">
-                            <div class="team-box">
-                                <input type="text" id="m-team1-${index}" value="${m.team1 || ''}">
-                                <input type="number" id="m-score1-${index}" value="${m.score1 || 0}">
-                            </div>
+                            <div class="team-box"><input type="text" id="m-team1-${index}" value="${m.team1 || ''}"><input type="number" id="m-score1-${index}" value="${m.score1 || 0}"></div>
                             <div class="match-center-info"><span>VS</span></div>
-                            <div class="team-box">
-                                <input type="text" id="m-team2-${index}" value="${m.team2 || ''}">
-                                <input type="number" id="m-score2-${index}" value="${m.score2 || 0}">
-                            </div>
+                            <div class="team-box"><input type="text" id="m-team2-${index}" value="${m.team2 || ''}"><input type="number" id="m-score2-${index}" value="${m.score2 || 0}"></div>
                         </div>
                         <div class="match-bottom-row">
-                            <select id="m-status-${index}">
-                                <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
-                                <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
-                            </select>
+                            <select id="m-status-${index}"><option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option></select>
                             <button type="button" class="btn-delete" onclick="deleteMatch(${index})">حذف</button>
                         </div>
                     </div>`;
@@ -466,21 +465,12 @@
                     <div class="item-card" style="border: 1px dashed var(--gold);">
                         <div style="font-size:13px; color:var(--gold); margin-bottom:6px;">مباراة رقم ${index + 1} (الدور الثاني)</div>
                         <div class="match-card-grid">
-                            <div class="team-box">
-                                <input type="text" value="${m.team1 || ''}" readonly style="color:var(--gold);">
-                                <input type="number" id="r2-score1-${index}" value="${m.score1 || 0}">
-                            </div>
+                            <div class="team-box"><input type="text" value="${m.team1 || ''}" readonly style="color:var(--gold);"><input type="number" id="r2-score1-${index}" value="${m.score1 || 0}"></div>
                             <div class="match-center-info"><span>VS</span></div>
-                            <div class="team-box">
-                                <input type="text" value="${m.team2 || ''}" readonly style="color:var(--gold);">
-                                <input type="number" id="r2-score2-${index}" value="${m.score2 || 0}">
-                            </div>
+                            <div class="team-box"><input type="text" value="${m.team2 || ''}" readonly style="color:var(--gold);"><input type="number" id="r2-score2-${index}" value="${m.score2 || 0}"></div>
                         </div>
                         <div class="match-bottom-row">
-                            <select id="r2-status-${index}">
-                                <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
-                                <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
-                            </select>
+                            <select id="r2-status-${index}"><option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option></select>
                         </div>
                     </div>`;
                 });
@@ -491,4 +481,155 @@
                     <div class="item-card" style="border: 1px dashed var(--gold);">
                         <div style="font-size:13px; color:var(--gold); margin-bottom:6px;">مباراة رقم ${index + 1} (نصف النهائي)</div>
                         <div class="match-card-grid">
-                            <div class="team
+                            <div class="team-box"><input type="text" value="${m.team1 || ''}" readonly style="color:var(--gold);"><input type="number" id="sf-score1-${index}" value="${m.score1 || 0}"></div>
+                            <div class="match-center-info"><span>VS</span></div>
+                            <div class="team-box"><input type="text" value="${m.team2 || ''}" readonly style="color:var(--gold);"><input type="number" id="sf-score2-${index}" value="${m.score2 || 0}"></div>
+                        </div>
+                        <div class="match-bottom-row">
+                            <select id="sf-status-${index}"><option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option></select>
+                        </div>
+                    </div>`;
+                });
+            } else {
+                let fm = workingData.finalMatch;
+                matchesHtml += `
+                <div class="item-card" style="border: 2px solid var(--gold); background: rgba(55,40,85,0.9);">
+                    <div style="font-size:15px; color:var(--gold); margin-bottom:6px; font-weight:bold;">🏆 النهائي الكبير</div>
+                    <div class="match-card-grid">
+                        <div class="team-box"><input type="text" value="${fm.team1 || ''}" readonly style="color:var(--gold);"><input type="number" id="f-score1" value="${fm.score1 || 0}"></div>
+                        <div class="match-center-info"><span>VS</span></div>
+                        <div class="team-box"><input type="text" value="${fm.team2 || ''}" readonly style="color:var(--gold);"><input type="number" id="f-score2" value="${fm.score2 || 0}"></div>
+                    </div>
+                    <div class="match-bottom-row">
+                        <select id="f-status"><option value="pending" ${fm.status==='pending'?'selected':''}>لم تبدأ</option><option value="finished" ${fm.status==='finished'?'selected':''}>انتهت</option></select>
+                    </div>
+                </div>`;
+            }
+
+            document.getElementById('matches-edit-container').innerHTML = matchesHtml;
+        }
+
+        function addMatch() {
+            syncFromUI();
+            workingData.matches.push({ team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" });
+            renderMatches();
+        }
+
+        function deleteMatch(index) {
+            syncFromUI();
+            workingData.matches.splice(index, 1);
+            renderMatches();
+        }
+
+        function renderHistory() {
+            let historyHtml = "";
+            workingData.history.forEach((h, hIndex) => {
+                let winnersList = h.winners ? h.winners.join(", ") : "";
+                historyHtml += `
+                <div class="item-card">
+                    <div class="row-flex" style="margin-bottom:10px;">
+                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season || ''}" placeholder="اسم البطولة">
+                        <button type="button" class="btn-delete" onclick="deleteHistory(${hIndex})">حذف</button>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <input type="text" id="h-winners-${hIndex}" value="${winnersList}" placeholder="الأبطال (مثال: بسام, خالد)" style="width:100%; max-width:none;">
+                    </div>
+                </div>`;
+            });
+            document.getElementById('history-edit-container').innerHTML = historyHtml;
+        }
+
+        function addHistorySeason() {
+            syncFromUI();
+            workingData.history.push({ season: "بطولة جديدة", winners: ["اسم البطل"] });
+            renderHistory();
+        }
+
+        function deleteHistory(index) {
+            syncFromUI();
+            workingData.history.splice(index, 1);
+            renderHistory();
+        }
+
+        function syncFromUI() {
+            workingData.settings.bannerText = document.getElementById('edit-banner-text').value;
+            workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
+            workingData.settings.leagueEnded = document.getElementById('edit-league-ended').value === "true";
+
+            syncFromUIValuesOnly();
+
+            workingData.players.forEach((p, index) => {
+                let radioEl = document.getElementById(`mvp-radio-${index}`);
+                if (radioEl && radioEl.checked) {
+                    workingData.lastMvp = { name: p.name, image: p.image };
+                    previousMvpName = p.name;
+                }
+            });
+
+            let round1 = workingData.matches || [];
+            let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
+            let round2 = workingData.round2Matches || [];
+            let isRound2Complete = round2.length > 0 && round2.every(m => m.status === 'finished');
+            let semiFinal = workingData.semiFinalMatches || [];
+            let isSemiFinalComplete = semiFinal.length > 0 && semiFinal.every(m => m.status === 'finished');
+
+            if (!isRound1Complete) {
+                workingData.matches.forEach((m, index) => {
+                    let t1 = document.getElementById(`m-team1-${index}`); let s1 = document.getElementById(`m-score1-${index}`);
+                    let s2 = document.getElementById(`m-score2-${index}`); let t2 = document.getElementById(`m-team2-${index}`);
+                    let st = document.getElementById(`m-status-${index}`);  if(t1) m.team1 = t1.value; if(s1) m.score1 = parseInt(s1.value) \vert{}\vert{} 0; if(s2) m.score2 = parseInt(s2.value) \vert{}\vert{} 0; if(t2) m.team2 = t2.value; if(st) m.status = st.value; }); } else if (!isRound2Complete) { if (workingData.round2Matches) { workingData.round2Matches.forEach((m, index) => { let s1 = document.getElementById(`r2-score1-${index}`);
+                        let s2 = document.getElementById(`r2-score2-${index}`); let st = document.getElementById(`r2-status-${index}`);
+
+                        if(s1) m.score1 = parseInt(s1.value) || 0;
+                        if(s2) m.score2 = parseInt(s2.value) || 0;
+                        if(st) m.status = st.value;
+                    });
+                }
+            } else if (!isSemiFinalComplete) {
+                if (workingData.semiFinalMatches) {
+                    workingData.semiFinalMatches.forEach((m, index) => {
+                        let s1 = document.getElementById(`sf-score1-${index}`); let s2 = document.getElementById(`sf-score2-${index}`);
+                        let st = document.getElementById(`sf-status-${index}`);  if(s1) m.score1 = parseInt(s1.value) \vert{}\vert{} 0; if(s2) m.score2 = parseInt(s2.value) \vert{}\vert{} 0; if(st) m.status = st.value; }); } } else { if (workingData.finalMatch) { let s1 = document.getElementById(`f-score1`); let s2 = document.getElementById(`f-score2`); let st = document.getElementById(`f-status`);  if(s1) workingData.finalMatch.score1 = parseInt(s1.value) \vert{}\vert{} 0; if(s2) workingData.finalMatch.score2 = parseInt(s2.value) \vert{}\vert{} 0; if(st) workingData.finalMatch.status = st.value; if(workingData.finalMatch.status === 'finished') workingData.settings.leagueEnded = true; } }  workingData.history.forEach((h, hIndex) => { let seasonEl = document.getElementById(`h-season-${hIndex}`);
+                let winnersEl = document.getElementById(`h-winners-${hIndex}`);  if(seasonEl) h.season = seasonEl.value; if(winnersEl) { let rawWinners = winnersEl.value; h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0); } }); }  function generateNewDataFile() { syncFromUI();  let fileContent = `// قاعدة البيانات\n\nconst DB = {\n`;  fileContent += `    settings: {\n`; fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
+            fileContent += `        bannerText: "${workingData.settings.bannerText}",\n`; fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
+            fileContent += `    },\n\n`;
+
+            fileContent += `    lastMvp: {\n`;
+            fileContent += `        name: "${workingData.lastMvp.name}",\n`; fileContent += `        image: "${workingData.lastMvp.image}"\n`;
+            fileContent += `    },\n\n`;
+
+            fileContent += `    players: [\n`;
+            workingData.players.forEach((p, i) => {
+                let comma = i === workingData.players.length - 1 ? "" : ",";
+                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists:${p.assists}, mvps: ${p.mvps} }${comma}\n`;
+            });
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    matches: [\n`;
+            workingData.matches.forEach((m, i) => {
+                let comma = i === workingData.matches.length - 1 ? "" : ",";
+                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
+            });
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    round2Matches: [\n`;
+            if (workingData.round2Matches) {
+                workingData.round2Matches.forEach((m, i) => {
+                    let comma = i === workingData.round2Matches.length - 1 ? "" : ",";
+                    fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
+                });
+            }
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    semiFinalMatches: [\n`;
+            if (workingData.semiFinalMatches) {
+                workingData.semiFinalMatches.forEach((m, i) => {
+                    let comma = i === workingData.semiFinalMatches.length - 1 ? "" : ",";
+                    fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
+                });
+            }
+            fileContent += `    ],\n\n`;
+
+            if (workingData.finalMatch) {
+                fileContent += `    finalMatch: {\n`;
+                fileContent += `        team1: "${workingData.finalMatch.team1}", score1: ${workingData.finalMatch.
