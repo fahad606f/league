@@ -272,6 +272,29 @@
     </div>
 
     <script>
+        // التأكد من تحميل البيانات بأمان تام بدون توقف
+        let workingData = {
+            settings: { showBanner: true, bannerText: "", leagueEnded: false },
+            lastMvp: { name: "", image: "" },
+            players: [],
+            matches: [],
+            history: []
+        };
+
+        try {
+            if (typeof DB !== 'undefined') {
+                workingData = JSON.parse(JSON.stringify(DB));
+            }
+        } catch (e) {
+            console.log("خطأ في قراءة ملف data.js، سيتم استخدام بيانات افتراضية.");
+        }
+
+        if (workingData.settings.leagueEnded === undefined) {
+            workingData.settings.leagueEnded = false;
+        }
+
+        let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
+
         function checkPin() {
             var pinInput = document.getElementById('pin-input').value.trim();
             if (pinInput === "322332") {
@@ -283,20 +306,11 @@
             }
         }
 
-        // السماح بالضغط على زر Enter داخل حقل الرمز السري لتسجيل الدخول مباشرة
         document.getElementById('pin-input').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 checkPin();
             }
         });
-
-        let workingData = typeof DB !== 'undefined' ? JSON.parse(JSON.stringify(DB)) : { settings: {}, lastMvp: {}, players: [], matches: [], history: [] };
-
-        if (workingData.settings.leagueEnded === undefined) {
-            workingData.settings.leagueEnded = false;
-        }
-
-        let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
 
         function loadAdminData() {
             document.getElementById('edit-banner-text').value = workingData.settings.bannerText || "";
@@ -318,7 +332,7 @@
                     <div class="player-header">
                         <div style="display:flex; align-items:center; gap:5px; width:75%;">
                             <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} onchange="handleMvpSelection(${index})" style="cursor:pointer; transform:scale(1.2);" title="تعيين كنجْم للجولة">
-                            <input type="text" id="p-name-${index}" value="${p.name}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:gold; padding:3px; border-radius:4px; font-weight:bold; width:100%; font-size:14px;">
+                            <input type="text" id="p-name-${index}" value="${p.name || ''}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:gold; padding:3px; border-radius:4px; font-weight:bold; width:100%; font-size:14px;">
                         </div>
                         <button type="button" class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
                     </div>
@@ -326,9 +340,9 @@
                         <input type="text" id="p-image-${index}" value="${p.image || ''}" placeholder="رابط الصورة" style="font-size:12px; padding:3px; width:100%; max-width:none;">
                     </div>
                     <div class="inputs-row">
-                        <div><label style="font-size:11px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals}"></div>
-                        <div><label style="font-size:11px">صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists}"></div>
-                        <div><label style="font-size:11px">MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps}"></div>
+                        <div><label style="font-size:11px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals || 0}"></div>
+                        <div><label style="font-size:11px">صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists || 0}"></div>
+                        <div><label style="font-size:11px">MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps || 0}"></div>
                     </div>
                 </div>`;
             });
@@ -392,11 +406,11 @@
                 matchesHtml += `
                 <div class="item-card">
                     <div class="match-row-grid">
-                        <input type="text" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق 1">
-                        <input type="number" id="m-score1-${index}" value="${m.score1}">
+                        <input type="text" id="m-team1-${index}" value="${m.team1 || ''}" placeholder="الفريق 1">
+                        <input type="number" id="m-score1-${index}" value="${m.score1 || 0}">
                         <span style="font-weight:bold; text-align:center; font-size:12px;">VS</span>
-                        <input type="number" id="m-score2-${index}" value="${m.score2}">
-                        <input type="text" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق 2">
+                        <input type="number" id="m-score2-${index}" value="${m.score2 || 0}">
+                        <input type="text" id="m-team2-${index}" value="${m.team2 || ''}" placeholder="الفريق 2">
                         <select id="m-status-${index}">
                             <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
                             <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
@@ -427,7 +441,7 @@
                 historyHtml += `
                 <div class="item-card">
                     <div class="row-flex" style="margin-bottom:4px;">
-                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة">
+                        <input type="text" style="flex:1" id="h-season-${hIndex}" value="${h.season || ''}" placeholder="اسم البطولة">
                         <button type="button" class="btn-delete" onclick="deleteHistory(${hIndex})">حذف</button>
                     </div>
                     <div class="form-group" style="margin-bottom:2px;">
