@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم الشاملة | دوري الأبطال</title>
+    <script src="data.js"></script>
+    <style>
+        :root {
+            --bg-color: #243456; 
+            --card-bg: #354a78; 
+            --score-bg: #465f9a; 
+            --text-main: #ffffff;
+            --text-muted: #c5d2ee; 
+            --gold: #FFD700;
+            --green: #4CAF50;
+            --red: #f44336;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0; padding: 20px; text-align: center;
+        }
+
+        #login-screen {
+            max-width: 400px;
+            margin: 100px auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        #login-screen h2 { color: var(--gold); margin-bottom: 20px; }
+        #login-screen input {
+            width: 80%; padding: 12px; font-size: 18px; border-radius: 8px; border: none;
+            text-align: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); color: white;
+        }
+        #login-screen button {
+            padding: 10px 25px; background: var(--score-bg); color: white; border: none;
+            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
+        }
+        .error-msg { color: var(--red); font-size: 14px; margin-top: 10px; display: none; }
+
+        #admin-panel { display: none; max-width: 850px; margin: 0 auto; text-align: right; }
+        
+        .panel-section {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .panel-section h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: var(--text-muted); }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; font-size: 15px; box-sizing: border-box;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .player-edit-card {
+            background: rgba(0,0,0,0.15);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .player-edit-card h4 { margin: 0 0 10px 0; color: var(--gold); font-size: 16px; }
+        .inputs-row { display: flex; gap: 10px; }
+        .inputs-row div { flex: 1; }
+        .inputs-row input {
+            width: 100%; padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2); color: white; text-align: center; box-sizing: border-box;
+        }
+
+        .item-card {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* تعديل قسم المواجهات لتكون المربعات أصغر ومضغوطة بشكل جميل */
+        .match-row-compact {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .match-row-compact input[type="text"] {
+            flex: 2;
+            padding: 6px 8px;
+            font-size: 13px;
+            height: 34px;
+        }
+        .match-row-compact input[type="number"] {
+            flex: 0.8;
+            padding: 6px;
+            font-size: 13px;
+            text-align: center;
+            height: 34px;
+        }
+        .match-row-compact select {
+            flex: 1.2;
+            padding: 6px;
+            font-size: 13px;
+            height: 34px;
+        }
+        .match-row-compact span {
+            font-weight: bold;
+            font-size: 13px;
+            padding: 0 2px;
+        }
+        .match-row-compact .btn-delete {
+            padding: 6px 10px;
+            font-size: 12px;
+            height: 34px;
+        }
+        .match-row-compact input, .match-row-compact select {
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid rgba(255,255,255,0.2); 
+            color: white; 
+            border-radius: 6px; 
+            box-sizing: border-box;
+        }
+
+        .row-flex {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .row-flex input, .row-flex select {
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white;
+            padding: 8px; border-radius: 6px; font-size: 14px; box-sizing: border-box;
+        }
+
+        .btn-add {
+            background: var(--score-bg); color: white; border: none; padding: 8px 15px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
+        }
+        .btn-delete {
+            background: var(--red); color: white; border: none; padding: 8px 12px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;
+        }
+
+        .action-bar {
+            position: sticky; bottom: 20px; text-align: center; background: rgba(36, 52, 86, 0.95);
+            padding: 15px; border-radius: 12px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5); z-index: 100;
+        }
+        .save-btn {
+            background: var(--green); color: white; padding: 12px 30px; font-size: 18px;
+            font-weight: bold; border: none; border-radius: 10px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .save-btn:hover { background: #45a049; }
+        .success-alert { color: var(--green); font-weight: bold; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h2>🔒 لوحة التحكم الشاملة</h2>
+        <p style="color: var(--text-muted); font-size: 14px;">أدخل الرقم السري للمتابعة</p>
+        <input type="password" id="pin-input" placeholder="الرقم السري">
+        <br>
+        <button onclick="checkPin()">دخول</button>
+        <div id="error-msg" class="error-msg">الرقم السري غير صحيح!</div>
+    </div>
+
+    <div id="admin-panel">
+        <h1 style="color: var(--gold); text-align: center; margin-bottom: 25px;">⚙️ لوحة إدارة دوري الأبطال</h1>
+
+        <!-- 1. البنر -->
+        <div class="panel-section">
+            <h3>📢 إعدادات الإعلان (البنر)</h3>
+            <div class="form-group">
+                <label>نص الإعلان المتحرك:</label>
+                <input type="text" id="edit-banner-text">
+            </div>
+            <div class="form-group">
+                <label>حالة الإعلان:</label>
+                <select id="edit-banner-show">
+                    <option value="true">إظهار</option>
+                    <option value="false">إخفاء</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 2. نجم الجولة (Last MVP) -->
+        <div class="panel-section">
+            <h3>🌟 نجم الجولة الأخيرة (MVP)</h3>
+            <div class="form-group">
+                <label>اسم نجم الجولة:</label>
+                <input type="text" id="edit-mvp-name">
+            </div>
+            <div class="form-group">
+                <label>مسار/رابط صورة نجم الجولة:</label>
+                <input type="text" id="edit-mvp-image">
+            </div>
+        </div>
+
+        <!-- 3. اللاعبين -->
+        <div class="panel-section">
+            <h3>👥 إحصائيات اللاعبين</h3>
+            <div class="players-grid" id="players-edit-container"></div>
+        </div>
+
+        <!-- 4. المواجهات -->
+        <div class="panel-section">
+            <h3>
+                <span>⚔️ إدارة المواجهات</span>
+                <button class="btn-add" onclick="addMatch()">➕ إضافة مباراة جديدة</button>
+            </h3>
+            <div id="matches-edit-container"></div>
+        </div>
+
+        <!-- 5. السجل الشرفي -->
+        <div class="panel-section">
+            <h3>
+                <span>🏆 السجل الشرفي والبطولات</span>
+                <button class="btn-add" onclick="addHistorySeason()">➕ إضافة بطولة جديدة</button>
+            </h3>
+            <div id="history-edit-container"></div>
+        </div>
+
+        <!-- زر الحفظ -->
+        <div class="action-bar">
+            <button class="save-btn" onclick="generateNewDataFile()">💾 توليد ونسخ كود التحديث الشامل</button>
+            <div id="success-msg" class="success-alert">تم نسخ الكود بنجاح! الصقه في ملف data.js واحفظه</div>
+        </div>
+    </div>
+
+    <script>
+        function checkPin() {
+            if (document.getElementById('pin-input').value === "322332") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                loadAdminData();
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        let workingData = JSON.parse(JSON.stringify(DB));
+
+        function loadAdminData() {
+            document.getElementById('edit-banner-text').value = workingData.settings.bannerText;
+            document.getElementById('edit-banner-show').value = workingData.settings.showBanner ? "true" : "false";
+
+            document.getElementById('edit-mvp-name').value = workingData.lastMvp.name || "";
+            document.getElementById('edit-mvp-image').value = workingData.lastMvp.image || "";
+
+            let playersHtml = "";
+            workingData.players.forEach((p, index) => {
+                playersHtml += `
+                <div class="player-edit-card">
+                    <h4>${p.name}</h4>
+                    <div class="inputs-row">
+                        <div><label style="font-size:11px">أهداف</label><input type="number" id="p-goals-${index}" value="${p.goals}"></div>
+                        <div><label style="font-size:11px">صناعة</label><input type="number" id="p-assists-${index}" value="${p.assists}"></div>
+                        <div><label style="font-size:11px">MVP</label><input type="number" id="p-mvps-${index}" value="${p.mvps}"></div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('players-edit-container').innerHTML = playersHtml;
+
+            renderMatches();
+            renderHistory();
+        }
+
+        function renderMatches() {
+            let matchesHtml = "";
+            workingData.matches.forEach((m, index) => {
+                matchesHtml += `
+                <div class="item-card">
+                    <div class="match-row-compact">
+                        <input type="text" id="m-team1-${index}" value="${m.team1}" placeholder="الفريق الأول">
+                        <input type="number" id="m-score1-${index}" value="${m.score1}">
+                        <span>VS</span>
+                        <input type="number" id="m-score2-${index}" value="${m.score2}">
+                        <input type="text" id="m-team2-${index}" value="${m.team2}" placeholder="الفريق الثاني">
+                        <select id="m-status-${index}">
+                            <option value="pending" ${m.status==='pending'?'selected':''}>لم تبدأ</option>
+                            <option value="finished" ${m.status==='finished'?'selected':''}>انتهت</option>
+                        </select>
+                        <button class="btn-delete" onclick="deleteMatch(${index})">حذف</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('matches-edit-container').innerHTML = matchesHtml;
+        }
+
+        function addMatch() {
+            syncFromUI();
+            workingData.matches.push({ team1: "الفريق 1", score1: 0, team2: "الفريق 2", score2: 0, status: "pending" });
+            renderMatches();
+        }
+
+        function deleteMatch(index) {
+            syncFromUI();
+            workingData.matches.splice(index, 1);
+            renderMatches();
+        }
+
+        function renderHistory() {
+            let historyHtml = "";
+            workingData.history.forEach((h, hIndex) => {
+                let winnersList = h.winners ? h.winners.join(", ") : "";
+                historyHtml += `
+                <div class="item-card">
+                    <div class="row-flex" style="margin-bottom:10px;">
+                        <input type="text" style="flex:3" id="h-season-${hIndex}" value="${h.season}" placeholder="اسم البطولة أو الموسم">
+                        <button class="btn-delete" onclick="deleteHistory(${hIndex})">حذف البطولة</button>
+                    </div>
+                    <div class="row-flex">
+                        <input type="text" style="flex:1" id="h-winners-${hIndex}" value="${winnersList}" placeholder="أسماء الأبطال مفصولة بفواصل (مثال: بسام, خالد فايز)">
+                    </div>
+                    <small style="color:var(--text-muted)">اكتب أسماء الأبطال وافصل بينهم بـ (فاصلة) ليظهروا كأبطال للبطولة.</small>
+                </div>`;
+            });
+            document.getElementById('history-edit-container').innerHTML = historyHtml;
+        }
+
+        function addHistorySeason() {
+            syncFromUI();
+            workingData.history.push({ season: "بطولة جديدة", winners: ["اسم البطل"] });
+            renderHistory();
+        }
+
+        function deleteHistory(index) {
+            syncFromUI();
+            workingData.history.splice(index, 1);
+            renderHistory();
+        }
+
+        function syncFromUI() {
+            workingData.settings.bannerText = document.getElementById('edit-banner-text').value;
+            workingData.settings.showBanner = document.getElementById('edit-banner-show').value === "true";
+
+            workingData.lastMvp.name = document.getElementById('edit-mvp-name').value;
+            workingData.lastMvp.image = document.getElementById('edit-mvp-image').value;
+
+            workingData.players.forEach((p, index) => {
+                p.goals = parseInt(document.getElementById(`p-goals-${index}`).value) || 0;
+                p.assists = parseInt(document.getElementById(`p-assists-${index}`).value) || 0;
+                p.mvps = parseInt(document.getElementById(`p-mvps-${index}`).value) || 0;
+            });
+
+            workingData.matches.forEach((m, index) => {
+                m.team1 = document.getElementById(`m-team1-${index}`).value;
+                m.score1 = parseInt(document.getElementById(`m-score1-${index}`).value) || 0;
+                m.score2 = parseInt(document.getElementById(`m-score2-${index}`).value) || 0;
+                m.team2 = document.getElementById(`m-team2-${index}`).value;
+                m.status = document.getElementById(`m-status-${index}`).value;
+            });
+
+            workingData.history.forEach((h, hIndex) => {
+                h.season = document.getElementById(`h-season-${hIndex}`).value;
+                let rawWinners = document.getElementById(`h-winners-${hIndex}`).value;
+                h.winners = rawWinners.split(',').map(w => w.trim()).filter(w => w.length > 0);
+            });
+        }
+
+        function generateNewDataFile() {
+            syncFromUI();
+
+            let fileContent = `// هذا الملف هو قاعدة البيانات الخاصة بك، من هنا تعدل كل شيء في الموقع\n\nconst DB = {\n`;
+            
+            fileContent += `    settings: {\n`;
+            fileContent += `        showBanner: ${workingData.settings.showBanner},\n`;
+            fileContent += `        bannerText: "${workingData.settings.bannerText}"\n`;
+            fileContent += `    },\n\n`;
+
+            fileContent += `    lastMvp: {\n`;
+            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
+            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
+            fileContent += `    },\n\n`;
+
+            fileContent += `    players: [\n`;
+            workingData.players.forEach((p, i) => {
+                let comma = i === workingData.players.length - 1 ? "" : ",";
+                fileContent += `        { name: "${p.name}", image: "${p.image}", goals: ${p.goals}, assists: ${p.assists}, mvps: ${p.mvps} }${comma}\n`;
+            });
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    matches: [\n`;
+            workingData.matches.forEach((m, i) => {
+                let comma = i === workingData.matches.length - 1 ? "" : ",";
+                fileContent += `        { team1: "${m.team1}", score1: ${m.score1}, team2: "${m.team2}", score2: ${m.score2}, status: "${m.status}" }${comma}\n`;
+            });
+            fileContent += `    ],\n\n`;
+
+            fileContent += `    history: [\n`;
+            workingData.history.forEach((h, i) => {
+                let comma = i === workingData.history.length - 1 ? "" : ",";
+                let winnersStr = h.winners.map(w => `"${w}"`).join(", ");
+                fileContent += `        { season: "${h.season}", winners: [${winnersStr}] }${comma}\n`;
+            });
+            fileContent += `    ]\n};`;
+
+            navigator.clipboard.writeText(fileContent).then(() => {
+                let msg = document.getElementById('success-msg');
+                msg.style.display = 'block';
+                setTimeout(() => { msg.style.display = 'none'; }, 4000);
+            }).catch(err => {
+                alert("حدث خطأ أثناء النسخ التلقائي.");
+            });
+        }
+    </script>
+</body>
+</html>
