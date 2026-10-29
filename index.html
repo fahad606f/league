@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الرئيسية | دوري الأبطال</title>
-    <script src="data.js?v=4000"></script>
+    <script src="data.js?v=9999"></script>
     <style>
         :root {
             --bg-color: #1a233a; 
@@ -24,22 +24,14 @@
             margin: 0; padding: 15px; text-align: center;
         }
 
-        /* الإعلانات */
         #ad-banner {
             background: linear-gradient(90deg, #ff8a00, #e52e71);
             color: white; padding: 12px; border-radius: 12px; font-weight: bold; font-size: 16px;
             overflow: hidden; white-space: nowrap; margin-bottom: 20px; display: none;
         }
-        .marquee { 
-            display: inline-block; 
-            animation: marquee 25s linear infinite; 
-        }
-        @keyframes marquee { 
-            0% { transform: translateX(-100%); } 
-            100% { transform: translateX(100%); } 
-        }
+        .marquee { display: inline-block; animation: marquee 25s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-        /* الصناديق الأساسية */
         .styled-box {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -48,90 +40,32 @@
             max-width: 80%;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .styled-box.finished-box {
-            background-color: var(--finished-bg);
-            opacity: 0.85;
-        }
-        .styled-box.generated-box {
-            border: 1px dashed var(--gold);
-            background-color: rgba(45, 65, 105, 0.8);
-        }
+        .styled-box.finished-box { background-color: var(--finished-bg); opacity: 0.85; }
+        .styled-box.generated-box { border: 1px dashed var(--gold); background-color: rgba(45, 65, 105, 0.8); }
 
         .box-header {
             display: flex; justify-content: space-between; align-items: center;
             font-size: 15px; color: var(--text-muted); margin-bottom: 6px; font-weight: bold;
         }
-        .box-divider {
-            border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 8px;
-        }
-        .box-content {
-            display: flex; justify-content: space-between; align-items: center;
-            font-weight: bold; font-size: 17px;
-        }
+        .box-divider { border: 0; height: 1px; background: rgba(255, 255, 255, 0.15); margin-bottom: 8px; }
+        .box-content { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 17px; }
         
         .section-main-title {
-            color: var(--gold);
-            font-size: 19px;
-            font-weight: bold;
-            text-align: right;
-            max-width: 80%;
-            margin: 20px auto 10px auto;
+            color: var(--gold); font-size: 19px; font-weight: bold; text-align: right; max-width: 80%; margin: 20px auto 10px auto;
         }
         
-        .score-container {
-            display: flex; align-items: center; gap: 10px;
-            color: var(--text-muted); font-size: 14px;
-        }
-        .score-box {
-            background-color: var(--score-bg); padding: 5px 12px;
-            border-radius: 10px; color: var(--text-main); font-size: 17px;
-        }
+        .score-container { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 14px; }
+        .score-box { background-color: var(--score-bg); padding: 5px 12px; border-radius: 10px; color: var(--text-main); font-size: 17px; }
 
-        /* بطاقة أفضل لاعب MVP */
         .mvp-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 15px;
-            margin: 15px auto;
-            max-width: 60%;
-            border: 1px solid var(--gold);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            background-color: var(--card-bg); border-radius: 16px; padding: 15px; margin: 15px auto; max-width: 60%;
+            border: 1px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
         .mvp-title { font-size: 14px; margin-bottom: 5px; color: var(--gold); font-weight: bold; }
-        
-        .mvp-avatar-container {
-            position: relative;
-            display: inline-block;
-            margin: 15px auto 5px auto;
-        }
-        
-        .crown-icon {
-            position: absolute;
-            top: -48px;
-            left: -48px;
-            transform: rotate(-30deg);
-            font-size: 75px;
-            z-index: 0;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
-        }
-
-        .mvp-img-wrapper {
-            position: relative; 
-            width: 110px; height: 110px;
-            border-radius: 50%; 
-            border: 3px solid var(--gold); 
-            overflow: hidden;
-            z-index: 1;
-            background-color: var(--card-bg);
-        }
+        .mvp-avatar-container { position: relative; display: inline-block; margin: 15px auto 5px auto; }
+        .crown-icon { position: absolute; top: -48px; left: -48px; transform: rotate(-30deg); font-size: 75px; z-index: 0; }
+        .mvp-img-wrapper { position: relative; width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--gold); overflow: hidden; z-index: 1; background-color: var(--card-bg); }
         .mvp-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        .mvp-img-wrapper::after {
-            content: ""; position: absolute; top: 0; left: -100%;
-            width: 50%; height: 100%; background: rgba(255,255,255,0.4);
-            transform: skewX(-20deg); animation: shine 3s infinite;
-        }
-        @keyframes shine { 100% { left: 200%; } }
-        
         #mvp-name { font-size: 18px; margin-top: 10px; font-weight: bold; color: var(--gold); }
 
         .winner { color: var(--green); }
@@ -140,152 +74,40 @@
         .team-right { text-align: right; }
         .team-left { text-align: left; }
 
-        /* إحصائيات اللاعبين */
         .player-stat-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 17px;
-            font-weight: bold;
+            padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 17px; font-weight: bold;
         }
         .player-stat-row:last-child { border-bottom: none; }
-        
-        .player-info {
-            display: flex; align-items: center; gap: 12px;
-        }
-        
-        .rank-box {
-            min-width: 26px;
-            height: 26px;
-            background-color: rgba(0, 0, 0, 0.3);
-            color: var(--gold);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        img.player-icon { 
-            width: 50px; height: 50px;
-            border-radius: 50%; object-fit: cover; 
-            border: 2px solid var(--gold); 
-        }
+        .player-info { display: flex; align-items: center; gap: 12px; }
+        .rank-box { min-width: 26px; height: 26px; background: rgba(0,0,0,0.3); color: var(--gold); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        img.player-icon { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
 
         .nav-buttons { margin-bottom: 15px; }
         .nav-buttons a {
             display: inline-block; padding: 10px 20px; background: var(--score-bg); color: white;
-            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.15);
-            font-family: inherit; font-size: 14px; font-weight: bold;
+            text-decoration: none; border-radius: 10px; margin: 5px; border: 1px solid rgba(255,255,255,0.15); font-weight: bold;
         }
 
-        /* زر التبديل */
         .toggle-btn {
-            background: linear-gradient(135deg, #FFD700, #ff9900);
-            color: #1c2742;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-            font-family: inherit;
+            background: linear-gradient(135deg, #FFD700, #ff9900); color: #1c2742; border: none;
+            padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3); font-family: inherit;
         }
 
-        /* الشجرة المصغرة */
-        .bracket-scroll-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            -webkit-overflow-scrolling: touch;
-        }
-
+        .bracket-scroll-wrapper { width: 100%; overflow-x: auto; padding-bottom: 10px; }
         .bracket-master-container {
-            position: relative;
-            background: linear-gradient(135deg, #162238 0%, #243456 50%, #162238 100%);
-            border-radius: 14px;
-            padding: 12px 8px;
-            margin: 0 auto;
-            min-width: 550px;
-            overflow: hidden;
-            border: 1px solid rgba(255,215,0,0.25);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            position: relative; background: linear-gradient(135deg, #162238 0%, #243456 50%, #162238 100%);
+            border-radius: 14px; padding: 12px 8px; margin: 0 auto; min-width: 550px; overflow: hidden;
+            border: 1px solid rgba(255,215,0,0.25); box-shadow: 0 6px 20px rgba(0,0,0,0.5);
         }
-
-        .bracket-master-container::before {
-            content: "🏆";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 160px;
-            opacity: 0.04;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .tree-columns-flex {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tree-round-col {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            flex: 1;
-        }
-
-        .mini-node-card {
-            background: rgba(30, 45, 75, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 6px;
-            padding: 3px 5px;
-            font-size: 9.5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        .mini-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            margin: 1px 0;
-        }
-
-        .mini-team-txt {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 55px;
-        }
-
-        .mini-score-badge {
-            background: var(--score-bg);
-            padding: 0px 3px;
-            border-radius: 3px;
-            font-size: 9px;
-            min-width: 14px;
-            text-align: center;
-        }
-
-        .hub-trophy-title {
-            color: var(--gold);
-            font-size: 11px;
-            font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            background: rgba(0,0,0,0.3);
-            padding: 2px 6px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,215,0,0.3);
-            margin-bottom: 4px;
-            text-align: center;
-        }
+        .tree-columns-flex { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .tree-round-col { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .mini-node-card { background: rgba(30, 45, 75, 0.95); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 3px 5px; font-size: 9.5px; }
+        .mini-row { display: flex; justify-content: space-between; align-items: center; font-weight: bold; margin: 1px 0; }
+        .mini-team-txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55px; }
+        .mini-score-badge { background: var(--score-bg); padding: 0px 3px; border-radius: 3px; font-size: 9px; min-width: 14px; text-align: center; }
+        .hub-trophy-title { color: var(--gold); font-size: 11px; font-weight: bold; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 8px; border: 1px solid rgba(255,215,0,0.3); margin-bottom: 4px; text-align: center; }
     </style>
 </head>
 <body>
@@ -297,19 +119,15 @@
         <a href="history.html">🏆 السجل الشرفي</a>
     </div>
 
-    <!-- بطاقة أفضل لاعب MVP -->
     <div class="mvp-card">
         <div class="mvp-title">🌟 نجم الجولة</div>
         <div class="mvp-avatar-container">
             <div class="crown-icon">👑</div>
-            <div class="mvp-img-wrapper">
-                <img id="mvp-img" src="" alt="MVP">
-            </div>
+            <div class="mvp-img-wrapper"><img id="mvp-img" src="" alt="MVP"></div>
         </div>
         <div id="mvp-name"></div>
     </div>
 
-    <!-- أعلى الهدافين -->
     <div class="styled-box">
         <div class="box-header">
             <span style="font-size: 17px; color: var(--gold); font-weight: bold;">⚽ أعلى الهدافين</span>
@@ -319,7 +137,6 @@
         <div id="top-scorers"></div>
     </div>
 
-    <!-- أعلى صناع اللعب -->
     <div class="styled-box">
         <div class="box-header">
             <span style="font-size: 17px; color: var(--gold); font-weight: bold;">🎯 أعلى صناع اللعب</span>
@@ -329,15 +146,11 @@
         <div id="top-assists"></div>
     </div>
 
-    <!-- قسم مواجهات الدوري مع زر التبديل -->
     <div id="matches-section-wrapper">
         <div class="section-main-title" style="display: flex; justify-content: space-between; align-items: center;">
             <span>⚔️ مواجهات الدوري</span>
-            <div style="margin: 0;">
-                <button type="button" class="toggle-btn" id="toggleViewBtn" onclick="toggleViewMode()">🔀 عرض شجري</button>
-            </div>
+            <div><button type="button" class="toggle-btn" id="toggleViewBtn" onclick="toggleViewMode()">🔀 عرض شجري</button></div>
         </div>
-        
         <div id="matches-display-area"></div>
     </div>
 
@@ -357,32 +170,14 @@
         let topScorersHtml = "";
         let topScorers = [...players].sort((a, b) => b.goals - a.goals).slice(0, 3);
         topScorers.forEach((p, index) => {
-            let rank = index + 1;
-            topScorersHtml += `
-            <div class="player-stat-row">
-                <div class="player-info">
-                    <div class="rank-box">${rank}</div>
-                    <img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"> 
-                    <span>${p.name}</span>
-                </div>
-                <div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.goals}</div>
-            </div>`;
+            topScorersHtml += `<div class="player-stat-row"><div class="player-info"><div class="rank-box">${index+1}</div><img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>${p.name}</span></div><div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.goals}</div></div>`;
         });
         document.getElementById('top-scorers').innerHTML = topScorersHtml;
 
         let topAssistsHtml = "";
         let topAssists = [...players].sort((a, b) => b.assists - a.assists).slice(0, 3);
         topAssists.forEach((p, index) => {
-            let rank = index + 1;
-            topAssistsHtml += `
-            <div class="player-stat-row">
-                <div class="player-info">
-                    <div class="rank-box">${rank}</div>
-                    <img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"> 
-                    <span>${p.name}</span>
-                </div>
-                <div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.assists}</div>
-            </div>`;
+            topAssistsHtml += `<div class="player-stat-row"><div class="player-info"><div class="rank-box">${index+1}</div><img src="${p.image}" class="player-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>${p.name}</span></div><div class="score-box" style="padding: 4px 12px; font-size: 16px;">${p.assists}</div></div>`;
         });
         document.getElementById('top-assists').innerHTML = topAssistsHtml;
 
@@ -390,43 +185,27 @@
 
         function toggleViewMode() {
             isBracketView = !isBracketView;
-            let btn = document.getElementById('toggleViewBtn');
-            if (isBracketView) {
-                btn.innerText = "📋 عرض الجدول";
-            } else {
-                btn.innerText = "🔀 عرض شجري";
-            }
+            document.getElementById('toggleViewBtn').innerText = isBracketView ? "📋 عرض الجدول" : "🔀 عرض شجري";
             renderMatchesSection();
         }
 
         function getWinnerAndClass(matchObj) {
-            if (!matchObj || matchObj.status !== 'finished') {
-                return { winner: null, t1Class: "", t2Class: "" };
-            }
-            if (matchObj.score1 > matchObj.score2) {
-                return { winner: matchObj.team1, t1Class: "winner", t2Class: "loser" };
-            } else if (matchObj.score2 > matchObj.score1) {
-                return { winner: matchObj.team2, t1Class: "loser", t2Class: "winner" };
-            }
+            if (!matchObj || matchObj.status !== 'finished') return { winner: null, t1Class: "", t2Class: "" };
+            if (matchObj.score1 > matchObj.score2) return { winner: matchObj.team1, t1Class: "winner", t2Class: "loser" };
+            if (matchObj.score2 > matchObj.score1) return { winner: matchObj.team2, t1Class: "loser", t2Class: "winner" };
             return { winner: null, t1Class: "", t2Class: "" };
         }
 
         function renderMatchesSection() {
             if (DB && DB.settings && DB.settings.leagueEnded) {
-                document.getElementById('matches-display-area').innerHTML = `
-                    <div class="styled-box" style="padding: 30px 20px; text-align: center; margin-top: 10px;">
-                        <div style="color: var(--gold); font-size: 20px; font-weight: bold; line-height: 1.6;">
-                            انتهى الدوري وسيبدأ الدوري الجديد قريباً... ⏳
-                        </div>
-                    </div>
-                `;
+                document.getElementById('matches-display-area').innerHTML = `<div class="styled-box" style="padding: 30px 20px; text-align: center;"><div style="color: var(--gold); font-size: 20px; font-weight: bold;">انتهى الدوري وسيبدأ الدوري الجديد قريباً... ⏳</div></div>`;
                 return;
             }
 
-            // الاعتماد حصرياً على الدور الأول القادم من ملف data.js فقط
+            // قراءة الدور الأول حصرياً ومباشرة من data.js
             let round1 = (DB && DB.matches) ? DB.matches : [];
             
-            // توليد الدور الثاني ديناميكياً حصرياً من حجم الدور الأول الحالي
+            // توليد الدور الثاني برمجياً بناءً على الدور الأول الجديد فقط
             let round2 = [];
             for (let i = 0; i < round1.length; i += 2) {
                 let m1 = round1[i];
@@ -436,7 +215,7 @@
                 round2.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
             }
 
-            // توليد نصف النهائي ديناميكياً حصرياً من الدور الثاني الناتج
+            // توليد نصف النهائي برمجياً
             let semiFinal = [];
             for (let i = 0; i < round2.length; i += 2) {
                 let m1 = round2[i];
@@ -446,7 +225,7 @@
                 semiFinal.push({ team1: teamA, team2: teamB, status: 'pending', score1: 0, score2: 0 });
             }
 
-            // توليد النهائي الكبير ديناميكياً حصرياً من نصف النهائي الناتج
+            // توليد النهائي برمجياً
             let finalTeam1 = semiFinal.length > 0 ? (getWinnerAndClass(semiFinal[0]).winner || "[طرف 1]") : "[طرف 1]";
             let finalTeam2 = semiFinal.length > 1 ? (getWinnerAndClass(semiFinal[1]).winner || "[طرف 2]") : "[طرف 2]";
             let finalMatch = { team1: finalTeam1, team2: finalTeam2, status: 'pending', score1: 0, score2: 0 };
@@ -460,50 +239,25 @@
                     let s1 = m && m.status === 'finished' ? m.score1 : '-';
                     let s2 = m && m.status === 'finished' ? m.score2 : '-';
                     let res = getWinnerAndClass(m);
-                    
-                    return `
-                    <div class="mini-node-card">
-                        <div style="font-size: 7.5px; color: var(--text-muted); text-align: center; margin-bottom: 1px;">${label}</div>
-                        <div class="mini-row"><span class="mini-team-txt ${res.t1Class}">${m ? (m.team1 || '---') : '---'}</span><span class="mini-score-badge">${s1}</span></div>
-                        <div class="mini-row"><span class="mini-team-txt ${res.t2Class}">${m ? (m.team2 || '---') : '---'}</span><span class="mini-score-badge">${s2}</span></div>
-                    </div>`;
+                    return `<div class="mini-node-card"><div style="font-size: 7.5px; color: var(--text-muted); text-align: center;">${label}</div><div class="mini-row"><span class="mini-team-txt ${res.t1Class}">${m ? (m.team1 || '---') : '---'}</span><span class="mini-score-badge">${s1}</span></div><div class="mini-row"><span class="mini-team-txt ${res.t2Class}">${m ? (m.team2 || '---') : '---'}</span><span class="mini-score-badge">${s2}</span></div></div>`;
                 };
 
                 let r1Html = ""; round1.forEach((m, idx) => { r1Html += renderCard(m, `مباراة ${idx+1}`); });
                 let r2Html = ""; round2.forEach((m, idx) => { r2Html += renderCard(m, `دور 2 - ${idx+1}`); });
                 let sfHtml = ""; semiFinal.forEach((m, idx) => { sfHtml += renderCard(m, `نصف نهائي ${idx+1}`); });
 
-                let finalHtml = `
-                <div class="hub-trophy-title">🏆 بطل الدوري</div>
-                ${renderCard(finalMatch, "النهائي الكبير")}
-                `;
-
                 let bracketHtml = `
                 <div class="bracket-scroll-wrapper">
                     <div class="bracket-master-container">
-                        <div style="font-size: 10px; color: var(--gold); margin-bottom: 6px; font-weight: bold; text-align: center;">
-                            📊 مسار الأدوار الشجري (يعتمد على الدور الأول من الداتا حصرياً)
-                        </div>
+                        <div style="font-size: 10px; color: var(--gold); margin-bottom: 6px; font-weight: bold; text-align: center;">📊 مسار الأدوار الشجري (متزامن حصرياً مع الداتا)</div>
                         <div class="tree-columns-flex">
-                            <div class="tree-round-col" style="max-width: 110px;">
-                                <div style="font-size:8px; color:var(--gold); text-align:center; font-weight:bold;">الدور الأول</div>
-                                ${r1Html}
-                            </div>
-                            <div class="tree-round-col" style="max-width: 100px;">
-                                <div style="font-size:8px; color:var(--gold); text-align:center; font-weight:bold;">الدور الثاني</div>
-                                ${r2Html}
-                            </div>
-                            <div class="tree-round-col" style="max-width: 120px; justify-content: center;">
-                                ${finalHtml}
-                            </div>
-                            <div class="tree-round-col" style="max-width: 100px;">
-                                <div style="font-size:8px; color:var(--gold); text-align:center; font-weight:bold;">نصف النهائي</div>
-                                ${sfHtml || '<div style="font-size:9px;color:var(--text-muted);">---</div>'}
-                            </div>
+                            <div class="tree-round-col" style="max-width: 110px;"><div style="font-size:8px; color:var(--gold); text-align:center; font-weight:bold;">الدور الأول</div>${r1Html}</div>
+                            <div class="tree-round-col" style="max-width: 100px;"><div style="font-size:8px; color:var(--gold); text-align:center; font-weight:bold;">الدور الثاني</div>${r2Html}</div>
+                            <div class="tree-round-col" style="max-width: 120px; justify-content: center;"><div class="hub-trophy-title">🏆 بطل الدوري</div>${renderCard(finalMatch, "النهائي الكبير")}</div>
+                            <div class="tree-round-col" style="max-width: 100px;"><div style="font-size:8px; color:var(--gold); text-align:center; font-weight:bold;">نصف النهائي</div>${sfHtml || '<div style="font-size:9px;color:var(--text-muted);">---</div>'}</div>
                         </div>
                     </div>
                 </div>`;
-                
                 document.getElementById('matches-display-area').innerHTML = bracketHtml;
 
             } else {
@@ -515,131 +269,49 @@
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
                         let score1 = m.status === 'finished' ? m.score1 : '0';
                         let score2 = m.status === 'finished' ? m.score2 : '0';
-                        let boxLabel = m.status === 'finished' ? 'انتهت' : 'مباراة قادمة';
-                        let boxClass = m.status === 'finished' ? 'styled-box finished-box' : 'styled-box';
-
                         let res = getWinnerAndClass(m);
                         if(m.status === "finished") {
-                            t1Class = res.t1Class;
-                            t2Class = res.t2Class;
+                            t1Class = res.t1Class; t2Class = res.t2Class;
                             if(res.t1Class === "winner") check1 = "✅";
                             if(res.t2Class === "winner") check2 = "✅";
                         }
-                        
-                        matchesHtml += `
-                        <div class="${boxClass}">
-                            <div class="box-header">
-                                <span>${boxLabel} (الدور الأول)</span>
-                                <span>مباراة رقم ${globalMatchIndex++}</span>
-                            </div>
-                            <hr class="box-divider">
-                            <div class="box-content">
-                                <div class="team-name team-right ${t1Class}">${check1} ${m.team1}</div>
-                                <div class="score-container">
-                                    <div class="score-box">${score1}</div>
-                                    <div>VS</div>
-                                    <div class="score-box">${score2}</div>
-                                </div>
-                                <div class="team-name team-left ${t2Class}">${m.team2} ${check2}</div>
-                            </div>
-                        </div>`;
+                        matchesHtml += `<div class="styled-box ${m.status === 'finished' ? 'finished-box' : ''}"><div class="box-header"><span>${m.status === 'finished' ? 'انتهت' : 'مباراة قادمة'} (الدور الأول)</span><span>مباراة رقم ${globalMatchIndex++}</span></div><hr class="box-divider"><div class="box-content"><div class="team-name team-right ${t1Class}">${check1} ${m.team1}</div><div class="score-container"><div class="score-box">${score1}</div><div>VS</div><div class="score-box">${score2}</div></div><div class="team-name team-left ${t2Class}">${m.team2} ${check2}</div></div></div>`;
                     });
                 } else if (!isRound2Complete) {
                     round2.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
                         let score1 = m.status === 'finished' ? m.score1 : '0';
                         let score2 = m.status === 'finished' ? m.score2 : '0';
-                        let boxLabel = m.status === 'finished' ? 'انتهت' : 'مباراة قادمة';
-                        let boxClass = m.status === 'finished' ? 'styled-box finished-box' : 'styled-box';
-
                         let res = getWinnerAndClass(m);
                         if(m.status === "finished") {
-                            t1Class = res.t1Class;
-                            t2Class = res.t2Class;
+                            t1Class = res.t1Class; t2Class = res.t2Class;
                             if(res.t1Class === "winner") check1 = "✅";
                             if(res.t2Class === "winner") check2 = "✅";
                         }
-
-                        matchesHtml += `
-                        <div class="${boxClass}">
-                            <div class="box-header">
-                                <span style="color:var(--gold);">🔄 الدور الثاني</span>
-                                <span>مباراة رقم ${globalMatchIndex++}</span>
-                            </div>
-                            <hr class="box-divider">
-                            <div class="box-content">
-                                <div class="team-name team-right ${t1Class}">${check1} ${m.team1}</div>
-                                <div class="score-container">
-                                    <div class="score-box">${score1}</div>
-                                    <div>VS</div>
-                                    <div class="score-box">${score2}</div>
-                                </div>
-                                <div class="team-name team-left ${t2Class}">${m.team2} ${check2}</div>
-                            </div>
-                        </div>`;
+                        matchesHtml += `<div class="styled-box ${m.status === 'finished' ? 'finished-box' : ''}"><div class="box-header"><span style="color:var(--gold);">🔄 الدور الثاني</span><span>مباراة رقم ${globalMatchIndex++}</span></div><hr class="box-divider"><div class="box-content"><div class="team-name team-right ${t1Class}">${check1} ${m.team1}</div><div class="score-container"><div class="score-box">${score1}</div><div>VS</div><div class="score-box">${score2}</div></div><div class="team-name team-left ${t2Class}">${m.team2} ${check2}</div></div></div>`;
                     });
                 } else if (!isSemiFinalComplete) {
                     semiFinal.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
                         let score1 = m.status === 'finished' ? m.score1 : '0';
                         let score2 = m.status === 'finished' ? m.score2 : '0';
-                        let boxLabel = m.status === 'finished' ? 'انتهت' : 'مباراة قادمة';
-                        let boxClass = m.status === 'finished' ? 'styled-box finished-box' : 'styled-box';
-
                         let res = getWinnerAndClass(m);
                         if(m.status === "finished") {
-                            t1Class = res.t1Class;
-                            t2Class = res.t2Class;
+                            t1Class = res.t1Class; t2Class = res.t2Class;
                             if(res.t1Class === "winner") check1 = "✅";
                             if(res.t2Class === "winner") check2 = "✅";
                         }
-
-                        matchesHtml += `
-                        <div class="${boxClass}">
-                            <div class="box-header">
-                                <span style="color:var(--gold);">⚔️ نصف النهائي</span>
-                                <span>مباراة رقم ${globalMatchIndex++}</span>
-                            </div>
-                            <hr class="box-divider">
-                            <div class="box-content">
-                                <div class="team-name team-right ${t1Class}">${check1} ${m.team1}</div>
-                                <div class="score-container">
-                                    <div class="score-box">${score1}</div>
-                                    <div>VS</div>
-                                    <div class="score-box">${score2}</div>
-                                </div>
-                                <div class="team-name team-left ${t2Class}">${m.team2} ${check2}</div>
-                            </div>
-                        </div>`;
+                        matchesHtml += `<div class="styled-box ${m.status === 'finished' ? 'finished-box' : ''}"><div class="box-header"><span style="color:var(--gold);">⚔️ نصف النهائي</span><span>مباراة رقم ${globalMatchIndex++}</span></div><hr class="box-divider"><div class="box-content"><div class="team-name team-right ${t1Class}">${check1} ${m.team1}</div><div class="score-container"><div class="score-box">${score1}</div><div>VS</div><div class="score-box">${score2}</div></div><div class="team-name team-left ${t2Class}">${m.team2} ${check2}</div></div></div>`;
                     });
                 } else {
-                    let t1Class = "", t2Class = "", check1 = "", check2 = "";
-                    let score1 = finalMatch.status === 'finished' ? finalMatch.score1 : '0';
-                    let score2 = finalMatch.status === 'finished' ? finalMatch.score2 : '0';
+                    let t1Class = "", t2Class = "", check1 = "", check2 = "", score1 = finalMatch.status === 'finished' ? finalMatch.score1 : '0', score2 = finalMatch.status === 'finished' ? finalMatch.score2 : '0';
                     let res = getWinnerAndClass(finalMatch);
                     if(finalMatch.status === "finished") {
                         t1Class = res.t1Class; t2Class = res.t2Class;
                         if(res.t1Class === "winner") check1 = "✅";
                         if(res.t2Class === "winner") check2 = "✅";
                     }
-
-                    matchesHtml += `
-                    <div class="styled-box generated-box" style="border: 2px solid var(--gold); background: rgba(55,40,85,0.9);">
-                        <div class="box-header">
-                            <span style="color:var(--gold); font-weight:bold;">🏆 النهائي الكبير</span>
-                            <span>المباراة الختامية</span>
-                        </div>
-                        <hr class="box-divider">
-                        <div class="box-content">
-                            <div class="team-name team-right ${t1Class}" style="color:var(--gold);">${check1} ${finalMatch.team1}</div>
-                            <div class="score-container">
-                                <div class="score-box">${score1}</div>
-                                <div>VS</div>
-                                <div class="score-box">${score2}</div>
-                            </div>
-                            <div class="team-name team-left ${t2Class}" style="color:var(--gold);">${finalMatch.team2} ${check2}</div>
-                        </div>
-                    </div>`;
+                    matchesHtml += `<div class="styled-box generated-box" style="border: 2px solid var(--gold); background: rgba(55,40,85,0.9);"><div class="box-header"><span style="color:var(--gold); font-weight:bold;">🏆 النهائي الكبير</span><span>المباراة الختامية</span></div><hr class="box-divider"><div class="box-content"><div class="team-name team-right ${t1Class}" style="color:var(--gold);">${check1} ${finalMatch.team1}</div><div class="score-container"><div class="score-box">${score1}</div><div>VS</div><div class="score-box">${score2}</div></div><div class="team-name team-left ${t2Class}" style="color:var(--gold);">${finalMatch.team2} ${check2}</div></div></div>`;
                 }
 
                 document.getElementById('matches-display-area').innerHTML = matchesHtml;
