@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الرئيسية | دوري الأبطال</title>
-    <script src="data.js?v=2037"></script>
+    <script src="data.js?v=2038"></script>
     <style>
         :root {
             --bg-color: #1a233a; 
@@ -485,6 +485,7 @@
                 let matchesHtml = "";
                 let globalMatchIndex = 1;
 
+                // المنطق الآمن والصحيح لعرض الأدوار بالترتيب:
                 if (!isRound1Complete) {
                     round1.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
@@ -519,7 +520,7 @@
                             </div>
                         </div>`;
                     });
-                } else if (!isRound2Complete) {
+                } else if (round2.length > 0 && !isRound2Complete) {
                     round2.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
                         let score1 = m.status === 'finished' ? m.score1 : '0';
@@ -553,7 +554,7 @@
                             </div>
                         </div>`;
                     });
-                } else if (!isSemiFinalComplete) {
+                } else if (semiFinal.length > 0 && !isSemiFinalComplete) {
                     semiFinal.forEach((m) => {
                         let t1Class = "", t2Class = "", check1 = "", check2 = "";
                         let score1 = m.status === 'finished' ? m.score1 : '0';
@@ -593,7 +594,7 @@
                     let score2 = finalMatch.status === 'finished' ? finalMatch.score2 : '0';
                     let res = getWinnerAndClass(finalMatch);
                     if(finalMatch.status === "finished") {
-                        t1Class = res.t1Class; t2Class = res.t2Class;
+                        t1CardClass = res.t1Class; t2Class = res.t2Class;
                         if(res.t1Class === "winner") check1 = "✅";
                         if(res.t2Class === "winner") check2 = "✅";
                     }
