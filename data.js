@@ -61,12 +61,12 @@ const DB = {
     ],
 
     matches: [
-        { team1: "سامي+علي", score1: 0, team2: "محمد فيصل+محمدفهد", score2: 0, status: "pending" }, 
-        { team1: "ابوخالد+فارس", score1: 0, team2: "نواف الصبياني+مؤيد", score2: 0, status: "pending" },
-        { team1: "وليد+عيد", score1: 0, team2: "خالد+خالد", score2: 0, status: "pending" },
-        { team1: "صنهات+عبدالمجيد", score1: 0, team2: "حسام+فيصل", score2: 0, status: "pending" },
-        { team1: "عبدالله+ريان", score1: 0, team2: "فهد+نواف احمد", score2: 0, status: "pending" },
-        { team1: "مشعل+مشاري ", score1: 1, team2: "---", score2: 0, status: "finished" }
+        { team1: "سامي+ علي", score1: 0, team2: "محمد فيصل+ محمدفهد", score2: 0, status: "pending" }, 
+        { team1: "ابوخالد+ فارس", score1: 0, team2: "نواف الصبياني +مؤيد", score2: 0, status: "pending" },
+        { team1: "وليد+ عيد", score1: 0, team2: "خالد+ خالد", score2: 0, status: "pending" },
+        { team1: "صنهات+ عبدالمجيد", score1: 0, team2: "حسام +فيصل", score2: 0, status: "pending" },
+        { team1: "عبدالله+ ريان", score1: 0, team2: "فهد +نواف احمد", score2: 0, status: "pending" },
+        { team1: "مشعل+ مشاري ", score1: 1, team2: "---", score2: 0, status: "finished" }
     ],
 
     round2Matches: [
