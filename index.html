@@ -350,14 +350,11 @@
             document.getElementById('ad-text').innerText = DB.settings.bannerText;
         }
 
-        // البحث أوتوماتيكياً عن اللاعب الحاصل على الـ MVP من قائمة اللاعبين
-let mvpPlayer = DB.players.find(p => p.mvp > 0) || DB.lastMvp;
-
-if (mvpPlayer) {
-    document.getElementById('mvp-img').src = mvpPlayer.image;
-    document.getElementById('mvp-name').innerText = mvpPlayer.name;
-}
-
+        // 🌟 التعديل السليم هنا: جلب بيانات الـ MVP مباشرة من DB.lastMvp المحدثة من لوحة التحكم
+        if (DB.lastMvp && DB.lastMvp.name) {
+            document.getElementById('mvp-img').src = DB.lastMvp.image;
+            document.getElementById('mvp-name').innerText = DB.lastMvp.name;
+        }
 
         let players = DB.players.slice();
         
