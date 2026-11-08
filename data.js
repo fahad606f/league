@@ -14,7 +14,7 @@ const DB = {
 
     players: [
         { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 4, assists: 1, mvps: 0 },
-        { name: "محمد فيصل", image: "images/IMG_0447.jpeg", goals: 2, assists: 5, mvps: 0 },
+        { name: "محمد فيصل", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 5, mvps: 0 },
         { name: "نواف احمد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "وليدالغامدي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "علي", image: "images/IMG_0452.jpeg", goals: 1, assists: 0, mvps: 0 },
