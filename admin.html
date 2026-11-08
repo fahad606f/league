@@ -27,8 +27,6 @@
 
         *, *::before, *::after { box-sizing: border-box; }
 
-        /* تم حذف شاشة الدخول نهائياً وباتت اللوحة تفتح مباشرة */
-
         #admin-panel { max-width: 420px; margin: 0 auto; text-align: right; width: 100%; padding: 0 5px; display: block; }
         
         .panel-section {
@@ -238,7 +236,6 @@
 
         let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
 
-        // فتح لوحة التحكم فوراً وبشكل مباشر عند تحميل الصفحة
         document.addEventListener("DOMContentLoaded", function() {
             loadAdminData();
         });
@@ -294,6 +291,9 @@
             }
             selectedPlayer.mvps += 1;
             previousMvpName = selectedPlayer.name;
+            
+            // تحديث مباشر لكائن الـ lastMvp فور اختيار الـ Radio
+            workingData.lastMvp = { name: selectedPlayer.name, image: selectedPlayer.image };
             renderPlayers();
         }
 
@@ -502,12 +502,14 @@
 
             syncFromUIValuesOnly();
 
-            // 🌟 الربط التلقائي المباشر لتحديث lastMvp وإظهاره في الاندكس تلقائياً
+            // ضمان التقاط الـ MVP وتحديث lastMvp بدقة أثناء الحفظ
+            let mvpFound = false;
             workingData.players.forEach((p, index) => {
                 let radioEl = document.getElementById(`mvp-radio-${index}`);
                 if (radioEl && radioEl.checked) {
                     workingData.lastMvp = { name: p.name, image: p.image };
                     previousMvpName = p.name;
+                    mvpFound = true;
                 }
             });
 
@@ -592,9 +594,10 @@
             fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
             fileContent += `    },\n\n`;
 
+            // كتابة كائن lastMvp الحقيقي داخل الكود المولد ليقرأه الـ index مباشرة
             fileContent += `    lastMvp: {\n`;
-            fileContent += `        name: "${workingData.lastMvp.name}",\n`;
-            fileContent += `        image: "${workingData.lastMvp.image}"\n`;
+            fileContent += `        name: "${workingData.lastMvp ? workingData.lastMvp.name : "⏳.."}",\n`;
+            fileContent += `        image: "${workingData.lastMvp ? workingData.lastMvp.image : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}"\n`;
             fileContent += `    },\n\n`;
 
             fileContent += `    players: [\n`;
