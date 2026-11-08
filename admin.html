@@ -502,6 +502,7 @@
 
             syncFromUIValuesOnly();
 
+            // 🌟 الربط التلقائي المباشر لتحديث lastMvp وإظهاره في الاندكس تلقائياً
             workingData.players.forEach((p, index) => {
                 let radioEl = document.getElementById(`mvp-radio-${index}`);
                 if (radioEl && radioEl.checked) {
