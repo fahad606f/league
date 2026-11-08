@@ -24,7 +24,7 @@ const DB = {
         { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 0, assists: 0, mvps: 0 },
         { name: "فهد اليامي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 0, assists: 0, mvps: 0 },
-        { name: "ابوخالد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 5, mvps: 0 },
+        { name: "ابوخالد", image: "images/dea4a814-f29a-498b-8077-13cab8c6246b.jpeg", goals: 1, assists: 5, mvps: 1 },
         { name: "سامي", image: "images/IMG_0478.jpeg", goals: 1, assists: 1, mvps: 0 },
         { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "وليد الحماد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
@@ -51,7 +51,7 @@ const DB = {
     ],
 
     round2Matches: [
-        { team1: "[متأهل 1]", score1: 0, team2: "[متأهل 2]", score2: 0, status: "pending" },
+        { team1: "سامي+ علي", score1: 0, team2: "[متأهل 2]", score2: 0, status: "pending" },
         { team1: "[متأهل 1]", score1: 0, team2: "[متأهل 2]", score2: 0, status: "pending" },
         { team1: "[متأهل 1]", score1: 0, team2: "مشعل+ مشاري ", score2: 0, status: "pending" }
     ],
