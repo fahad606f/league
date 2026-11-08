@@ -350,8 +350,14 @@
             document.getElementById('ad-text').innerText = DB.settings.bannerText;
         }
 
-        document.getElementById('mvp-img').src = DB.lastMvp.image;
-        document.getElementById('mvp-name').innerText = DB.lastMvp.name;
+        // البحث أوتوماتيكياً عن اللاعب الحاصل على الـ MVP من قائمة اللاعبين
+let mvpPlayer = DB.players.find(p => p.mvp > 0) || DB.lastMvp;
+
+if (mvpPlayer) {
+    document.getElementById('mvp-img').src = mvpPlayer.image;
+    document.getElementById('mvp-name').innerText = mvpPlayer.name;
+}
+
 
         let players = DB.players.slice();
         
