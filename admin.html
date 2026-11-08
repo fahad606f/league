@@ -143,6 +143,17 @@
     <div id="admin-panel">
         <h1 style="color: var(--gold); text-align: center; margin-bottom: 18px; font-size: 22px;">⚙️ لوحة إدارة دوري الأبطال</h1>
 
+        <!-- 🌟 قائمة منسدلة واضحة ومباشرة لاختيار نجم الجولة -->
+        <div class="panel-section" style="border: 2px solid var(--gold);">
+            <h3><span>🌟 اختيار نجم الجولة (MVP)</span></h3>
+            <div class="form-group" style="margin-top: 10px;">
+                <label>اختر اللاعب (ليظهر اسمه وصورته في الرئيسية تلقائياً):</label>
+                <select id="select-current-mvp">
+                    <option value="">-- اختر اللاعب --</option>
+                </select>
+            </div>
+        </div>
+
         <div class="panel-section">
             <h3><span>📢 إعدادات الإعلان (البنر)</span></h3>
             <div class="form-group" style="margin-top: 10px;">
@@ -172,11 +183,11 @@
         <details class="panel-section">
             <summary>
                 <div class="summary-content">
-                    <span>👥 إحصائيات اللاعبين ونجم الجولة</span>
+                    <span>👥 إحصائيات اللاعبين</span>
                     <button type="button" class="btn-add" onclick="event.preventDefault(); addPlayer();">➕ إضافة لاعب</button>
                 </div>
             </summary>
-            <p style="font-size:14px; color:var(--gold); margin-top:10px; text-align: right;">⭐ تفعيل (MVP) يحول اللاعب لنجم الجولة ويزيد عداد جوائزه تلقائياً (+1):</p>
+            <p style="font-size:14px; color:var(--gold); margin-top:10px; text-align: right;">إدارة بيانات اللاعبين وإحصائياتهم:</p>
             <div class="players-grid" id="players-edit-container"></div>
         </details>
 
@@ -234,8 +245,6 @@
         if (!workingData.semiFinalMatches) workingData.semiFinalMatches = [];
         if (!workingData.history) workingData.history = [];
 
-        let previousMvpName = workingData.lastMvp ? workingData.lastMvp.name : "";
-
         document.addEventListener("DOMContentLoaded", function() {
             loadAdminData();
         });
@@ -247,6 +256,7 @@
                 document.getElementById('edit-league-ended').value = workingData.settings.leagueEnded ? "true" : "false";
 
                 renderPlayers();
+                populateMvpDropdown();
                 renderMatches();
                 renderHistory();
             } catch (err) {
@@ -254,15 +264,28 @@
             }
         }
 
+        // تعبئة القائمة المنسدلة للـ MVP بأسماء اللاعبين
+        function populateMvpDropdown() {
+            let selectEl = document.getElementById('select-current-mvp');
+            if (!selectEl) return;
+            
+            let currentName = workingData.lastMvp ? workingData.lastMvp.name : "";
+            let html = `<option value="">-- اختر اللاعب --</option>`;
+            
+            workingData.players.forEach(p => {
+                let selected = (p.name === currentName) ? "selected" : "";
+                html += `<option value="${p.name}" ${selected}>${p.name}</option>`;
+            });
+            selectEl.innerHTML = html;
+        }
+
         function renderPlayers() {
             let playersHtml = "";
             workingData.players.forEach((p, index) => {
-                let isCurrentMvp = (workingData.lastMvp && workingData.lastMvp.name === p.name) ? "checked" : "";
                 playersHtml += `
                 <div class="player-edit-card">
                     <div class="player-header">
                         <div style="display:flex; align-items:center; gap:10px; width:75%;">
-                            <input type="radio" name="mvp-selector" id="mvp-radio-${index}" ${isCurrentMvp} onchange="handleMvpSelection(${index})" style="cursor:pointer; transform:scale(1.4);">
                             <input type="text" id="p-name-${index}" value="${p.name || ''}" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.3); color:gold; padding:8px; border-radius:8px; font-weight:bold; width:100%; font-size:17px;">
                         </div>
                         <button type="button" class="btn-delete" onclick="deletePlayer(${index})">حذف</button>
@@ -279,22 +302,7 @@
                 </div>`;
             });
             document.getElementById('players-edit-container').innerHTML = playersHtml;
-        }
-
-        function handleMvpSelection(selectedIndex) {
-            syncFromUIValuesOnly();
-            let selectedPlayer = workingData.players[selectedIndex];
-            if (previousMvpName === selectedPlayer.name) return;
-            if (previousMvpName) {
-                let oldMvp = workingData.players.find(p => p.name === previousMvpName);
-                if (oldMvp && oldMvp.mvps > 0) oldMvp.mvps -= 1;
-            }
-            selectedPlayer.mvps += 1;
-            previousMvpName = selectedPlayer.name;
-            
-            // تحديث مباشر لكائن الـ lastMvp فور اختيار الـ Radio
-            workingData.lastMvp = { name: selectedPlayer.name, image: selectedPlayer.image };
-            renderPlayers();
+            populateMvpDropdown(); // تحديث القائمة المنسدلة تلقائياً إذا تم تعديل اللاعبين
         }
 
         function syncFromUIValuesOnly() {
@@ -502,16 +510,20 @@
 
             syncFromUIValuesOnly();
 
-            // ضمان التقاط الـ MVP وتحديث lastMvp بدقة أثناء الحفظ
-            let mvpFound = false;
-            workingData.players.forEach((p, index) => {
-                let radioEl = document.getElementById(`mvp-radio-${index}`);
-                if (radioEl && radioEl.checked) {
-                    workingData.lastMvp = { name: p.name, image: p.image };
-                    previousMvpName = p.name;
-                    mvpFound = true;
+            // 🌟 التقاط اسم وصورة نجم الجولة مباشرة من القائمة المنسدلة الجديدة عند الحفظ
+            let selectEl = document.getElementById('select-current-mvp');
+            if (selectEl && selectEl.value) {
+                let selectedPlayerName = selectEl.value;
+                let playerObj = workingData.players.find(p => p.name === selectedPlayerName);
+                if (playerObj) {
+                    workingData.lastMvp = {
+                        name: playerObj.name,
+                        image: playerObj.image
+                    };
                 }
-            });
+            } else {
+                workingData.lastMvp = { name: "⏳..", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" };
+            }
 
             let round1 = workingData.matches || [];
             let isRound1Complete = round1.length > 0 && round1.every(m => m.status === 'finished');
@@ -594,7 +606,6 @@
             fileContent += `        leagueEnded: ${workingData.settings.leagueEnded}\n`;
             fileContent += `    },\n\n`;
 
-            // كتابة كائن lastMvp الحقيقي داخل الكود المولد ليقرأه الـ index مباشرة
             fileContent += `    lastMvp: {\n`;
             fileContent += `        name: "${workingData.lastMvp ? workingData.lastMvp.name : "⏳.."}",\n`;
             fileContent += `        image: "${workingData.lastMvp ? workingData.lastMvp.image : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}"\n`;
