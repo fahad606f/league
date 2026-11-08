@@ -24,7 +24,7 @@ const DB = {
         { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 0, assists: 0, mvps: 0 },
         { name: "فهد اليامي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 0, assists: 0, mvps: 0 },
-        { name: "ابوخالد", image: "images/dea4a814-f29a-498b-8077-13cab8c6246b.jpeg", goals: 1, assists: 5, mvps: 1 },
+        { name: "ابوخالد", image: "images/dea4a814-f29a-498b-8077-13cab8c6246b.jpeg", goals: 1, assists: 5, mvps: 0 },
         { name: "سامي", image: "images/IMG_0478.jpeg", goals: 1, assists: 1, mvps: 0 },
         { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "وليد الحماد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
