@@ -13,10 +13,10 @@ const DB = {
     },
 
     players: [
-        { name: "ابوسعد", image: "images/default.jpg", goals: 2, assists: 0, mvps: 0 },
-        { name: "محمدالمساعد", image: "images/default.jpg", goals: 1, assists: 0, mvps: 0 },
+        { name: "ابوسعد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 0, mvps: 0 },
+        { name: "محمدالمساعد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "عبدالمجيد", image: "images/default.jpg", goals: 1, assists: 2, mvps: 0 },
-        { name: "عامر عبدالرحمن", image: "images/default.jpg", goals: 3, assists: 0, mvps: 1 },
+        { name: "عامر عبدالرحمن", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 3, assists: 0, mvps: 1 },
         { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 7, assists: 1, mvps: 0 },
         { name: "محمد فيصل", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 9, mvps: 0 },
         { name: "نواف احمد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 2, mvps: 0 },
