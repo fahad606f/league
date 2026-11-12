@@ -2,7 +2,7 @@
 
 const DB = {
     settings: {
-        showBanner: false,
+        showBanner: true,
         bannerText: "🚨اول مباراة في الدوري2 ((نواف الصبياني+مؤيد ❌ ابوخالد+ فارس))🏆",
         leagueEnded: false
     },
@@ -56,7 +56,7 @@ const DB = {
 
     round2Matches: [
         { team1: "سامي+ علي", score1: 0, team2: "[متأهل 2]", score2: 0, status: "pending" },
-        { team1: "خالد+ خالد", score1: 0, team2: "[متأهل 2]", score2: 0, status: "pending" },
+        { team1: "خالد+ خالد", score1: 0, team2: "حسام +فيصل", score2: 0, status: "pending" },
         { team1: "[متأهل 1]", score1: 0, team2: "مشعل+ مشاري ", score2: 0, status: "pending" }
     ],
 
