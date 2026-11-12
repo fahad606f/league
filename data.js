@@ -3,7 +3,7 @@
 const DB = {
     settings: {
         showBanner: true,
-        bannerText: "🚨اول مباراة في الدوري2 ((نواف الصبياني+مؤيد ❌ ابوخالد+ فارس))🏆",
+        bannerText: "🚨 المباراة القادمة   ((نواف الصبياني+مؤيد ❌ ابوخالد+ فارس))🏆",
         leagueEnded: false
     },
 
