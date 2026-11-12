@@ -3,38 +3,38 @@
 const DB = {
     settings: {
         showBanner: false,
-        bannerText: "🚨اول مباراة في الدوري2 ((سامي+علي ❌ محمدفيصل+محمد فهد))🏆",
+        bannerText: "🚨اول مباراة في الدوري2 ((نواف الصبياني+مؤيد ❌ ابوخالد+ فارس))🏆",
         leagueEnded: false
     },
 
     lastMvp: {
-        name: "عامر عبدالرحمن",
-        image: "images/default.jpg"
+        name: "نواف احمد",
+        image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
     },
 
     players: [
-        { name: "ابوسعد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 0, mvps: 0 },
+        { name: "ابوسعد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 6, assists: 0, mvps: 0 },
         { name: "محمدالمساعد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 0, mvps: 0 },
         { name: "عبدالمجيد", image: "images/default.jpg", goals: 1, assists: 2, mvps: 0 },
         { name: "عامر عبدالرحمن", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 3, assists: 0, mvps: 1 },
-        { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 7, assists: 1, mvps: 0 },
-        { name: "محمد فيصل", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 9, mvps: 0 },
-        { name: "نواف احمد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 2, mvps: 0 },
-        { name: "وليدالغامدي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 2, mvps: 0 },
-        { name: "علي", image: "images/IMG_0452.jpeg", goals: 2, assists: 0, mvps: 0 },
-        { name: "فارس", image: "images/IMG_0451.jpeg", goals: 0, assists: 0, mvps: 0 },
+        { name: "خالد فايز", image: "images/IMG_0449.jpeg", goals: 10, assists: 1, mvps: 0 },
+        { name: "محمد فيصل", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 7, assists: 12, mvps: 0 },
+        { name: "نواف احمد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 4, assists: 3, mvps: 1 },
+        { name: "وليدالغامدي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 3, mvps: 0 },
+        { name: "علي", image: "images/IMG_0452.jpeg", goals: 2, assists: 1, mvps: 0 },
+        { name: "فارس", image: "images/IMG_0451.jpeg", goals: 1, assists: 0, mvps: 0 },
         { name: "مهند", image: "images/IMG_0446.jpeg", goals: 0, assists: 0, mvps: 0 },
-        { name: "محمد فهد", image: "images/IMG_0482.jpeg", goals: 0, assists: 1, mvps: 0 },
+        { name: "محمد فهد", image: "images/IMG_0482.jpeg", goals: 1, assists: 2, mvps: 0 },
         { name: "مشاري", image: "images/IMG_0444.jpeg", goals: 0, assists: 0, mvps: 0 },
         { name: "فهد اليامي", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "مشعل", image: "images/IMG_0479.jpeg", goals: 0, assists: 0, mvps: 0 },
-        { name: "ابوخالد", image: "images/dea4a814-f29a-498b-8077-13cab8c6246b.jpeg", goals: 4, assists: 8, mvps: 1 },
-        { name: "سامي", image: "images/IMG_0478.jpeg", goals: 5, assists: 4, mvps: 0 },
+        { name: "ابوخالد", image: "images/dea4a814-f29a-498b-8077-13cab8c6246b.jpeg", goals: 6, assists: 12, mvps: 1 },
+        { name: "سامي", image: "images/IMG_0478.jpeg", goals: 6, assists: 7, mvps: 0 },
         { name: "مؤيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 1, mvps: 0 },
         { name: "وليد الحماد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "عبدالله", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "ريان", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 1, assists: 3, mvps: 0 },
-        { name: "سلطان", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 0, mvps: 0 },
+        { name: "سلطان", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 3, assists: 0, mvps: 0 },
         { name: "عيد", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
         { name: "نواف الصبياني", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 2, assists: 0, mvps: 0 },
         { name: "يزن", image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", goals: 0, assists: 0, mvps: 0 },
@@ -56,7 +56,7 @@ const DB = {
 
     round2Matches: [
         { team1: "سامي+ علي", score1: 0, team2: "[متأهل 2]", score2: 0, status: "pending" },
-        { team1: "[متأهل 1]", score1: 0, team2: "[متأهل 2]", score2: 0, status: "pending" },
+        { team1: "خالد+ خالد", score1: 0, team2: "[متأهل 2]", score2: 0, status: "pending" },
         { team1: "[متأهل 1]", score1: 0, team2: "مشعل+ مشاري ", score2: 0, status: "pending" }
     ],
 
